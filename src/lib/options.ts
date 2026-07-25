@@ -159,13 +159,32 @@ export const SOCIAL_ACTIVITY_OPTIONS = [
   "Natur & Ausflüge",
 ] as const;
 
+/**
+ * Reizempfindlichkeiten, orientiert an Dunns Vier-Quadranten-Modell der
+ * sensorischen Verarbeitung (Dunn, 1997; validiert u. a. bei Jussila et al.,
+ * 2019, PMC6406387). Das Modell unterscheidet Reizschwelle (niedrig/hoch)
+ * und Reaktionsstil (aktiv/passiv) — die vier Muster sind:
+ * Low Registration, Sensation Seeking, Sensory Sensitivity, Sensation
+ * Avoiding. Die Formulierungen hier sind eigene, alltagssprachliche
+ * Selbstauskünfte und keine Wiedergabe des kommerziellen Testverfahrens.
+ */
 export const SENSORY_NEED_OPTIONS = [
+  // Sensory Sensitivity — Reize werden schnell bemerkt und als belastend erlebt
   "Laute Umgebungen sind anstrengend",
   "Grelles Licht ist unangenehm",
-  "Menschenmengen sind anstrengend",
   "Starke Gerüche sind unangenehm",
+  "Bestimmte Stoffe/Texturen sind unangenehm",
+  // Sensation Avoiding — Reize werden aktiv vermieden oder kontrolliert
+  "Menschenmengen sind anstrengend",
   "Ich brauche Pausen bei vielen Reizen",
   "Berührungen nur nach Absprache",
+  "Ich plane Rückzugsmöglichkeiten gerne im Voraus",
+  // Low Registration — Reize werden erst spät oder schwach wahrgenommen
+  "Ich merke Hunger, Kälte oder Müdigkeit oft erst spät",
+  "Hintergrundgeräusche lenken mich kaum ab",
+  // Sensation Seeking — intensive Reize werden aktiv gesucht
+  "Ich mag intensive Musik, Licht oder Bewegung",
+  "Ich brauche eher mehr als weniger Reize, um mich wohlzufühlen",
 ] as const;
 
 /** Barrierefreiheits- und Unterstützungsbedürfnisse für Treffen. */

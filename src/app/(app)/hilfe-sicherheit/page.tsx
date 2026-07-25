@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
-import { AlertTriangle, HeartHandshake, PhoneCall, ShieldCheck } from "lucide-react";
+import {
+  AlertTriangle,
+  BookOpen,
+  ExternalLink,
+  HeartHandshake,
+  PhoneCall,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert } from "@/components/ui/alert";
 
@@ -88,6 +96,135 @@ export default function SafetyPage() {
             Ob langsame Antworten, Pausen oder kurze Treffen: Du bestimmst das Tempo. Funktionen
             wie „Match pausieren“, „Meine Antwort kann etwas dauern“ und flexible Absagen sind
             genau dafür da — und niemals kostenpflichtig.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BookOpen aria-hidden="true" className="size-5 text-primary" />
+            Wissenschaftlicher Hintergrund
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <h3 className="font-semibold">Warum wir Kommunikationsstil statt „Defizite“ matchen</h3>
+            <p className="mt-1">
+              Der Autismus-Forscher Damian Milton hat 2012 das „Double Empathy Problem“
+              beschrieben: Missverständnisse zwischen autistischen und nicht-autistischen
+              Menschen entstehen auf beiden Seiten gleichermaßen — nicht, weil eine Seite
+              „falsch“ kommuniziert. Deshalb fragen wir nach deinem Kommunikationsstil und
+              deiner Kontaktfrequenz, statt anzunehmen, dass es eine „richtige“ Art gibt,
+              miteinander zu sprechen.
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Milton, D. (2012).{" "}
+              <a
+                href="https://kar.kent.ac.uk/62639/1/Double%20empathy%20problem.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                On the ontological status of autism: the &lsquo;double empathy problem&rsquo;
+              </a>
+              . Disability &amp; Society, 27(6).{" "}
+              <a
+                href="https://journals.sagepub.com/doi/10.1177/13623613221129123"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                Zehn-Jahres-Folgestudie (Milton, Gurbuz &amp; López, 2022)
+              </a>
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold">Warum unsere Reizempfindlichkeiten so aufgeteilt sind</h3>
+            <p className="mt-1">
+              Die Auswahl bei „Reizempfindlichkeiten“ orientiert sich an Winnie Dunns
+              Vier-Quadranten-Modell der sensorischen Verarbeitung: Menschen unterscheiden
+              sich darin, wie schnell sie Reize bemerken und wie aktiv oder passiv sie darauf
+              reagieren. Das ist keine Diagnose, sondern beschreibt normale Unterschiede in der
+              Reizverarbeitung.
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Jussila, K. et al. (2019).{" "}
+              <a
+                href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6406387/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                Dunn&rsquo;s Model of Sensory Processing: An Investigation of the Axes of the
+                Four-Quadrant Model in Healthy Adults
+              </a>
+            </p>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Alle Angaben in deinem Profil sind Selbstauskünfte in deinen eigenen Worten — die
+            App stellt keine Diagnosen und leitet auch keine aus deinen Angaben ab.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users aria-hidden="true" className="size-5 text-primary" />
+            Weiterführende Anlaufstellen
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-2">
+            <li>
+              <a
+                href="https://adhs-deutschland.de/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 underline"
+              >
+                ADHS Deutschland e. V.
+                <ExternalLink aria-hidden="true" className="size-4" />
+              </a>
+              <p className="text-sm text-muted-foreground">
+                Größte deutsche Selbsthilfeorganisation zu ADHS, mit bundesweitem
+                Selbsthilfegruppen-Netzwerk und Telefonberatung.
+              </p>
+            </li>
+            <li>
+              <a
+                href="https://autismus.de/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 underline"
+              >
+                Autismus Deutschland e. V.
+                <ExternalLink aria-hidden="true" className="size-4" />
+              </a>
+              <p className="text-sm text-muted-foreground">
+                Größter deutscher Dachverband zu Autismus, gegründet 1970, mit
+                Regionalverbänden und Beratungsangeboten.
+              </p>
+            </li>
+            <li>
+              <a
+                href="https://autisticadvocacy.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 underline"
+              >
+                Autistic Self Advocacy Network (ASAN)
+                <ExternalLink aria-hidden="true" className="size-4" />
+              </a>
+              <p className="text-sm text-muted-foreground">
+                Selbstvertretungsorganisation autistischer Menschen (englischsprachig), u. a.
+                mit Sprachleitfäden.
+              </p>
+            </li>
+          </ul>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Diese Links ersetzen keine medizinische oder therapeutische Beratung.
           </p>
         </CardContent>
       </Card>
