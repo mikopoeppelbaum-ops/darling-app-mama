@@ -62,10 +62,7 @@ function DatesPageInner() {
       </header>
 
       {creating ? (
-        <DatePlanForm
-          preselectedMatchId={preselectedMatch}
-          onDone={() => setCreating(false)}
-        />
+        <DatePlanForm preselectedMatchId={preselectedMatch} onDone={() => setCreating(false)} />
       ) : null}
 
       {upcoming.length === 0 && !creating ? (
@@ -78,15 +75,21 @@ function DatesPageInner() {
         <ul className="space-y-3">
           {upcoming.map((plan) => {
             const match = state.matches.find((m) => m.id === plan.matchId);
-            const other = match ? profileById(state, otherProfileId(match, state.me.id)) : undefined;
+            const other = match
+              ? profileById(state, otherProfileId(match, state.me.id))
+              : undefined;
             return (
               <li key={plan.id}>
                 <DatePlanCard
                   plan={plan}
                   otherName={other?.displayName ?? "Unbekannt"}
-                  onConfirm={() => store.updateDatePlan(plan.id, { status: "confirmed" }, "Treffpunkt bestätigt")}
+                  onConfirm={() =>
+                    store.updateDatePlan(plan.id, { status: "confirmed" }, "Treffpunkt bestätigt")
+                  }
                   onCancel={() => setCancelTarget(plan)}
-                  onCheckIn={() => store.updateDatePlan(plan.id, { checkInDone: true, status: "completed" })}
+                  onCheckIn={() =>
+                    store.updateDatePlan(plan.id, { checkInDone: true, status: "completed" })
+                  }
                 />
               </li>
             );
@@ -120,7 +123,11 @@ function DatesPageInner() {
             <Button
               variant="outline"
               onClick={() => {
-                store.updateDatePlan(cancelTarget.id, { status: "cancelled" }, "Ohne Nachricht abgesagt");
+                store.updateDatePlan(
+                  cancelTarget.id,
+                  { status: "cancelled" },
+                  "Ohne Nachricht abgesagt",
+                );
                 setCancelTarget(null);
               }}
             >
@@ -158,7 +165,10 @@ function DatePlanCard({
   function downloadIcs() {
     // Kalendererinnerung: einfache ICS-Datei zum Import in jeden Kalender.
     const dt = (iso: string) =>
-      new Date(iso).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+      new Date(iso)
+        .toISOString()
+        .replace(/[-:]/g, "")
+        .replace(/\.\d{3}/, "");
     const end = new Date(new Date(plan.startsAt).getTime() + plan.durationMinutes * 60000);
     const ics = [
       "BEGIN:VCALENDAR",
@@ -193,7 +203,15 @@ function DatePlanCard({
       <CardHeader className="pb-2">
         <CardTitle className="flex flex-wrap items-center gap-2">
           Date mit {otherName}
-          <Badge variant={plan.status === "confirmed" ? "success" : plan.status === "cancelled" ? "destructive" : "outline"}>
+          <Badge
+            variant={
+              plan.status === "confirmed"
+                ? "success"
+                : plan.status === "cancelled"
+                  ? "destructive"
+                  : "outline"
+            }
+          >
             {statusLabel[plan.status]}
           </Badge>
         </CardTitle>
@@ -208,7 +226,9 @@ function DatePlanCard({
           <div>
             <dt className="font-semibold text-muted-foreground">Treffpunkt</dt>
             <dd>{plan.locationName}</dd>
-            {plan.locationNotes ? <dd className="text-muted-foreground">{plan.locationNotes}</dd> : null}
+            {plan.locationNotes ? (
+              <dd className="text-muted-foreground">{plan.locationNotes}</dd>
+            ) : null}
           </div>
           {plan.accessibilityRequirements.length > 0 ? (
             <div>
@@ -347,7 +367,11 @@ function DatePlanForm({
           </FormField>
 
           <FormField label="Art des Treffens" htmlFor="plan-type" error={errors.dateType?.message}>
-            <Select id="plan-type" aria-invalid={Boolean(errors.dateType)} {...register("dateType")}>
+            <Select
+              id="plan-type"
+              aria-invalid={Boolean(errors.dateType)}
+              {...register("dateType")}
+            >
               <option value="">Bitte auswählen …</option>
               {DATE_TYPE_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>
@@ -358,7 +382,11 @@ function DatePlanForm({
           </FormField>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <FormField label="Datum und Uhrzeit" htmlFor="plan-start" error={errors.startsAt?.message}>
+            <FormField
+              label="Datum und Uhrzeit"
+              htmlFor="plan-start"
+              error={errors.startsAt?.message}
+            >
               <Input
                 id="plan-start"
                 type="datetime-local"
@@ -366,7 +394,11 @@ function DatePlanForm({
                 {...register("startsAt")}
               />
             </FormField>
-            <FormField label="Dauer (Minuten)" htmlFor="plan-duration" error={errors.durationMinutes?.message}>
+            <FormField
+              label="Dauer (Minuten)"
+              htmlFor="plan-duration"
+              error={errors.durationMinutes?.message}
+            >
               <Input
                 id="plan-duration"
                 type="number"
@@ -379,12 +411,30 @@ function DatePlanForm({
             </FormField>
           </div>
 
-          <FormField label="Treffpunkt" htmlFor="plan-location" hint="Name des Ortes reicht — z. B. ein Café. Keine privaten Adressen." error={errors.locationName?.message}>
-            <Input id="plan-location" aria-invalid={Boolean(errors.locationName)} {...register("locationName")} />
+          <FormField
+            label="Treffpunkt"
+            htmlFor="plan-location"
+            hint="Name des Ortes reicht — z. B. ein Café. Keine privaten Adressen."
+            error={errors.locationName?.message}
+          >
+            <Input
+              id="plan-location"
+              aria-invalid={Boolean(errors.locationName)}
+              {...register("locationName")}
+            />
           </FormField>
 
-          <FormField label="Hinweise zum Ort" htmlFor="plan-location-notes" optional error={errors.locationNotes?.message}>
-            <Input id="plan-location-notes" placeholder="z. B. Eingang über den Hof, Aufzug vorhanden" {...register("locationNotes")} />
+          <FormField
+            label="Hinweise zum Ort"
+            htmlFor="plan-location-notes"
+            optional
+            error={errors.locationNotes?.message}
+          >
+            <Input
+              id="plan-location-notes"
+              placeholder="z. B. Eingang über den Hof, Aufzug vorhanden"
+              {...register("locationNotes")}
+            />
           </FormField>
 
           <ChipGroup
@@ -395,17 +445,31 @@ function DatePlanForm({
             onChange={setAccessibility}
           />
 
-          <FormField label="Notizen für euch beide" htmlFor="plan-notes" optional error={errors.notes?.message}>
+          <FormField
+            label="Notizen für euch beide"
+            htmlFor="plan-notes"
+            optional
+            error={errors.notes?.message}
+          >
             <Textarea id="plan-notes" rows={2} {...register("notes")} />
           </FormField>
 
           <fieldset className="space-y-3 rounded-md border border-border p-4">
             <legend className="px-1 font-semibold">Sicherheit</legend>
             <div className="grid gap-4 sm:grid-cols-2">
-              <FormField label="Sicherheitskontakt (Name)" htmlFor="plan-safety-name" optional hint="Eine Vertrauensperson, die weiß, wo du bist.">
+              <FormField
+                label="Sicherheitskontakt (Name)"
+                htmlFor="plan-safety-name"
+                optional
+                hint="Eine Vertrauensperson, die weiß, wo du bist."
+              >
                 <Input id="plan-safety-name" {...register("safetyContactName")} />
               </FormField>
-              <FormField label="Telefonnummer der Vertrauensperson" htmlFor="plan-safety-phone" optional>
+              <FormField
+                label="Telefonnummer der Vertrauensperson"
+                htmlFor="plan-safety-phone"
+                optional
+              >
                 <Input id="plan-safety-phone" type="tel" {...register("safetyContactPhone")} />
               </FormField>
             </div>

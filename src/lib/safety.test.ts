@@ -8,8 +8,12 @@ describe("detectContentWarnings", () => {
   });
 
   it("warnt vor Links", () => {
-    expect(detectContentWarnings("Schau mal: https://beispiel.de/xyz").some((w) => w.type === "link")).toBe(true);
-    expect(detectContentWarnings("Auf www.beispiel.com gibts das").some((w) => w.type === "link")).toBe(true);
+    expect(
+      detectContentWarnings("Schau mal: https://beispiel.de/xyz").some((w) => w.type === "link"),
+    ).toBe(true);
+    expect(
+      detectContentWarnings("Auf www.beispiel.com gibts das").some((w) => w.type === "link"),
+    ).toBe(true);
   });
 
   it("warnt vor Bankdaten (IBAN)", () => {
@@ -52,7 +56,10 @@ describe("chunkLongMessage", () => {
   });
 
   it("teilt lange Nachrichten an Satzgrenzen", () => {
-    const long = Array.from({ length: 10 }, (_, i) => `Das ist Satz Nummer ${i + 1} mit etwas Inhalt.`).join(" ");
+    const long = Array.from(
+      { length: 10 },
+      (_, i) => `Das ist Satz Nummer ${i + 1} mit etwas Inhalt.`,
+    ).join(" ");
     const chunks = chunkLongMessage(long, 120);
     expect(chunks.length).toBeGreaterThan(1);
     expect(chunks.join(" ")).toBe(long);

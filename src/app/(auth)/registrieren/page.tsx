@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, type RegisterInput } from "@/lib/validation";
 import { createSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
+import { useAccessibility } from "@/components/a11y/accessibility-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,8 @@ import { Alert } from "@/components/ui/alert";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { settings } = useAccessibility();
+  const simple = settings.simpleLanguage;
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [emailSent, setEmailSent] = React.useState(false);
   const {
@@ -54,8 +57,9 @@ export default function RegisterPage() {
   if (emailSent) {
     return (
       <Alert variant="success" title="Fast geschafft!">
-        Wir haben dir eine E-Mail geschickt. Bitte klicke auf den Link darin, um deine
-        E-Mail-Adresse zu bestätigen. Danach kannst du dich anmelden.
+        {simple
+          ? "Wir haben dir eine E-Mail geschickt. Klicke auf den Link in der E-Mail. Das bestätigt deine E-Mail-Adresse. Danach kannst du dich anmelden."
+          : "Wir haben dir eine E-Mail geschickt. Bitte klicke auf den Link darin, um deine E-Mail-Adresse zu bestätigen. Danach kannst du dich anmelden."}
       </Alert>
     );
   }
@@ -65,7 +69,9 @@ export default function RegisterPage() {
       <CardHeader>
         <CardTitle className="text-2xl">Konto erstellen</CardTitle>
         <CardDescription>
-          Kostenlos und in deinem Tempo. Du brauchst nur eine E-Mail-Adresse.
+          {simple
+            ? "Die Registrierung ist kostenlos. Du brauchst nur eine E-Mail-Adresse."
+            : "Kostenlos und in deinem Tempo. Du brauchst nur eine E-Mail-Adresse."}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -93,7 +99,11 @@ export default function RegisterPage() {
           <FormField
             label="Passwort"
             htmlFor="reg-password"
-            hint="Mindestens 10 Zeichen. Ein Satz ist leicht zu merken und sicher."
+            hint={
+              simple
+                ? "Nutze mindestens 10 Zeichen. Ein kurzer Satz ist gut und leicht zu merken."
+                : "Mindestens 10 Zeichen. Ein Satz ist leicht zu merken und sicher."
+            }
             error={errors.password?.message}
           >
             <Input
@@ -105,7 +115,11 @@ export default function RegisterPage() {
               {...register("password")}
             />
           </FormField>
-          <FormField label="Passwort wiederholen" htmlFor="reg-password2" error={errors.passwordConfirm?.message}>
+          <FormField
+            label="Passwort wiederholen"
+            htmlFor="reg-password2"
+            error={errors.passwordConfirm?.message}
+          >
             <Input
               id="reg-password2"
               type="password"
@@ -117,7 +131,11 @@ export default function RegisterPage() {
           <FormField
             label="Geburtsdatum"
             htmlFor="reg-birthdate"
-            hint="EchtNah ist ab 18 Jahren. Dein Geburtsdatum wird nie öffentlich angezeigt — nur dein Alter."
+            hint={
+              simple
+                ? "Du musst 18 Jahre oder älter sein. Wir zeigen dein Geburtsdatum nie an. Andere sehen nur dein Alter."
+                : "EchtNah ist ab 18 Jahren. Dein Geburtsdatum wird nie öffentlich angezeigt — nur dein Alter."
+            }
             error={errors.birthdate?.message}
           >
             <Input
@@ -132,10 +150,15 @@ export default function RegisterPage() {
           <fieldset className="space-y-3">
             <legend className="font-medium">Einwilligungen</legend>
             <div className="flex items-start gap-3">
-              <Checkbox id="reg-privacy" aria-invalid={Boolean(errors.acceptPrivacy)} {...register("acceptPrivacy")} />
+              <Checkbox
+                id="reg-privacy"
+                aria-invalid={Boolean(errors.acceptPrivacy)}
+                {...register("acceptPrivacy")}
+              />
               <label htmlFor="reg-privacy" className="text-sm">
-                Ich stimme der Datenschutzerklärung zu. Sensible Angaben (z. B. zu Behinderung
-                oder Neurodivergenz) sind immer freiwillig.
+                {simple
+                  ? "Ich stimme dem Datenschutz zu. Ich muss nichts über eine Behinderung oder Neurodivergenz sagen. Das ist immer freiwillig."
+                  : "Ich stimme der Datenschutzerklärung zu. Sensible Angaben (z. B. zu Behinderung oder Neurodivergenz) sind immer freiwillig."}
               </label>
             </div>
             {errors.acceptPrivacy ? (
@@ -144,9 +167,15 @@ export default function RegisterPage() {
               </p>
             ) : null}
             <div className="flex items-start gap-3">
-              <Checkbox id="reg-terms" aria-invalid={Boolean(errors.acceptTerms)} {...register("acceptTerms")} />
+              <Checkbox
+                id="reg-terms"
+                aria-invalid={Boolean(errors.acceptTerms)}
+                {...register("acceptTerms")}
+              />
               <label htmlFor="reg-terms" className="text-sm">
-                Ich stimme den Nutzungsbedingungen zu.
+                {simple
+                  ? "Ich stimme den Regeln für die Nutzung zu."
+                  : "Ich stimme den Nutzungsbedingungen zu."}
               </label>
             </div>
             {errors.acceptTerms ? (
@@ -155,13 +184,29 @@ export default function RegisterPage() {
               </p>
             ) : null}
             <div className="flex items-start gap-3">
-              <Checkbox id="reg-rules" aria-invalid={Boolean(errors.acceptCommunityRules)} {...register("acceptCommunityRules")} />
+              <Checkbox
+                id="reg-rules"
+                aria-invalid={Boolean(errors.acceptCommunityRules)}
+                {...register("acceptCommunityRules")}
+              />
               <label htmlFor="reg-rules" className="text-sm">
-                Ich habe die{" "}
-                <Link href="/community-regeln" className="underline" target="_blank">
-                  Community-Regeln
-                </Link>{" "}
-                gelesen und stimme ihnen zu.
+                {simple ? (
+                  <>
+                    Ich habe die{" "}
+                    <Link href="/community-regeln" className="underline" target="_blank">
+                      Community-Regeln
+                    </Link>{" "}
+                    gelesen. Ich stimme ihnen zu.
+                  </>
+                ) : (
+                  <>
+                    Ich habe die{" "}
+                    <Link href="/community-regeln" className="underline" target="_blank">
+                      Community-Regeln
+                    </Link>{" "}
+                    gelesen und stimme ihnen zu.
+                  </>
+                )}
               </label>
             </div>
             {errors.acceptCommunityRules ? (

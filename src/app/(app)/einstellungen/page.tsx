@@ -6,6 +6,7 @@ import {
   Bell,
   Brain,
   ChevronRight,
+  KeyRound,
   Lock,
   ShieldOff,
   Trash2,
@@ -26,6 +27,12 @@ const SETTINGS_LINKS = [
     label: "ADHS-freundliche Funktionen",
     description: "Erinnerungen, Fokusmodus, automatische Entwürfe",
     icon: Brain,
+  },
+  {
+    href: "/einstellungen/sicherheit",
+    label: "Zwei-Faktor-Anmeldung",
+    description: "Zusätzlicher Schutz mit einer Authenticator-App, freiwillig und kostenlos",
+    icon: KeyRound,
   },
   {
     href: "/einstellungen/privatsphaere",

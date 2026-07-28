@@ -120,7 +120,12 @@ interface AppStoreValue {
   toggleSave: (profileId: string) => void;
   block: (profileId: string) => void;
   unblock: (profileId: string) => void;
-  report: (profileId: string, category: ReportCategory, description: string, messageId?: string) => void;
+  report: (
+    profileId: string,
+    category: ReportCategory,
+    description: string,
+    messageId?: string,
+  ) => void;
   sendMessage: (matchId: string, body: string, imageUrl?: string) => { rateLimited?: boolean };
   deleteMessage: (messageId: string) => void;
   markAnswerLater: (messageId: string, remindAt?: string) => void;
@@ -179,7 +184,13 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     like: (profileId) => {
       const now = new Date().toISOString();
       // Schutz vor massenhaftem Liken: max. 10 Likes pro Minute.
-      if (isRateLimited(state.likesGiven.map((l) => l.createdAt), 60_000, 10)) {
+      if (
+        isRateLimited(
+          state.likesGiven.map((l) => l.createdAt),
+          60_000,
+          10,
+        )
+      ) {
         return { rateLimited: true };
       }
       if (likesRemainingToday(state.likesGiven.map((l) => l.createdAt)) <= 0) {
@@ -345,7 +356,9 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       setState((s) => ({
         ...s,
         matches: s.matches.map((m) =>
-          m.id === matchId ? { ...m, status: paused ? ("paused" as const) : ("active" as const) } : m,
+          m.id === matchId
+            ? { ...m, status: paused ? ("paused" as const) : ("active" as const) }
+            : m,
         ),
       })),
 
@@ -430,7 +443,17 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
 
     exportMyData: () => {
       // DSGVO Art. 20: alle eigenen Daten als JSON.
-      const { me, myPreferences, likesGiven, saved, matches, messages, datePlans, privacySettings, notificationSettings } = state;
+      const {
+        me,
+        myPreferences,
+        likesGiven,
+        saved,
+        matches,
+        messages,
+        datePlans,
+        privacySettings,
+        notificationSettings,
+      } = state;
       return JSON.stringify(
         {
           exportedAt: new Date().toISOString(),

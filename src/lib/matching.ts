@@ -20,8 +20,7 @@ export function distanceKm(
   const dLng = ((b.approxLng - a.approxLng) * Math.PI) / 180;
   const la1 = (a.approxLat * Math.PI) / 180;
   const la2 = (b.approxLat * Math.PI) / 180;
-  const h =
-    Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) ** 2;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) ** 2;
   return Math.round(2 * R * Math.asin(Math.sqrt(h)));
 }
 
@@ -119,10 +118,7 @@ export function violatesDealbreakers(prefs: Preferences, candidate: Profile): bo
   const d = prefs.dealbreakers;
   if (d.includes("Rauchen") && candidate.lifestyle.smoking === "yes") return true;
   if (d.includes("Häufiger Alkohol") && candidate.lifestyle.alcohol === "yes") return true;
-  if (
-    d.includes("Kein Interesse an fester Beziehung") &&
-    candidate.relationshipGoal === "casual"
-  ) {
+  if (d.includes("Kein Interesse an fester Beziehung") && candidate.relationshipGoal === "casual") {
     return true;
   }
   return false;
@@ -133,7 +129,11 @@ export function violatesDealbreakers(prefs: Preferences, candidate: Profile): bo
  * nur berücksichtigt, wenn die betroffene Person sie ausdrücklich als
  * "searchable" freigegeben hat.
  */
-export function applyDiscoverFilters(profiles: Profile[], filters: DiscoverFilters, viewer?: Profile): Profile[] {
+export function applyDiscoverFilters(
+  profiles: Profile[],
+  filters: DiscoverFilters,
+  viewer?: Profile,
+): Profile[] {
   return profiles.filter((p) => {
     const age = ageFromBirthdate(p.birthdate);
     if (filters.ageMin !== undefined && age < filters.ageMin) return false;
@@ -146,7 +146,10 @@ export function applyDiscoverFilters(profiles: Profile[], filters: DiscoverFilte
     ) {
       return false;
     }
-    if (filters.relationshipGoals?.length && !filters.relationshipGoals.includes(p.relationshipGoal)) {
+    if (
+      filters.relationshipGoals?.length &&
+      !filters.relationshipGoals.includes(p.relationshipGoal)
+    ) {
       return false;
     }
     if (filters.interests?.length && !filters.interests.some((i) => p.interests.includes(i))) {
@@ -164,10 +167,17 @@ export function applyDiscoverFilters(profiles: Profile[], filters: DiscoverFilte
     if (filters.planningStyles?.length && !filters.planningStyles.includes(p.planningStyle)) {
       return false;
     }
-    if (filters.contactFrequencies?.length && !filters.contactFrequencies.includes(p.contactFrequency)) {
+    if (
+      filters.contactFrequencies?.length &&
+      !filters.contactFrequencies.includes(p.contactFrequency)
+    ) {
       return false;
     }
-    if (filters.maxDistanceKm !== undefined && viewer && distanceKm(viewer, p) > filters.maxDistanceKm) {
+    if (
+      filters.maxDistanceKm !== undefined &&
+      viewer &&
+      distanceKm(viewer, p) > filters.maxDistanceKm
+    ) {
       return false;
     }
     if (
@@ -179,13 +189,22 @@ export function applyDiscoverFilters(profiles: Profile[], filters: DiscoverFilte
       // barrierearme Orte brauchen oder bevorzugen.
       return false;
     }
-    if (filters.childrenWish?.length && (!p.lifestyle.childrenWish || !filters.childrenWish.includes(p.lifestyle.childrenWish))) {
+    if (
+      filters.childrenWish?.length &&
+      (!p.lifestyle.childrenWish || !filters.childrenWish.includes(p.lifestyle.childrenWish))
+    ) {
       return false;
     }
-    if (filters.smoking?.length && (!p.lifestyle.smoking || !filters.smoking.includes(p.lifestyle.smoking))) {
+    if (
+      filters.smoking?.length &&
+      (!p.lifestyle.smoking || !filters.smoking.includes(p.lifestyle.smoking))
+    ) {
       return false;
     }
-    if (filters.alcohol?.length && (!p.lifestyle.alcohol || !filters.alcohol.includes(p.lifestyle.alcohol))) {
+    if (
+      filters.alcohol?.length &&
+      (!p.lifestyle.alcohol || !filters.alcohol.includes(p.lifestyle.alcohol))
+    ) {
       return false;
     }
     if (filters.pets?.length && (!p.lifestyle.pets || !filters.pets.includes(p.lifestyle.pets))) {

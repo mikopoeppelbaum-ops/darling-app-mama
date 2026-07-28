@@ -1,6 +1,10 @@
 "use client";
 
-import { useAccessibility, type FontSize, type ThemeSetting } from "@/components/a11y/accessibility-provider";
+import {
+  useAccessibility,
+  type FontSize,
+  type ThemeSetting,
+} from "@/components/a11y/accessibility-provider";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioCards } from "@/components/ui/radio-cards";
 import { Switch } from "@/components/ui/switch";
@@ -37,7 +41,11 @@ export default function AccessibilitySettingsPage() {
             legend="Farbschema"
             name="theme"
             options={[
-              { value: "system", label: "Wie mein Gerät", description: "Folgt der Einstellung deines Systems." },
+              {
+                value: "system",
+                label: "Wie mein Gerät",
+                description: "Folgt der Einstellung deines Systems.",
+              },
               { value: "light", label: "Hell" },
               { value: "dark", label: "Dunkel" },
             ]}
@@ -49,7 +57,9 @@ export default function AccessibilitySettingsPage() {
               <Label htmlFor="set-contrast" className="font-medium">
                 Hoher Kontrast
               </Label>
-              <p className="text-sm text-muted-foreground">Kräftigere Farben und deutlichere Ränder.</p>
+              <p className="text-sm text-muted-foreground">
+                Kräftigere Farben und deutlichere Ränder.
+              </p>
             </div>
             <Switch
               id="set-contrast"
@@ -77,6 +87,29 @@ export default function AccessibilitySettingsPage() {
               id="set-reduced"
               checked={settings.reducedView}
               onCheckedChange={(v) => update({ reducedView: v })}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Einfache Sprache</CardTitle>
+          <CardDescription>
+            Kürzere Sätze und einfachere Wörter auf der Registrierung und den Community-Regeln. Das
+            ist eine Annäherung an Leichte Sprache — keine geprüfte Übersetzung nach dem offiziellen
+            Regelwerk, das eine Prüfung durch Menschen aus der Zielgruppe selbst verlangt.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between gap-3">
+            <Label htmlFor="set-simple-language" className="font-medium">
+              Einfache Sprache verwenden
+            </Label>
+            <Switch
+              id="set-simple-language"
+              checked={settings.simpleLanguage}
+              onCheckedChange={(v) => update({ simpleLanguage: v })}
             />
           </div>
         </CardContent>

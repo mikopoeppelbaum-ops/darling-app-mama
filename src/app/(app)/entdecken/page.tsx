@@ -90,7 +90,11 @@ export default function DiscoverPage() {
 
   function handleUndo() {
     const restored = store.undoSkip();
-    setNotice(restored ? "Das zuletzt übersprungene Profil ist wieder da." : "Es gibt nichts zum Zurückholen.");
+    setNotice(
+      restored
+        ? "Das zuletzt übersprungene Profil ist wieder da."
+        : "Es gibt nichts zum Zurückholen.",
+    );
   }
 
   const likesLeft = store.likesLeftToday;
@@ -116,7 +120,12 @@ export default function DiscoverPage() {
           >
             <List aria-hidden="true" className="size-4" /> Liste
           </Button>
-          <Button variant="outline" size="sm" aria-expanded={filtersOpen} onClick={() => setFiltersOpen((v) => !v)}>
+          <Button
+            variant="outline"
+            size="sm"
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen((v) => !v)}
+          >
             <SlidersHorizontal aria-hidden="true" className="size-4" /> Filter
           </Button>
         </div>
@@ -142,7 +151,11 @@ export default function DiscoverPage() {
       ) : null}
 
       {filtersOpen ? (
-        <DiscoverFiltersPanel filters={filters} onChange={setFilters} onClose={() => setFiltersOpen(false)} />
+        <DiscoverFiltersPanel
+          filters={filters}
+          onChange={setFilters}
+          onClose={() => setFiltersOpen(false)}
+        />
       ) : null}
 
       {candidates.length === 0 ? (
@@ -190,7 +203,11 @@ export default function DiscoverPage() {
                       {distanceKm(state.me, p)} km entfernt
                     </p>
                   </div>
-                  <Button size="sm" onClick={() => handleLike(p)} aria-label={`${p.displayName} liken`}>
+                  <Button
+                    size="sm"
+                    onClick={() => handleLike(p)}
+                    aria-label={`${p.displayName} liken`}
+                  >
                     <Heart aria-hidden="true" className="size-4" /> Gefällt mir
                   </Button>
                 </CardContent>
@@ -271,11 +288,18 @@ function CandidateCard({
 
         {reasons.length > 0 ? <MatchReasonsList reasons={reasons} /> : null}
 
-        <Link href={`/profil/${profile.id}`} className="inline-block font-medium text-primary underline underline-offset-4">
+        <Link
+          href={`/profil/${profile.id}`}
+          className="inline-block font-medium text-primary underline underline-offset-4"
+        >
           Ganzes Profil ansehen
         </Link>
 
-        <div className="flex flex-wrap gap-3 border-t border-border pt-4" role="group" aria-label={`Aktionen für ${profile.displayName}`}>
+        <div
+          className="flex flex-wrap gap-3 border-t border-border pt-4"
+          role="group"
+          aria-label={`Aktionen für ${profile.displayName}`}
+        >
           <Button size="lg" onClick={onLike}>
             <Heart aria-hidden="true" /> Gefällt mir
           </Button>

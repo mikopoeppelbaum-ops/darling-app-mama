@@ -28,15 +28,15 @@ zurück erzeugt sofort ein Match.
 
 ## Technischer Stack
 
-| Bereich | Technologie | Anmerkung |
-| --- | --- | --- |
-| Framework | Next.js 16 (App Router) + React 19 + TypeScript (strict) | |
-| Styling | Tailwind CSS v4 | Design-Tokens in `globals.css` |
-| UI-Komponenten | Handgeschriebene Komponenten im shadcn/ui-Stil | Bewusste Entscheidung: kein shadcn-CLI-Import nötig, dieselben Patterns (cva, cn, Radix-ähnliche Semantik) mit nativen Elementen (`<dialog>`, `<select>`, `<input type=checkbox>`) für maximale Screenreader-/Tastatur-Kompatibilität ohne Zusatzabhängigkeiten |
-| Formulare | React Hook Form + Zod (`@hookform/resolvers`) | |
-| Icons | Lucide | |
-| Backend | Supabase (PostgreSQL, Auth, Storage, Realtime) | Migrationen + RLS in `supabase/`; App läuft ohne Konfiguration im Demo-Modus |
-| Tests | Vitest + Testing Library (+ SQL-RLS-Testskript) | |
+| Bereich        | Technologie                                              | Anmerkung                                                                                                                                                                                                                                                       |
+| -------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework      | Next.js 16 (App Router) + React 19 + TypeScript (strict) |                                                                                                                                                                                                                                                                 |
+| Styling        | Tailwind CSS v4                                          | Design-Tokens in `globals.css`                                                                                                                                                                                                                                  |
+| UI-Komponenten | Handgeschriebene Komponenten im shadcn/ui-Stil           | Bewusste Entscheidung: kein shadcn-CLI-Import nötig, dieselben Patterns (cva, cn, Radix-ähnliche Semantik) mit nativen Elementen (`<dialog>`, `<select>`, `<input type=checkbox>`) für maximale Screenreader-/Tastatur-Kompatibilität ohne Zusatzabhängigkeiten |
+| Formulare      | React Hook Form + Zod (`@hookform/resolvers`)            |                                                                                                                                                                                                                                                                 |
+| Icons          | Lucide                                                   |                                                                                                                                                                                                                                                                 |
+| Backend        | Supabase (PostgreSQL, Auth, Storage, Realtime)           | Migrationen + RLS in `supabase/`; App läuft ohne Konfiguration im Demo-Modus                                                                                                                                                                                    |
+| Tests          | Vitest + Testing Library (+ SQL-RLS-Testskript)          |                                                                                                                                                                                                                                                                 |
 
 ## Projektstruktur
 
@@ -107,14 +107,14 @@ psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" \
 
 ## Skripte
 
-| Befehl | Zweck |
-| --- | --- |
-| `npm run dev` | Entwicklungsserver |
+| Befehl                        | Zweck                       |
+| ----------------------------- | --------------------------- |
+| `npm run dev`                 | Entwicklungsserver          |
 | `npm run build` / `npm start` | Produktions-Build / -Server |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | TypeScript ohne Emit |
-| `npm test` | Vitest (63 Tests) |
-| `npm run format` | Prettier |
+| `npm run lint`                | ESLint                      |
+| `npm run typecheck`           | TypeScript ohne Emit        |
+| `npm test`                    | Vitest (63 Tests)           |
+| `npm run format`              | Prettier                    |
 
 ## Fertige Funktionen (MVP)
 
@@ -147,28 +147,55 @@ psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" \
   Änderungs-Notizen, ICS-Kalenderexport, Sicherheitskontakt, Sicherheitscode,
   Teilen mit Vertrauensperson, Check-in nach dem Date
 - **Einstellungen**: Barrierefreiheit (Schriftgröße, Dark Mode, hoher Kontrast,
-  reduzierte Ansicht), ADHS-Funktionen (Erinnerungen, Gliederung langer Nachrichten,
-  Fokusmodus), Privatsphäre (Sichtbarkeit, Datenexport), Benachrichtigungen
-  (einzeln/gebündelt), blockierte Nutzer:innen, Konto löschen (mit Bestätigung)
+  reduzierte Ansicht, Einfache Sprache), ADHS-Funktionen (Erinnerungen, Gliederung
+  langer Nachrichten, Fokusmodus), **Zwei-Faktor-Anmeldung** (TOTP via Supabase Auth
+  MFA, freiwillig, mit manueller Schlüsseleingabe als Alternative zum QR-Code),
+  Privatsphäre (Sichtbarkeit, Datenexport), Benachrichtigungen (einzeln/gebündelt),
+  blockierte Nutzer:innen, Konto löschen (mit Bestätigung)
 - **Datenexport** (DSGVO Art. 20) und **Kontolöschung** (Art. 17)
 - **Admin-Dashboard**: Meldungen mit Kategorie/Zeitstempel/Status, interne Notizen,
   Verwarnung, temporäre/dauerhafte Sperre, Audit-Log; Rollenkonzept in DB (`app_users.role`)
 - **Community-Regeln** (gegen Ableismus, Fetischisierung, Diagnose-Druck u. a.) und
-  **Sicherheitsleitfaden** in einfacher Sprache
+  **Sicherheitsleitfaden** in einfacher Sprache — beide auch als **Einfache-Sprache**-Fassung
+  abrufbar (Einstellung „Barrierefreiheit“)
+- **Wissenschaftlicher Hintergrund** auf `/hilfe-sicherheit`: erklärt das Double-Empathy-Problem
+  (Milton, 2012) als Grundlage für Kommunikationsstil- statt Defizit-Matching und Dunns
+  Vier-Quadranten-Modell als Grundlage der Reizempfindlichkeits-Optionen, mit Quellenangaben
+  und Links zu ADHS Deutschland e. V., Autismus Deutschland e. V. und ASAN
 
 ## Barrierefreiheit (WCAG 2.2 AA als Leitlinie)
 
 - Vollständige Tastaturbedienung, sichtbare Fokusringe (3 px, `:focus-visible`)
 - Skip-Link, Landmark-Struktur, `aria-label`/`aria-current`/`role="alert"` durchgängig
+- Korrekte, lückenlose Überschriften-Hierarchie (h1 → h2 → h3, konfigurierbar über
+  `CardTitle`s `as`-Prop) — automatisiert geprüft, siehe unten
 - Native Elemente (`<dialog>`, `<select>`, Checkboxen/Radios) statt Skript-Nachbauten
 - Wichtige Zustände nie nur über Farbe (Häkchen, Unterstreichung, Text-Badges)
 - Einstellbare Schriftgröße (100/112,5/125 %), Dark Mode, Modus für hohen Kontrast
 - Reduzierte Ansicht: keine Animationen/Schatten; `prefers-reduced-motion` wird respektiert
+- **Einfache Sprache** (Einstellung, wirkt auf Registrierung und Community-Regeln):
+  kürzere Sätze, einfachere Wörter. Das ist eine Annäherung, keine geprüfte
+  „Leichte Sprache“ nach dem Regelwerk des Netzwerks Leichte Sprache — dafür wäre eine
+  Prüfung durch eine Prüfgruppe aus der Zielgruppe selbst nötig, die dieses Projekt
+  nicht leisten kann.
 - Mindest-Zielgrößen 44 px, klare deutsche Sprache, verständliche Fehlermeldungen
 - Alt-Texte für alle Bilder (Profilfotos haben ein Pflicht-Alt-Text-Feld im Schema)
 
+**Automatisierte Prüfung**: `npm test` schließt axe-core-Audits (`jest-axe`) für die
+Startseite, Registrierung, Community-Regeln (beide Sprachvarianten), die
+Zwei-Faktor-Einstellungsseite, die App-Navigation und alle zentralen UI-Bausteine ein
+(`src/components/a11y-audit.test.tsx`). Diese Prüfung hat bereits einen echten Fehler
+gefunden und behoben (übersprungene Überschriften-Ebene bei Card-Titeln). Wichtige
+Grenze: axe-core in jsdom kann weder echten Farbkontrast prüfen (kein Rendering/Painting)
+noch ersetzt es einen Test mit einem echten Screenreader (NVDA, JAWS, VoiceOver) — das
+steht als offener Punkt weiterhin aus.
+
 ## Sicherheit & Datenschutz
 
+- **Optionale Zwei-Faktor-Anmeldung** (TOTP) über die offizielle Supabase-Auth-MFA-API
+  (`auth.mfa.enroll/challenge/verify/unenroll/listFactors`) unter
+  „Einstellungen → Zwei-Faktor-Anmeldung“; Login-Flow fragt bei aktivierter MFA einen
+  Code ab, bevor die Sitzung auf AAL2 hochgestuft wird. Freiwillig und kostenlos.
 - **Row Level Security** auf allen Tabellen; Default „alles verboten“
   - Sensible Angaben (Disclosures, Barrierefreiheitsbedürfnisse) folgen der
     gewählten Sichtbarkeit auch auf Datenbankebene; Moderation hat **keinen**
@@ -198,8 +225,15 @@ unbegrenzte Likes (`FREE_DAILY_LIKE_LIMIT` konfigurierbar), erweiterte Filter.
 - **Handgeschriebene UI-Komponenten statt shadcn-CLI**: gleiche API-Idee, aber ohne
   Radix-Abhängigkeiten; native Browser-Semantik ist für Screenreader am robustesten.
 - **Kein Kompatibilitäts-Score**: bewusst nur konkrete, ehrliche Übereinstimmungssätze.
-- **npm audit**: 2 moderate Findings betreffen ein transitives `postcss` innerhalb von
-  Next.js selbst (kein Fix ohne Next-Downgrade auf v9 — nicht sinnvoll; beobachten).
+- **2FA ohne QR-Code-Bibliothek**: Supabase liefert den QR-Code bereits als fertiges
+  Daten-URI-SVG (`data.totp.qr_code`); zusätzlich wird der Schlüssel als Text zur
+  manuellen Eingabe angezeigt — wichtig für Screenreader-Nutzer:innen, die den QR-Code
+  nicht scannen können.
+- **npm audit**: Next.js wurde auf 16.2.12 aktualisiert (behebt mehrere High-Severity-CVEs,
+  u. a. Middleware-Bypass und SSRF). Verbleibend: `postcss`/`sharp` sind intern in Next.js
+  selbst gebündelt (`next/node_modules/...`) und nicht ohne ein weiteres Next-Update
+  fixbar; `brace-expansion` steckt in einer Dev-Abhängigkeit von ESLint (nicht im
+  Produktions-Bundle). Alle drei werden beobachtet.
 
 ## Offene Punkte / nächste Schritte
 
@@ -213,9 +247,18 @@ unbegrenzte Likes (`FREE_DAILY_LIKE_LIMIT` konfigurierbar), erweiterte Filter.
 6. **Karten-/Location-Anbindung** für barrierearme Treffpunkte (`external_place_id` vorbereitet,
    z. B. Wheelmap-API).
 7. **Einspruchsverfahren** für Moderationsentscheidungen (Felder `appeal_*` vorhanden).
-8. **Automatisierte a11y-Prüfung** (axe-core in CI) und E2E-Tests (Playwright).
+8. **Test mit echtem Screenreader** (NVDA, JAWS, VoiceOver) mit echten Nutzer:innen —
+   axe-core (siehe oben) ist integriert, ersetzt das aber nicht. E2E-Tests (Playwright)
+   in CI wären der nächste Ausbauschritt für die automatisierte Seite.
 9. **Zahlungsanbindung** (z. B. Stripe) für das vorbereitete Freemium-Modell.
-10. **Leichte-Sprache-Variante** zentraler Seiten.
+10. **Geprüfte Leichte Sprache**: Die aktuelle „Einfache Sprache“ ist eine Annäherung.
+    Für echte, zertifizierte Leichte Sprache nach dem Regelwerk des Netzwerks Leichte
+    Sprache bräuchte es eine Prüfung durch eine Prüfgruppe aus der Zielgruppe selbst,
+    zusätzliche Piktogramme und eine Ausweitung auf weitere Seiten.
+11. **Barrierefreiheitsbedürfnisse wissenschaftlich fundieren**: analog zu den
+    Reizempfindlichkeiten (Dunn-Modell) ließe sich `ACCESSIBILITY_NEED_OPTIONS` an der
+    ICF der WHO (International Classification of Functioning, Disability and Health)
+    ausrichten, die Behinderung explizit relational statt medizinisch definiert.
 
 ## Rechtlicher Hinweis
 

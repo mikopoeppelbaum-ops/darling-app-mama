@@ -3,7 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MessageCircle, Star, BellOff } from "lucide-react";
-import { otherProfileId, profileById, unreadCount, useAppStore, visibleMessages } from "@/lib/store";
+import {
+  otherProfileId,
+  profileById,
+  unreadCount,
+  useAppStore,
+  visibleMessages,
+} from "@/lib/store";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -53,10 +59,16 @@ export default function ConversationsPage() {
                         <p className="flex items-center gap-2 font-semibold">
                           {other.displayName}
                           {settings?.important ? (
-                            <Star aria-label="Als wichtig markiert" className="size-4 text-accent" />
+                            <Star
+                              aria-label="Als wichtig markiert"
+                              className="size-4 text-accent"
+                            />
                           ) : null}
                           {settings?.muted ? (
-                            <BellOff aria-label="Stummgeschaltet" className="size-4 text-muted-foreground" />
+                            <BellOff
+                              aria-label="Stummgeschaltet"
+                              className="size-4 text-muted-foreground"
+                            />
                           ) : null}
                         </p>
                         <p className="truncate text-sm text-muted-foreground">

@@ -59,15 +59,18 @@ export function ReportDialog({
       {submitted ? (
         <div className="space-y-4">
           <p>
-            Danke für deine Meldung. Unser Moderationsteam schaut sie sich so schnell wie
-            möglich an. Wenn du dich unsicher fühlst, kannst du die Person zusätzlich
-            blockieren.
+            Danke für deine Meldung. Unser Moderationsteam schaut sie sich so schnell wie möglich
+            an. Wenn du dich unsicher fühlst, kannst du die Person zusätzlich blockieren.
           </p>
           <Button onClick={close}>Schließen</Button>
         </div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-          <FormField label="Worum geht es?" htmlFor="report-category" error={errors.category?.message}>
+          <FormField
+            label="Worum geht es?"
+            htmlFor="report-category"
+            error={errors.category?.message}
+          >
             <Select
               id="report-category"
               aria-invalid={Boolean(errors.category)}

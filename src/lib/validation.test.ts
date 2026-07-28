@@ -3,6 +3,7 @@ import {
   datePlanSchema,
   disclosureSchema,
   messageSchema,
+  mfaCodeSchema,
   profileBasicsSchema,
   registerSchema,
   reportSchema,
@@ -34,9 +35,9 @@ describe("registerSchema", () => {
   });
 
   it("verlangt alle Einwilligungen", () => {
-    expect(
-      registerSchema.safeParse({ ...validRegistration, acceptPrivacy: false }).success,
-    ).toBe(false);
+    expect(registerSchema.safeParse({ ...validRegistration, acceptPrivacy: false }).success).toBe(
+      false,
+    );
     expect(
       registerSchema.safeParse({ ...validRegistration, acceptCommunityRules: false }).success,
     ).toBe(false);
@@ -69,9 +70,9 @@ describe("profileBasicsSchema", () => {
   });
 
   it("lehnt zu kurze Anzeigenamen ab", () => {
-    expect(
-      profileBasicsSchema.safeParse({ displayName: "A", city: "Köln", bio: "" }).success,
-    ).toBe(false);
+    expect(profileBasicsSchema.safeParse({ displayName: "A", city: "Köln", bio: "" }).success).toBe(
+      false,
+    );
   });
 });
 
@@ -110,9 +111,7 @@ describe("datePlanSchema", () => {
   });
 
   it("lehnt Termine in der Vergangenheit ab", () => {
-    expect(
-      datePlanSchema.safeParse({ ...base, startsAt: "2020-01-01T10:00" }).success,
-    ).toBe(false);
+    expect(datePlanSchema.safeParse({ ...base, startsAt: "2020-01-01T10:00" }).success).toBe(false);
   });
 
   it("verlangt einen Treffpunkt", () => {
@@ -123,8 +122,27 @@ describe("datePlanSchema", () => {
 describe("reportSchema", () => {
   it("verlangt Kategorie und Beschreibung", () => {
     expect(
-      reportSchema.safeParse({ category: "ableism", description: "Die Person hat mich wiederholt abgewertet." }).success,
+      reportSchema.safeParse({
+        category: "ableism",
+        description: "Die Person hat mich wiederholt abgewertet.",
+      }).success,
     ).toBe(true);
     expect(reportSchema.safeParse({ category: "", description: "zu kurz" }).success).toBe(false);
+  });
+});
+
+describe("mfaCodeSchema", () => {
+  it("akzeptiert genau 6 Ziffern", () => {
+    expect(mfaCodeSchema.safeParse("123456").success).toBe(true);
+  });
+
+  it("lehnt zu kurze, zu lange oder nicht-numerische Codes ab", () => {
+    expect(mfaCodeSchema.safeParse("12345").success).toBe(false);
+    expect(mfaCodeSchema.safeParse("1234567").success).toBe(false);
+    expect(mfaCodeSchema.safeParse("abcdef").success).toBe(false);
+  });
+
+  it("entfernt Leerzeichen vor der Prüfung", () => {
+    expect(mfaCodeSchema.safeParse(" 123456 ").success).toBe(true);
   });
 });

@@ -62,7 +62,10 @@ export function DiscoverFiltersPanel({
               inputMode="numeric"
               value={filters.ageMin ?? ""}
               onChange={(e) =>
-                onChange({ ...filters, ageMin: e.target.value ? Number(e.target.value) : undefined })
+                onChange({
+                  ...filters,
+                  ageMin: e.target.value ? Number(e.target.value) : undefined,
+                })
               }
             />
           </FormField>
@@ -75,7 +78,10 @@ export function DiscoverFiltersPanel({
               inputMode="numeric"
               value={filters.ageMax ?? ""}
               onChange={(e) =>
-                onChange({ ...filters, ageMax: e.target.value ? Number(e.target.value) : undefined })
+                onChange({
+                  ...filters,
+                  ageMax: e.target.value ? Number(e.target.value) : undefined,
+                })
               }
             />
           </FormField>
@@ -195,7 +201,10 @@ export function DiscoverFiltersPanel({
               onChange({
                 ...filters,
                 disclosureLabels: e.target.value
-                  ? e.target.value.split(",").map((s) => s.trim()).filter(Boolean)
+                  ? e.target.value
+                      .split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean)
                   : undefined,
               })
             }

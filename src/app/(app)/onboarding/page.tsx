@@ -63,7 +63,12 @@ export default function OnboardingPage() {
     headingRef.current?.focus();
   }, [step]);
 
-  const steps: { title: string; description?: string; content: React.ReactNode; validate?: () => string | null }[] = [
+  const steps: {
+    title: string;
+    description?: string;
+    content: React.ReactNode;
+    validate?: () => string | null;
+  }[] = [
     {
       title: "Wie möchtest du genannt werden?",
       description: "Dein Anzeigename kann dein Vorname oder ein frei gewählter Name sein.",
@@ -121,11 +126,16 @@ export default function OnboardingPage() {
     },
     {
       title: "Wo bist du ungefähr?",
-      description: "Wir speichern nie deine genaue Adresse — nur die Stadt und einen ungefähren Umkreis.",
+      description:
+        "Wir speichern nie deine genaue Adresse — nur die Stadt und einen ungefähren Umkreis.",
       content: (
         <div className="space-y-4">
           <FormField label="Stadt" htmlFor="ob-city">
-            <Input id="ob-city" value={me.city} onChange={(e) => store.updateProfile({ city: e.target.value })} />
+            <Input
+              id="ob-city"
+              value={me.city}
+              onChange={(e) => store.updateProfile({ city: e.target.value })}
+            />
           </FormField>
           <FormField label="Suchradius (km)" htmlFor="ob-radius">
             <Input
@@ -134,7 +144,9 @@ export default function OnboardingPage() {
               min={1}
               max={500}
               value={state.myPreferences.maxDistanceKm}
-              onChange={(e) => store.updatePreferences({ maxDistanceKm: Number(e.target.value) || 50 })}
+              onChange={(e) =>
+                store.updatePreferences({ maxDistanceKm: Number(e.target.value) || 50 })
+              }
             />
           </FormField>
         </div>
@@ -181,7 +193,9 @@ export default function OnboardingPage() {
             legend="Kommunikationsvorlieben"
             options={COMMUNICATION_STYLE_OPTIONS}
             selected={me.communicationStyles}
-            onChange={(v) => store.updateProfile({ communicationStyles: v as CommunicationStyle[] })}
+            onChange={(v) =>
+              store.updateProfile({ communicationStyles: v as CommunicationStyle[] })
+            }
           />
           <RadioCards
             legend="Gewünschte Kontaktfrequenz"
@@ -232,8 +246,8 @@ export default function OnboardingPage() {
         "Behinderung, Erkrankung, ADHS oder Neurodivergenz: Du entscheidest, ob und was du teilst. Eine Diagnose ist nie verpflichtend. Diese Angaben kannst du in deinem Profil jederzeit hinzufügen, ändern und einzeln sichtbar oder unsichtbar schalten.",
       content: (
         <Alert variant="info" title="Kein Druck">
-          Du kannst diesen Schritt einfach überspringen. Alles dazu findest du später unter
-          „Mein Profil“.
+          Du kannst diesen Schritt einfach überspringen. Alles dazu findest du später unter „Mein
+          Profil“.
         </Alert>
       ),
     },
@@ -265,8 +279,8 @@ export default function OnboardingPage() {
             onChange={(v) => store.updatePreferences({ dealbreakers: v })}
           />
           <Alert variant="info" title="Profilbilder">
-            Im Demo-Modus wird ein Platzhalterbild verwendet. Mit Supabase-Anbindung kannst du
-            hier Fotos mit Bildbeschreibung (Alt-Text) hochladen.
+            Im Demo-Modus wird ein Platzhalterbild verwendet. Mit Supabase-Anbindung kannst du hier
+            Fotos mit Bildbeschreibung (Alt-Text) hochladen.
           </Alert>
         </div>
       ),
@@ -294,7 +308,11 @@ export default function OnboardingPage() {
 
   return (
     <div className="mx-auto max-w-xl space-y-4">
-      <Progress value={step + 1} max={steps.length} label={`Schritt ${step + 1} von ${steps.length}`} />
+      <Progress
+        value={step + 1}
+        max={steps.length}
+        label={`Schritt ${step + 1} von ${steps.length}`}
+      />
       <Card>
         <CardHeader>
           <CardTitle>
@@ -308,7 +326,11 @@ export default function OnboardingPage() {
           {error ? <Alert variant="destructive">{error}</Alert> : null}
           {current.content}
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
-            <Button variant="secondary" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
+            <Button
+              variant="secondary"
+              onClick={() => setStep((s) => Math.max(0, s - 1))}
+              disabled={step === 0}
+            >
               <ArrowLeft aria-hidden="true" /> Zurück
             </Button>
             <p className="text-sm text-muted-foreground">Dein Fortschritt wird gespeichert.</p>

@@ -62,9 +62,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "flex min-h-11 items-center gap-3 rounded-md px-3 py-2 text-base font-medium",
-                  active
-                    ? "bg-primary text-primary-foreground"
-                    : "text-foreground hover:bg-muted",
+                  active ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted",
                 )}
               >
                 <Icon aria-hidden="true" className="size-5" />
@@ -81,7 +79,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <main id="hauptinhalt" className={cn("mx-auto w-full max-w-3xl flex-1 p-4 md:p-8", !focusMode && "pb-24 md:pb-8")}>
+        <main
+          id="hauptinhalt"
+          className={cn(
+            "mx-auto w-full max-w-3xl flex-1 p-4 md:p-8",
+            !focusMode && "pb-24 md:pb-8",
+          )}
+        >
           {children}
         </main>
 

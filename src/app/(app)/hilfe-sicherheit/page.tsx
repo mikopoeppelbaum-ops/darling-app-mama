@@ -36,11 +36,25 @@ export default function SafetyPage() {
         </CardHeader>
         <CardContent>
           <ul className="list-inside list-disc space-y-2">
-            <li>Teile Telefonnummer, Adresse oder Bankdaten erst, wenn du der Person wirklich vertraust.</li>
-            <li>Sende niemals Geld, Gutscheine oder Kryptowährung — egal, wie dringend die Geschichte klingt.</li>
-            <li>Die App warnt dich automatisch, wenn Nachrichten Telefonnummern, Links oder Geldforderungen enthalten.</li>
-            <li>Du darfst jederzeit aufhören zu antworten. Du schuldest niemandem eine Erklärung.</li>
-            <li>Blockieren und Melden geht in jedem Profil und in jedem Chat — die Person erfährt es nicht.</li>
+            <li>
+              Teile Telefonnummer, Adresse oder Bankdaten erst, wenn du der Person wirklich
+              vertraust.
+            </li>
+            <li>
+              Sende niemals Geld, Gutscheine oder Kryptowährung — egal, wie dringend die Geschichte
+              klingt.
+            </li>
+            <li>
+              Die App warnt dich automatisch, wenn Nachrichten Telefonnummern, Links oder
+              Geldforderungen enthalten.
+            </li>
+            <li>
+              Du darfst jederzeit aufhören zu antworten. Du schuldest niemandem eine Erklärung.
+            </li>
+            <li>
+              Blockieren und Melden geht in jedem Profil und in jedem Chat — die Person erfährt es
+              nicht.
+            </li>
           </ul>
         </CardContent>
       </Card>
@@ -55,10 +69,19 @@ export default function SafetyPage() {
         <CardContent>
           <ul className="list-inside list-disc space-y-2">
             <li>Triff dich zuerst an einem öffentlichen Ort oder per Videocall.</li>
-            <li>Hinterlege im Date-Planer einen Sicherheitskontakt — eine Person, die weiß, wo du bist.</li>
-            <li>Nutze den optionalen Sicherheitscode: eine Vertrauensperson kennt ihn und du meldest dich nach dem Date.</li>
+            <li>
+              Hinterlege im Date-Planer einen Sicherheitskontakt — eine Person, die weiß, wo du
+              bist.
+            </li>
+            <li>
+              Nutze den optionalen Sicherheitscode: eine Vertrauensperson kennt ihn und du meldest
+              dich nach dem Date.
+            </li>
             <li>Der Check-in nach dem Date erinnert dich, kurz „Mir geht es gut“ zu bestätigen.</li>
-            <li>Plane Pausen ein und sage ab, wenn du dich nicht wohlfühlst — dafür gibt es vorformulierte, freundliche Absagen.</li>
+            <li>
+              Plane Pausen ein und sage ab, wenn du dich nicht wohlfühlst — dafür gibt es
+              vorformulierte, freundliche Absagen.
+            </li>
           </ul>
         </CardContent>
       </Card>
@@ -73,8 +96,12 @@ export default function SafetyPage() {
         <CardContent>
           <ul className="list-inside list-disc space-y-2">
             <li>Die Person bittet um Geld oder erzählt von plötzlichen Notlagen.</li>
-            <li>Die Person drängt dich, die App schnell zu verlassen (z. B. zu einem Messenger).</li>
-            <li>Die Person setzt dich unter Druck, eine Diagnose oder private Details offenzulegen.</li>
+            <li>
+              Die Person drängt dich, die App schnell zu verlassen (z. B. zu einem Messenger).
+            </li>
+            <li>
+              Die Person setzt dich unter Druck, eine Diagnose oder private Details offenzulegen.
+            </li>
             <li>Die Person reduziert dich auf deine Behinderung oder macht sie zum Fetisch.</li>
             <li>Die Person ignoriert deine Grenzen — auch kleine.</li>
           </ul>
@@ -93,9 +120,9 @@ export default function SafetyPage() {
         </CardHeader>
         <CardContent>
           <p>
-            Ob langsame Antworten, Pausen oder kurze Treffen: Du bestimmst das Tempo. Funktionen
-            wie „Match pausieren“, „Meine Antwort kann etwas dauern“ und flexible Absagen sind
-            genau dafür da — und niemals kostenpflichtig.
+            Ob langsame Antworten, Pausen oder kurze Treffen: Du bestimmst das Tempo. Funktionen wie
+            „Match pausieren“, „Meine Antwort kann etwas dauern“ und flexible Absagen sind genau
+            dafür da — und niemals kostenpflichtig.
           </p>
         </CardContent>
       </Card>
@@ -111,12 +138,11 @@ export default function SafetyPage() {
           <div>
             <h3 className="font-semibold">Warum wir Kommunikationsstil statt „Defizite“ matchen</h3>
             <p className="mt-1">
-              Der Autismus-Forscher Damian Milton hat 2012 das „Double Empathy Problem“
-              beschrieben: Missverständnisse zwischen autistischen und nicht-autistischen
-              Menschen entstehen auf beiden Seiten gleichermaßen — nicht, weil eine Seite
-              „falsch“ kommuniziert. Deshalb fragen wir nach deinem Kommunikationsstil und
-              deiner Kontaktfrequenz, statt anzunehmen, dass es eine „richtige“ Art gibt,
-              miteinander zu sprechen.
+              Der Autismus-Forscher Damian Milton hat 2012 das „Double Empathy Problem“ beschrieben:
+              Missverständnisse zwischen autistischen und nicht-autistischen Menschen entstehen auf
+              beiden Seiten gleichermaßen — nicht, weil eine Seite „falsch“ kommuniziert. Deshalb
+              fragen wir nach deinem Kommunikationsstil und deiner Kontaktfrequenz, statt
+              anzunehmen, dass es eine „richtige“ Art gibt, miteinander zu sprechen.
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
               Milton, D. (2012).{" "}
@@ -143,9 +169,9 @@ export default function SafetyPage() {
             <h3 className="font-semibold">Warum unsere Reizempfindlichkeiten so aufgeteilt sind</h3>
             <p className="mt-1">
               Die Auswahl bei „Reizempfindlichkeiten“ orientiert sich an Winnie Dunns
-              Vier-Quadranten-Modell der sensorischen Verarbeitung: Menschen unterscheiden
-              sich darin, wie schnell sie Reize bemerken und wie aktiv oder passiv sie darauf
-              reagieren. Das ist keine Diagnose, sondern beschreibt normale Unterschiede in der
+              Vier-Quadranten-Modell der sensorischen Verarbeitung: Menschen unterscheiden sich
+              darin, wie schnell sie Reize bemerken und wie aktiv oder passiv sie darauf reagieren.
+              Das ist keine Diagnose, sondern beschreibt normale Unterschiede in der
               Reizverarbeitung.
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -162,8 +188,8 @@ export default function SafetyPage() {
             </p>
           </div>
           <p className="text-sm text-muted-foreground">
-            Alle Angaben in deinem Profil sind Selbstauskünfte in deinen eigenen Worten — die
-            App stellt keine Diagnosen und leitet auch keine aus deinen Angaben ab.
+            Alle Angaben in deinem Profil sind Selbstauskünfte in deinen eigenen Worten — die App
+            stellt keine Diagnosen und leitet auch keine aus deinen Angaben ab.
           </p>
         </CardContent>
       </Card>
@@ -203,8 +229,8 @@ export default function SafetyPage() {
                 <ExternalLink aria-hidden="true" className="size-4" />
               </a>
               <p className="text-sm text-muted-foreground">
-                Größter deutscher Dachverband zu Autismus, gegründet 1970, mit
-                Regionalverbänden und Beratungsangeboten.
+                Größter deutscher Dachverband zu Autismus, gegründet 1970, mit Regionalverbänden und
+                Beratungsangeboten.
               </p>
             </li>
             <li>
@@ -218,8 +244,8 @@ export default function SafetyPage() {
                 <ExternalLink aria-hidden="true" className="size-4" />
               </a>
               <p className="text-sm text-muted-foreground">
-                Selbstvertretungsorganisation autistischer Menschen (englischsprachig), u. a.
-                mit Sprachleitfäden.
+                Selbstvertretungsorganisation autistischer Menschen (englischsprachig), u. a. mit
+                Sprachleitfäden.
               </p>
             </li>
           </ul>

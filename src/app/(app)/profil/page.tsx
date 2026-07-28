@@ -71,7 +71,11 @@ export default function MyProfilePage() {
       <h1 className="text-2xl font-bold">Mein Profil</h1>
 
       <div role="group" aria-label="Ansicht wählen" className="flex flex-wrap gap-2">
-        <Button variant={tab === "edit" ? "default" : "outline"} aria-pressed={tab === "edit"} onClick={() => setTab("edit")}>
+        <Button
+          variant={tab === "edit" ? "default" : "outline"}
+          aria-pressed={tab === "edit"}
+          onClick={() => setTab("edit")}
+        >
           <Pencil aria-hidden="true" /> Bearbeiten
         </Button>
         <Button
@@ -93,7 +97,8 @@ export default function MyProfilePage() {
       {tab !== "edit" ? (
         <>
           <Alert variant="info" title="So sehen andere dein Profil">
-            Diese Vorschau zeigt exakt, was {tab === "preview_public" ? "Personen vor einem Match" : "deine Matches"} sehen —
+            Diese Vorschau zeigt exakt, was{" "}
+            {tab === "preview_public" ? "Personen vor einem Match" : "deine Matches"} sehen —
             inklusive deiner Sichtbarkeits-Einstellungen.
           </Alert>
           <ProfileDetails profile={me} context={tab === "preview_public" ? "public" : "matched"} />
@@ -108,7 +113,11 @@ export default function MyProfilePage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Progress value={doneCount} max={checklist.length} label={`${doneCount} von ${checklist.length} Schritten erledigt`} />
+              <Progress
+                value={doneCount}
+                max={checklist.length}
+                label={`${doneCount} von ${checklist.length} Schritten erledigt`}
+              />
               <ul className="space-y-1 text-sm">
                 {checklist.map((c) => (
                   <li key={c.label} className={c.done ? "text-muted-foreground line-through" : ""}>
@@ -174,10 +183,23 @@ function BasicsForm({ onSaved }: { onSaved: () => void }) {
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField label="Anzeigename" htmlFor="p-name" error={errors.displayName?.message}>
-              <Input id="p-name" aria-invalid={Boolean(errors.displayName)} {...register("displayName")} />
+              <Input
+                id="p-name"
+                aria-invalid={Boolean(errors.displayName)}
+                {...register("displayName")}
+              />
             </FormField>
-            <FormField label="Pronomen" htmlFor="p-pronouns" optional error={errors.pronouns?.message}>
-              <Input id="p-pronouns" placeholder="z. B. sie/ihr, er/ihm, they/them" {...register("pronouns")} />
+            <FormField
+              label="Pronomen"
+              htmlFor="p-pronouns"
+              optional
+              error={errors.pronouns?.message}
+            >
+              <Input
+                id="p-pronouns"
+                placeholder="z. B. sie/ihr, er/ihm, they/them"
+                {...register("pronouns")}
+              />
             </FormField>
           </div>
           <FormField
@@ -370,7 +392,9 @@ function PromptsForm({ onSaved }: { onSaved: () => void }) {
               rows={2}
               defaultValue={me.prompts[p.key] ?? ""}
               onBlur={(e) => {
-                store.updateProfile({ prompts: { ...me.prompts, [p.key]: e.target.value || undefined } });
+                store.updateProfile({
+                  prompts: { ...me.prompts, [p.key]: e.target.value || undefined },
+                });
                 onSaved();
               }}
             />
@@ -402,7 +426,12 @@ function DisclosuresEditor() {
   const [error, setError] = React.useState<string | null>(null);
 
   function addDisclosure() {
-    const parsed = disclosureSchema.safeParse({ label, description: description || undefined, visibility, searchable });
+    const parsed = disclosureSchema.safeParse({
+      label,
+      description: description || undefined,
+      visibility,
+      searchable,
+    });
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? "Bitte prüfe deine Eingabe.");
       return;
@@ -462,7 +491,13 @@ function DisclosuresEditor() {
                   onChange={(v) =>
                     store.updateProfile({
                       disclosures: me.disclosures.map((x) =>
-                        x.id === d.id ? { ...x, visibility: v, searchable: v === "public" ? x.searchable : false } : x,
+                        x.id === d.id
+                          ? {
+                              ...x,
+                              visibility: v,
+                              searchable: v === "public" ? x.searchable : false,
+                            }
+                          : x,
                       ),
                     })
                   }
@@ -494,8 +529,16 @@ function DisclosuresEditor() {
         <fieldset className="space-y-3 rounded-md border border-border p-4">
           <legend className="px-1 font-semibold">Neue Angabe hinzufügen</legend>
           {error ? <Alert variant="destructive">{error}</Alert> : null}
-          <FormField label="Bezeichnung" htmlFor="new-disclosure-label" hint="Deine eigenen Worte, z. B. „ADHS“ oder „chronische Schmerzen“.">
-            <Input id="new-disclosure-label" value={label} onChange={(e) => setLabel(e.target.value)} />
+          <FormField
+            label="Bezeichnung"
+            htmlFor="new-disclosure-label"
+            hint="Deine eigenen Worte, z. B. „ADHS“ oder „chronische Schmerzen“."
+          >
+            <Input
+              id="new-disclosure-label"
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+            />
           </FormField>
           <FormField label="Beschreibung" htmlFor="new-disclosure-desc" optional>
             <Textarea

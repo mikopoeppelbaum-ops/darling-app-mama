@@ -27,11 +27,7 @@ export type Orientation =
   | "prefer_not_to_say";
 
 export type RelationshipGoal =
-  | "long_term"
-  | "open_to_anything"
-  | "friendship_first"
-  | "casual"
-  | "companionship";
+  "long_term" | "open_to_anything" | "friendship_first" | "casual" | "companionship";
 
 export type ContactFrequency = "daily" | "few_times_week" | "weekly" | "flexible";
 
@@ -224,12 +220,7 @@ export interface Report {
   moderatorNotes?: string;
 }
 
-export type DatePlanStatus =
-  | "proposed"
-  | "confirmed"
-  | "rescheduled"
-  | "cancelled"
-  | "completed";
+export type DatePlanStatus = "proposed" | "confirmed" | "rescheduled" | "cancelled" | "completed";
 
 export interface DatePlan {
   id: string;

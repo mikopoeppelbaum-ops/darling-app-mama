@@ -11,6 +11,13 @@ export interface AccessibilitySettings {
   highContrast: boolean;
   /** Reduzierte Ansicht: keine Animationen, weniger gleichzeitige Reize. */
   reducedView: boolean;
+  /**
+   * Kürzere Sätze und einfachere Wörter auf zentralen Seiten. Eine Annäherung
+   * an Leichte Sprache — keine geprüfte Übersetzung nach dem Regelwerk des
+   * Netzwerks Leichte Sprache (das verlangt eine Prüfung durch eine
+   * Prüfgruppe aus der Zielgruppe selbst, die wir hier nicht leisten können).
+   */
+  simpleLanguage: boolean;
 }
 
 const DEFAULTS: AccessibilitySettings = {
@@ -18,6 +25,7 @@ const DEFAULTS: AccessibilitySettings = {
   theme: "system",
   highContrast: false,
   reducedView: false,
+  simpleLanguage: false,
 };
 
 const STORAGE_KEY = "echtnah.accessibility";
@@ -37,6 +45,7 @@ function applyToDocument(settings: AccessibilitySettings) {
   root.dataset.fontSize = settings.fontSize;
   root.dataset.contrast = settings.highContrast ? "high" : "normal";
   root.dataset.reduced = settings.reducedView ? "true" : "false";
+  root.dataset.simpleLanguage = settings.simpleLanguage ? "true" : "false";
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const dark = settings.theme === "dark" || (settings.theme === "system" && prefersDark);
   root.classList.toggle("dark", dark);
@@ -95,6 +104,7 @@ export const accessibilityInitScript = `
     root.dataset.fontSize = s.fontSize || "normal";
     root.dataset.contrast = s.highContrast ? "high" : "normal";
     root.dataset.reduced = s.reducedView ? "true" : "false";
+    root.dataset.simpleLanguage = s.simpleLanguage ? "true" : "false";
     var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     if (s.theme === "dark" || ((!s.theme || s.theme === "system") && prefersDark)) {
       root.classList.add("dark");

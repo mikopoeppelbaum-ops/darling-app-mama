@@ -44,8 +44,8 @@ export default function AdminPage() {
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Moderation</h1>
       <Alert variant="info" title="Demo-Modus">
-        Mit Supabase-Anbindung ist dieser Bereich über die Rolle „admin“/„moderator“ und Row
-        Level Security geschützt.
+        Mit Supabase-Anbindung ist dieser Bereich über die Rolle „admin“/„moderator“ und Row Level
+        Security geschützt.
       </Alert>
 
       <Card>
@@ -131,7 +131,11 @@ function ReportRow({
       actionType,
       reason: notes || labelFor(REPORT_CATEGORY_OPTIONS, report.category),
     });
-    store.updateReportStatus(report.id, actionType === "dismissed" ? "dismissed" : "resolved", notes);
+    store.updateReportStatus(
+      report.id,
+      actionType === "dismissed" ? "dismissed" : "resolved",
+      notes,
+    );
   }
 
   return (
@@ -160,7 +164,11 @@ function ReportRow({
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" variant="secondary" onClick={() => store.updateReportStatus(report.id, "in_review", notes)}>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => store.updateReportStatus(report.id, "in_review", notes)}
+            >
               In Prüfung nehmen
             </Button>
             <Button size="sm" variant="outline" onClick={() => act("warning")}>

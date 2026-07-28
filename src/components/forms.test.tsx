@@ -35,7 +35,10 @@ describe("Registrierungsformular", () => {
     render(<RegisterPage />);
     const sixteenYearsAgo = new Date();
     sixteenYearsAgo.setFullYear(sixteenYearsAgo.getFullYear() - 16);
-    await user.type(screen.getByLabelText(/geburtsdatum/i), sixteenYearsAgo.toISOString().slice(0, 10));
+    await user.type(
+      screen.getByLabelText(/geburtsdatum/i),
+      sixteenYearsAgo.toISOString().slice(0, 10),
+    );
     await user.click(screen.getByRole("button", { name: /konto erstellen/i }));
     const alerts = await screen.findAllByRole("alert");
     expect(alerts.map((a) => a.textContent).join(" ")).toMatch(/noch nicht registrieren/);

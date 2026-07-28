@@ -67,7 +67,11 @@ export const PLANNING_STYLE_OPTIONS: {
   description?: string;
 }[] = [
   { value: "spontaneous", label: "Spontan", description: "Ich entscheide gerne kurzfristig." },
-  { value: "semi_planned", label: "Teilweise geplant", description: "Grober Plan, Details flexibel." },
+  {
+    value: "semi_planned",
+    label: "Teilweise geplant",
+    description: "Grober Plan, Details flexibel.",
+  },
   {
     value: "structured",
     label: "Stark strukturiert",

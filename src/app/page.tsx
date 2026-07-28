@@ -94,8 +94,8 @@ export default function LandingPage() {
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
             Lerne Menschen kennen, die zu deinem Alltag, deinen Werten und deiner Art zu
-            kommunizieren passen. Für Menschen mit und ohne Behinderungen, mit ADHS,
-            neurodivergent oder einfach auf der Suche nach echter Nähe.
+            kommunizieren passen. Für Menschen mit und ohne Behinderungen, mit ADHS, neurodivergent
+            oder einfach auf der Suche nach echter Nähe.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href="/registrieren" className={buttonVariants({ size: "lg" })}>
@@ -105,7 +105,9 @@ export default function LandingPage() {
               Demo ansehen
             </Link>
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">Ab 18 Jahren. Kostenlos im Basis-Umfang.</p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Ab 18 Jahren. Kostenlos im Basis-Umfang.
+          </p>
         </section>
 
         {/* Funktionsweise */}
@@ -116,12 +118,27 @@ export default function LandingPage() {
             </h2>
             <ol className="mx-auto mt-8 grid max-w-3xl gap-6 sm:grid-cols-3">
               {[
-                { step: "1", title: "Erzähl von dir", text: "In kurzen, freiwilligen Schritten — in deinem Tempo, mit Pausen." },
-                { step: "2", title: "Entdecke Menschen", text: "Mit nachvollziehbaren Gemeinsamkeiten statt reiner Foto-Auswahl." },
-                { step: "3", title: "Lernt euch kennen", text: "Chat ohne Druck, Date-Planung mit Rücksicht auf eure Bedürfnisse." },
+                {
+                  step: "1",
+                  title: "Erzähl von dir",
+                  text: "In kurzen, freiwilligen Schritten — in deinem Tempo, mit Pausen.",
+                },
+                {
+                  step: "2",
+                  title: "Entdecke Menschen",
+                  text: "Mit nachvollziehbaren Gemeinsamkeiten statt reiner Foto-Auswahl.",
+                },
+                {
+                  step: "3",
+                  title: "Lernt euch kennen",
+                  text: "Chat ohne Druck, Date-Planung mit Rücksicht auf eure Bedürfnisse.",
+                },
               ].map((s) => (
                 <li key={s.step} className="text-center">
-                  <p aria-hidden="true" className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary text-xl font-bold text-primary-foreground">
+                  <p
+                    aria-hidden="true"
+                    className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary text-xl font-bold text-primary-foreground"
+                  >
                     {s.step}
                   </p>
                   <h3 className="mt-3 text-lg font-semibold">{s.title}</h3>
@@ -142,7 +159,7 @@ export default function LandingPage() {
               {FEATURES.map((f) => (
                 <Card key={f.title}>
                   <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center gap-2 text-base">
+                    <CardTitle as="h3" className="flex items-center gap-2 text-base">
                       <f.icon aria-hidden="true" className="size-5 text-primary" />
                       {f.title}
                     </CardTitle>
@@ -159,7 +176,10 @@ export default function LandingPage() {
         {/* Sicherheit */}
         <section aria-labelledby="safety-heading" className="border-t border-border bg-card py-14">
           <div className="mx-auto max-w-3xl px-4">
-            <h2 id="safety-heading" className="flex items-center justify-center gap-2 text-center text-3xl font-bold">
+            <h2
+              id="safety-heading"
+              className="flex items-center justify-center gap-2 text-center text-3xl font-bold"
+            >
               <ShieldCheck aria-hidden="true" className="size-8 text-primary" />
               Sicherheit zuerst
             </h2>

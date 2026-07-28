@@ -11,7 +11,10 @@ export const emailSchema = z
 
 export const passwordSchema = z
   .string()
-  .min(10, "Dein Passwort braucht mindestens 10 Zeichen. Ein längerer Satz ist leicht zu merken und sicher.");
+  .min(
+    10,
+    "Dein Passwort braucht mindestens 10 Zeichen. Ein längerer Satz ist leicht zu merken und sicher.",
+  );
 
 export const registerSchema = z
   .object({
@@ -53,6 +56,11 @@ export const loginSchema = z.object({
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;
+
+export const mfaCodeSchema = z
+  .string()
+  .trim()
+  .regex(/^\d{6}$/, "Bitte gib den 6-stelligen Code aus deiner Authenticator-App ein.");
 
 export const resetPasswordSchema = z.object({
   email: emailSchema,
@@ -114,8 +122,16 @@ export const datePlanSchema = z.object({
     .int()
     .min(15, "Ein Treffen dauert mindestens 15 Minuten.")
     .max(600, "Bitte höchstens 10 Stunden eintragen."),
-  locationName: z.string().trim().min(2, "Bitte gib einen Treffpunkt an — z. B. den Namen eines Cafés."),
-  locationNotes: z.string().trim().max(300, "Bitte höchstens 300 Zeichen.").optional().or(z.literal("")),
+  locationName: z
+    .string()
+    .trim()
+    .min(2, "Bitte gib einen Treffpunkt an — z. B. den Namen eines Cafés."),
+  locationNotes: z
+    .string()
+    .trim()
+    .max(300, "Bitte höchstens 300 Zeichen.")
+    .optional()
+    .or(z.literal("")),
   accessibilityRequirements: z.array(z.string()),
   notes: z.string().trim().max(500, "Bitte höchstens 500 Zeichen.").optional().or(z.literal("")),
   remindersEnabled: z.boolean(),
@@ -131,7 +147,10 @@ export const reportSchema = z.object({
   description: z
     .string()
     .trim()
-    .min(10, "Bitte beschreibe kurz, was passiert ist (mindestens 10 Zeichen). Das hilft uns bei der Prüfung.")
+    .min(
+      10,
+      "Bitte beschreibe kurz, was passiert ist (mindestens 10 Zeichen). Das hilft uns bei der Prüfung.",
+    )
     .max(2000, "Bitte höchstens 2000 Zeichen."),
 });
 

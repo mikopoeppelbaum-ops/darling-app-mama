@@ -44,8 +44,7 @@ export function detectContentWarnings(text: string): ContentWarning[] {
   if (LINK_RE.test(text)) {
     warnings.push({
       type: "link",
-      message:
-        "Diese Nachricht enthält einen Link. Öffne Links nur, wenn du der Person vertraust.",
+      message: "Diese Nachricht enthält einen Link. Öffne Links nur, wenn du der Person vertraust.",
     });
   }
 

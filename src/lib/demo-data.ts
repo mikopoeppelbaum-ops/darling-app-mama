@@ -39,10 +39,20 @@ export const DEMO_ME: Profile = {
   responsePace: "takes_time",
   socialActivities: ["Ruhige Cafés", "Zu Hause gemütlich", "Spaziergänge"],
   sensoryNeeds: ["Laute Umgebungen sind anstrengend", "Ich brauche Pausen bei vielen Reizen"],
-  accessibilityNeeds: ["Ruhige Umgebung", "Pausen während des Treffens", "Flexible Absagemöglichkeit"],
+  accessibilityNeeds: [
+    "Ruhige Umgebung",
+    "Pausen während des Treffens",
+    "Flexible Absagemöglichkeit",
+  ],
   accessibilityVisibility: "after_match",
   disclosures: [
-    { id: "d-me-1", label: "ADHS", description: "Ich vergesse manchmal zu antworten — das hat nichts mit dir zu tun.", visibility: "after_match", searchable: false },
+    {
+      id: "d-me-1",
+      label: "ADHS",
+      description: "Ich vergesse manchmal zu antworten — das hat nichts mit dir zu tun.",
+      visibility: "after_match",
+      searchable: false,
+    },
   ],
   prompts: {
     helpsMeOnDates: "Ein ruhiger Ort und ein klarer Zeitrahmen.",
@@ -134,14 +144,21 @@ export const DEMO_PROFILES: Profile[] = [
     accessibilityNeeds: ["Schriftliche Kommunikation bevorzugt"],
     accessibilityVisibility: "public",
     disclosures: [
-      { id: "d-p2-1", label: "Schwerhörigkeit", description: "Mit Hörgeräten verstehe ich in ruhigen Räumen gut. Schreiben klappt immer.", visibility: "public", searchable: true },
+      {
+        id: "d-p2-1",
+        label: "Schwerhörigkeit",
+        description: "Mit Hörgeräten verstehe ich in ruhigen Räumen gut. Schreiben klappt immer.",
+        visibility: "public",
+        searchable: true,
+      },
     ],
     prompts: {
       aboutMyCommunication: "In lauten Räumen verstehe ich schlechter — ruhige Orte sind super.",
       perfectFirstDate: "Zusammen kochen und dabei quatschen.",
       howIShowInterest: "Ich melde mich zuverlässig und plane gerne das nächste Treffen.",
     },
-    boundaries: "Ich möchte nicht als 'inspirierend' bezeichnet werden, nur weil ich Hörgeräte trage.",
+    boundaries:
+      "Ich möchte nicht als 'inspirierend' bezeichnet werden, nur weil ich Hörgeräte trage.",
     lifestyle: { childrenWish: "yes", smoking: "no", alcohol: "sometimes", pets: "has_pets" },
     photos: [photo("p2", "Illustration eines Mannes mit Bart und Mütze")],
     statusFlags: { slowReplies: false, pausedNeedTime: false },
@@ -170,14 +187,26 @@ export const DEMO_PROFILES: Profile[] = [
     responsePace: "takes_time",
     socialActivities: ["Online-Gaming", "Videocalls", "Zu Hause gemütlich"],
     sensoryNeeds: ["Grelles Licht ist unangenehm", "Ich brauche Pausen bei vielen Reizen"],
-    accessibilityNeeds: ["Gedämpftes Licht", "Kurze Treffen bevorzugt", "Flexible Absagemöglichkeit"],
+    accessibilityNeeds: [
+      "Gedämpftes Licht",
+      "Kurze Treffen bevorzugt",
+      "Flexible Absagemöglichkeit",
+    ],
     accessibilityVisibility: "public",
     disclosures: [
-      { id: "d-p3-1", label: "Autistisch", description: "Ich sage Dinge direkt und meine sie genau so. Ironie gerne mit Kennzeichnung.", visibility: "public", searchable: true },
+      {
+        id: "d-p3-1",
+        label: "Autistisch",
+        description:
+          "Ich sage Dinge direkt und meine sie genau so. Ironie gerne mit Kennzeichnung.",
+        visibility: "public",
+        searchable: true,
+      },
       { id: "d-p3-2", label: "ADHS", visibility: "after_match", searchable: false },
     ],
     prompts: {
-      aboutMyCommunication: "Direkt, ehrlich, manchmal mit Verzögerung. Emojis helfen mir, Stimmung zu lesen.",
+      aboutMyCommunication:
+        "Direkt, ehrlich, manchmal mit Verzögerung. Emojis helfen mir, Stimmung zu lesen.",
       whatGivesMeSafety: "Ein Plan B, falls mir ein Treffen zu viel wird.",
       perfectFirstDate: "Erst ein Videocall, dann vielleicht Gaming zusammen.",
       myBoundaries: "Kein Smalltalk-Zwang. Schweigen ist okay.",
@@ -214,7 +243,13 @@ export const DEMO_PROFILES: Profile[] = [
     accessibilityNeeds: [],
     accessibilityVisibility: "public",
     disclosures: [
-      { id: "d-p4-1", label: "Chronische Erkrankung", description: "An manchen Tagen habe ich weniger Energie. Ich sage rechtzeitig Bescheid.", visibility: "after_match", searchable: false },
+      {
+        id: "d-p4-1",
+        label: "Chronische Erkrankung",
+        description: "An manchen Tagen habe ich weniger Energie. Ich sage rechtzeitig Bescheid.",
+        visibility: "after_match",
+        searchable: false,
+      },
     ],
     prompts: {
       howIShowInterest: "Ich rufe lieber an, statt tagelang zu texten.",
@@ -250,10 +285,20 @@ export const DEMO_PROFILES: Profile[] = [
     responsePace: "takes_time",
     socialActivities: ["Ruhige Cafés", "Museen", "Zu Hause gemütlich"],
     sensoryNeeds: ["Laute Umgebungen sind anstrengend", "Menschenmengen sind anstrengend"],
-    accessibilityNeeds: ["Ruhige Umgebung", "Wenig Hintergrundgeräusche", "Kurze Treffen bevorzugt"],
+    accessibilityNeeds: [
+      "Ruhige Umgebung",
+      "Wenig Hintergrundgeräusche",
+      "Kurze Treffen bevorzugt",
+    ],
     accessibilityVisibility: "after_match",
     disclosures: [
-      { id: "d-p5-1", label: "Soziale Angst", description: "Erste Treffen sind für mich aufregend. Kurz und ruhig ist perfekt.", visibility: "after_match", searchable: false },
+      {
+        id: "d-p5-1",
+        label: "Soziale Angst",
+        description: "Erste Treffen sind für mich aufregend. Kurz und ruhig ist perfekt.",
+        visibility: "after_match",
+        searchable: false,
+      },
     ],
     prompts: {
       whatGivesMeSafety: "Ein fester Endzeitpunkt. Dann kann ich mich entspannen.",
@@ -292,12 +337,19 @@ export const DEMO_PROFILES: Profile[] = [
     accessibilityNeeds: ["Assistenzhund willkommen"],
     accessibilityVisibility: "public",
     disclosures: [
-      { id: "d-p6-1", label: "ADHS", description: "Ich habe tausend Ideen gleichzeitig — Langeweile gibt es mit mir nicht.", visibility: "public", searchable: true },
+      {
+        id: "d-p6-1",
+        label: "ADHS",
+        description: "Ich habe tausend Ideen gleichzeitig — Langeweile gibt es mit mir nicht.",
+        visibility: "public",
+        searchable: true,
+      },
     ],
     prompts: {
       howIShowInterest: "Sprachnachrichten. Viele. Sag mir, wenn es zu viel wird!",
       perfectFirstDate: "Spontan Essen gehen und danach durch die Stadt ziehen.",
-      aboutMyCommunication: "Ich antworte schnell, vergesse aber manchmal, was ich zugesagt habe. Erinnere mich einfach.",
+      aboutMyCommunication:
+        "Ich antworte schnell, vergesse aber manchmal, was ich zugesagt habe. Erinnere mich einfach.",
     },
     boundaries: "Ich brauche Ehrlichkeit, keine Spielchen.",
     lifestyle: { childrenWish: "open", smoking: "no", alcohol: "sometimes", pets: "has_pets" },
@@ -337,7 +389,12 @@ export const DEMO_PROFILES: Profile[] = [
       howIShowInterest: "Ich frage nach, wie dein Tag wirklich war.",
     },
     boundaries: "Mein Kind hat Vorrang — wer das nicht respektiert, passt nicht zu mir.",
-    lifestyle: { childrenWish: "have_children", smoking: "no", alcohol: "sometimes", pets: "no_pets" },
+    lifestyle: {
+      childrenWish: "have_children",
+      smoking: "no",
+      alcohol: "sometimes",
+      pets: "no_pets",
+    },
     photos: [photo("p7", "Illustration eines Mannes mit kurzen grauen Haaren")],
     statusFlags: { slowReplies: false, pausedNeedTime: false },
     onboardingCompleted: true,
@@ -368,10 +425,18 @@ export const DEMO_PROFILES: Profile[] = [
     accessibilityNeeds: ["Schriftliche Kommunikation bevorzugt", "Ruhige Umgebung"],
     accessibilityVisibility: "public",
     disclosures: [
-      { id: "d-p8-1", label: "Gehörlos", description: "Ich kommuniziere in DGS und schriftlich. Lippenlesen klappt bei deutlichem Sprechen.", visibility: "public", searchable: true },
+      {
+        id: "d-p8-1",
+        label: "Gehörlos",
+        description:
+          "Ich kommuniziere in DGS und schriftlich. Lippenlesen klappt bei deutlichem Sprechen.",
+        visibility: "public",
+        searchable: true,
+      },
     ],
     prompts: {
-      aboutMyCommunication: "Schreiben ist meine Sprache. In DGS bringe ich dir gerne erste Gebärden bei.",
+      aboutMyCommunication:
+        "Schreiben ist meine Sprache. In DGS bringe ich dir gerne erste Gebärden bei.",
       perfectFirstDate: "Tierpark oder Katzencafé — Tiere brechen jedes Eis.",
       whatGivesMeSafety: "Wenn du dich vorher kurz mit schriftlicher Kommunikation wohlfühlst.",
     },

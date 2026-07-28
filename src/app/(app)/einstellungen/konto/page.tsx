@@ -59,8 +59,8 @@ export default function AccountPage() {
         <CardHeader>
           <CardTitle>Konto löschen</CardTitle>
           <CardDescription>
-            Dein Profil, deine Matches, Nachrichten und alle Angaben werden dauerhaft gelöscht.
-            Das kann nicht rückgängig gemacht werden.
+            Dein Profil, deine Matches, Nachrichten und alle Angaben werden dauerhaft gelöscht. Das
+            kann nicht rückgängig gemacht werden.
           </CardDescription>
         </CardHeader>
         <CardContent>

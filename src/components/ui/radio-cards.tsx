@@ -51,7 +51,10 @@ function RadioCards({ legend, name, options, value, onChange, hint, className }:
               {isSelected ? (
                 <CircleDot aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-primary" />
               ) : (
-                <Circle aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
+                <Circle
+                  aria-hidden="true"
+                  className="mt-0.5 size-5 shrink-0 text-muted-foreground"
+                />
               )}
               <span>
                 <span className="block font-medium">{opt.label}</span>

@@ -19,12 +19,7 @@ import {
   Trash2,
   UserX,
 } from "lucide-react";
-import {
-  otherProfileId,
-  profileById,
-  useAppStore,
-  visibleMessages,
-} from "@/lib/store";
+import { otherProfileId, profileById, useAppStore, visibleMessages } from "@/lib/store";
 import { detectContentWarnings, chunkLongMessage } from "@/lib/safety";
 import { CONVERSATION_STARTERS, POLITE_UNMATCH_TEMPLATES } from "@/lib/options";
 import { messageSchema } from "@/lib/validation";
@@ -59,7 +54,12 @@ export default function ChatPage() {
 
   const messages = visibleMessages(state, params.matchId);
   const warnings = React.useMemo(
-    () => messages.flatMap((m) => (m.senderProfileId !== state.me.id && m.status !== "deleted" ? detectContentWarnings(m.body) : [])),
+    () =>
+      messages.flatMap((m) =>
+        m.senderProfileId !== state.me.id && m.status !== "deleted"
+          ? detectContentWarnings(m.body)
+          : [],
+      ),
     [messages, state.me.id],
   );
 
@@ -117,7 +117,9 @@ export default function ChatPage() {
     }
     const result = store.sendMessage(match!.id, parsed.data.body);
     if (result.rateLimited) {
-      setError("Du hast sehr viele Nachrichten in kurzer Zeit gesendet. Bitte mache eine kurze Pause.");
+      setError(
+        "Du hast sehr viele Nachrichten in kurzer Zeit gesendet. Bitte mache eine kurze Pause.",
+      );
       return;
     }
     setError(null);
@@ -131,7 +133,12 @@ export default function ChatPage() {
     <div className="flex min-h-[70vh] flex-col space-y-4">
       <header className="flex items-center justify-between gap-3 border-b border-border pb-3">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" aria-label="Zurück zu den Nachrichten" onClick={() => router.push("/nachrichten")}>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Zurück zu den Nachrichten"
+            onClick={() => router.push("/nachrichten")}
+          >
             <ArrowLeft aria-hidden="true" />
           </Button>
           <div>
@@ -139,7 +146,9 @@ export default function ChatPage() {
               {other.displayName}
             </Link>
             {other.statusFlags.slowReplies ? (
-              <p className="text-xs text-muted-foreground">Antwortet manchmal langsamer — kein Grund zur Sorge.</p>
+              <p className="text-xs text-muted-foreground">
+                Antwortet manchmal langsamer — kein Grund zur Sorge.
+              </p>
             ) : null}
           </div>
         </div>
@@ -151,7 +160,13 @@ export default function ChatPage() {
             <Calendar aria-hidden="true" className="size-4" />
             <span className="hidden sm:inline">Date planen</span>
           </Link>
-          <Button variant="outline" size="icon" aria-label="Chat-Optionen öffnen" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="Chat-Optionen öffnen"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(true)}
+          >
             <MoreHorizontal aria-hidden="true" />
           </Button>
         </div>
@@ -211,7 +226,9 @@ export default function ChatPage() {
               onAnswerLater={() =>
                 store.markAnswerLater(
                   m.id,
-                  new Date(Date.now() + state.adhsSettings.defaultReminderHours * 3600_000).toISOString(),
+                  new Date(
+                    Date.now() + state.adhsSettings.defaultReminderHours * 3600_000,
+                  ).toISOString(),
                 )
               }
             />
@@ -278,7 +295,9 @@ export default function ChatPage() {
             <Switch
               id="opt-read"
               checked={settings?.readReceipts ?? true}
-              onCheckedChange={(v) => store.updateConversationSettings(match.id, { readReceipts: v })}
+              onCheckedChange={(v) =>
+                store.updateConversationSettings(match.id, { readReceipts: v })
+              }
             />
           </div>
           <div className="flex items-center justify-between gap-3">
@@ -288,7 +307,9 @@ export default function ChatPage() {
             <Switch
               id="opt-typing"
               checked={settings?.typingIndicator ?? true}
-              onCheckedChange={(v) => store.updateConversationSettings(match.id, { typingIndicator: v })}
+              onCheckedChange={(v) =>
+                store.updateConversationSettings(match.id, { typingIndicator: v })
+              }
             />
           </div>
 
@@ -319,16 +340,31 @@ export default function ChatPage() {
             <Button
               variant="secondary"
               onClick={() => {
-                store.sendMessage(match.id, "Ich bin noch interessiert, brauche aber gerade etwas Zeit. Danke für deine Geduld!");
+                store.sendMessage(
+                  match.id,
+                  "Ich bin noch interessiert, brauche aber gerade etwas Zeit. Danke für deine Geduld!",
+                );
                 setMenuOpen(false);
               }}
             >
               „Ich bin noch interessiert, brauche aber gerade Zeit“ senden
             </Button>
-            <Button variant="outline" onClick={() => { setMenuOpen(false); setEndOpen(true); }}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setMenuOpen(false);
+                setEndOpen(true);
+              }}
+            >
               Kontakt freundlich beenden
             </Button>
-            <Button variant="ghost" onClick={() => { setMenuOpen(false); setReportOpen(true); }}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setMenuOpen(false);
+                setReportOpen(true);
+              }}
+            >
               <Flag aria-hidden="true" /> {other.displayName} melden
             </Button>
             <Button
