@@ -36,7 +36,7 @@ export default function PrivacySettingsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Privatsphäre</h1>
+      <h1 className="text-3xl font-semibold">Privatsphäre</h1>
 
       <Alert variant="info" title="Deine Daten gehören dir">
         Sensible Angaben (z. B. zu Behinderung oder Neurodivergenz) steuerst du direkt in deinem

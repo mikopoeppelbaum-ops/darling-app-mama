@@ -18,7 +18,7 @@ export default function SavedProfilesPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Gespeicherte Profile</h1>
+      <h1 className="text-3xl font-semibold">Gespeicherte Profile</h1>
       <p className="text-muted-foreground">Profile, die du dir später in Ruhe ansehen möchtest.</p>
       {savedProfiles.length === 0 ? (
         <EmptyState

@@ -42,7 +42,7 @@ export default function AdminPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Moderation</h1>
+      <h1 className="text-3xl font-semibold">Moderation</h1>
       <Alert variant="info" title="Demo-Modus">
         Mit Supabase-Anbindung ist dieser Bereich über die Rolle „admin“/„moderator“ und Row Level
         Security geschützt.

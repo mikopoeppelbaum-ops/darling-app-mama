@@ -75,7 +75,7 @@ const SETTINGS_LINKS = [
 export default function SettingsPage() {
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Einstellungen</h1>
+      <h1 className="text-3xl font-semibold">Einstellungen</h1>
       <ul className="space-y-2">
         {SETTINGS_LINKS.map(({ href, label, description, icon: Icon }) => (
           <li key={href}>

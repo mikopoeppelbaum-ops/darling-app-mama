@@ -15,7 +15,7 @@ export default function AccessibilitySettingsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Barrierefreiheit</h1>
+      <h1 className="text-3xl font-semibold">Barrierefreiheit</h1>
       <p className="text-muted-foreground">
         Diese Einstellungen gelten sofort und werden auf diesem Gerät gespeichert. Alle
         Barrierefreiheits-Funktionen sind und bleiben kostenlos.

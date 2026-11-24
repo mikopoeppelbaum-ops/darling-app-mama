@@ -16,7 +16,7 @@ export default function MatchesPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Deine Matches</h1>
+      <h1 className="text-3xl font-semibold">Deine Matches</h1>
       {activeMatches.length === 0 ? (
         <EmptyState
           icon={Heart}

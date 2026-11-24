@@ -323,6 +323,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="mx-auto max-w-xl space-y-4">
+      <h1 className="text-3xl font-semibold">Dein Profil, in kleinen Schritten</h1>
       <Progress
         value={step + 1}
         max={steps.length}

@@ -152,7 +152,7 @@ export default function SecuritySettingsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Zwei-Faktor-Anmeldung</h1>
+      <h1 className="text-3xl font-semibold">Zwei-Faktor-Anmeldung</h1>
       <p className="text-muted-foreground">
         Zusätzlicher Schutz für dein Konto: Nach E-Mail und Passwort fragen wir einen 6-stelligen
         Code aus einer Authenticator-App ab (z. B. Google Authenticator, Authy, oder die Funktion in

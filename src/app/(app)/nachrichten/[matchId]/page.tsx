@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   AlarmClock,
   ArrowLeft,
@@ -10,6 +11,7 @@ import {
   BellOff,
   Calendar,
   Flag,
+  ImagePlus,
   MoreHorizontal,
   PauseCircle,
   PlayCircle,
@@ -18,10 +20,12 @@ import {
   Star,
   Trash2,
   UserX,
+  X,
 } from "lucide-react";
 import { otherProfileId, profileById, useAppStore, visibleMessages } from "@/lib/store";
-import { detectContentWarnings, chunkLongMessage } from "@/lib/safety";
-import { CONVERSATION_STARTERS, POLITE_UNMATCH_TEMPLATES } from "@/lib/options";
+import { detectContentWarnings, chunkLongMessage, parseToneTags } from "@/lib/safety";
+import { readFileAsDataUrl, validateImageFile } from "@/lib/files";
+import { CONVERSATION_STARTERS, POLITE_UNMATCH_TEMPLATES, TONE_TAGS } from "@/lib/options";
 import { messageSchema } from "@/lib/validation";
 import { cn, formatDateTime } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -50,7 +54,10 @@ export default function ChatPage() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [reportOpen, setReportOpen] = React.useState(false);
   const [endOpen, setEndOpen] = React.useState(false);
+  const [pendingImage, setPendingImage] = React.useState<string | null>(null);
+  const [imageError, setImageError] = React.useState<string | null>(null);
   const endRef = React.useRef<HTMLLIElement>(null);
+  const imageInputRef = React.useRef<HTMLInputElement>(null);
 
   const messages = visibleMessages(state, params.matchId);
   const warnings = React.useMemo(
@@ -110,12 +117,19 @@ export default function ChatPage() {
   const isPaused = match.status === "paused";
 
   function send() {
-    const parsed = messageSchema.safeParse({ body: draft });
-    if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Die Nachricht kann nicht gesendet werden.");
+    const trimmed = draft.trim();
+    if (!trimmed && !pendingImage) {
+      setError("Die Nachricht ist noch leer.");
       return;
     }
-    const result = store.sendMessage(match!.id, parsed.data.body);
+    if (trimmed) {
+      const parsed = messageSchema.safeParse({ body: trimmed });
+      if (!parsed.success) {
+        setError(parsed.error.issues[0]?.message ?? "Die Nachricht kann nicht gesendet werden.");
+        return;
+      }
+    }
+    const result = store.sendMessage(match!.id, trimmed, pendingImage ?? undefined);
     if (result.rateLimited) {
       setError(
         "Du hast sehr viele Nachrichten in kurzer Zeit gesendet. Bitte mache eine kurze Pause.",
@@ -124,7 +138,29 @@ export default function ChatPage() {
     }
     setError(null);
     setDraft("");
+    setPendingImage(null);
     store.updateConversationSettings(match!.id, { draft: "" });
+  }
+
+  async function onImageSelected(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setImageError(null);
+    const validationError = validateImageFile(file);
+    if (validationError) {
+      setImageError(validationError);
+      return;
+    }
+    try {
+      setPendingImage(await readFileAsDataUrl(file));
+    } catch {
+      setImageError("Das Bild konnte nicht gelesen werden. Bitte versuche es erneut.");
+    }
+  }
+
+  function addToneTag(tag: string) {
+    setDraft((d) => (d.trim() ? `${d.trimEnd()} ${tag}` : tag));
   }
 
   const outgoingWarnings = detectContentWarnings(draft);
@@ -242,8 +278,71 @@ export default function ChatPage() {
           {outgoingWarnings.length > 0 ? (
             <Alert variant="warning">{outgoingWarnings[0].message}</Alert>
           ) : null}
+          {imageError ? <Alert variant="destructive">{imageError}</Alert> : null}
           {error ? <Alert variant="destructive">{error}</Alert> : null}
+          {pendingImage ? (
+            <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-2">
+              <Image
+                src={pendingImage}
+                alt="Vorschau des ausgewählten Bildes"
+                width={56}
+                height={56}
+                unoptimized
+                className="size-14 rounded-lg object-cover"
+              />
+              <p className="flex-1 text-sm text-muted-foreground">
+                Bild wird mit der Nachricht gesendet.
+              </p>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Bild wieder entfernen"
+                onClick={() => setPendingImage(null)}
+              >
+                <X aria-hidden="true" />
+              </Button>
+            </div>
+          ) : null}
+          <details className="rounded-xl border border-border bg-card px-3 py-2">
+            <summary className="cursor-pointer text-sm font-semibold">
+              Ton markieren (Tone-Tags)
+            </summary>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Ein kurzes Kürzel macht klar, wie du etwas meinst. Die Erklärung wird beim
+              Gegenüber angezeigt.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {TONE_TAGS.map((t) => (
+                <Button
+                  key={t.tag}
+                  variant="soft"
+                  size="sm"
+                  onClick={() => addToneTag(t.tag)}
+                  aria-label={`Tone-Tag ${t.tag} einfügen: ${t.description}`}
+                >
+                  {t.tag} · {t.label}
+                </Button>
+              ))}
+            </div>
+          </details>
           <div className="flex items-end gap-2">
+            <input
+              ref={imageInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              className="sr-only"
+              tabIndex={-1}
+              aria-hidden="true"
+              onChange={onImageSelected}
+            />
+            <Button
+              variant="secondary"
+              size="icon"
+              aria-label="Bild anhängen"
+              onClick={() => imageInputRef.current?.click()}
+            >
+              <ImagePlus aria-hidden="true" />
+            </Button>
             <Textarea
               aria-label={`Nachricht an ${other.displayName}`}
               placeholder="Deine Nachricht … (Entwurf wird automatisch gespeichert)"
@@ -450,22 +549,50 @@ function MessageBubble({
   }
 
   const paragraphs = autoChunk ? chunkLongMessage(message.body) : [message.body];
+  const toneTags = TONE_TAGS.filter((t) =>
+    parseToneTags(
+      message.body,
+      TONE_TAGS.map((x) => x.tag),
+    ).includes(t.tag),
+  );
 
   return (
     <li className={cn("flex flex-col gap-1", mine ? "items-end" : "items-start")}>
       <div
         className={cn(
-          "max-w-[85%] space-y-2 rounded-lg border px-4 py-2.5",
+          "max-w-[85%] space-y-2 rounded-2xl border px-4 py-3",
           mine ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card",
         )}
       >
         <p className="sr-only">{authorName}:</p>
-        {paragraphs.map((p, i) => (
-          <p key={i} className="leading-relaxed whitespace-pre-wrap">
-            {p}
-          </p>
-        ))}
+        {message.imageUrl ? (
+          <Image
+            src={message.imageUrl}
+            alt={`Bild, gesendet von ${authorName}`}
+            width={240}
+            height={240}
+            unoptimized
+            className="max-w-full rounded-lg object-cover"
+          />
+        ) : null}
+        {message.body
+          ? paragraphs.map((p, i) => (
+              <p key={i} className="leading-relaxed whitespace-pre-wrap">
+                {p}
+              </p>
+            ))
+          : null}
       </div>
+      {toneTags.length > 0 ? (
+        <p className="flex flex-wrap gap-1 text-xs">
+          {toneTags.map((t) => (
+            <span key={t.tag} className="rounded-full bg-accent-soft px-2 py-0.5">
+              <span aria-hidden="true">{t.tag} = </span>
+              {t.description}
+            </span>
+          ))}
+        </p>
+      ) : null}
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <span>{formatDateTime(message.createdAt)}</span>
         {mine && readReceipts && message.status === "read" ? <span>· Gelesen</span> : null}

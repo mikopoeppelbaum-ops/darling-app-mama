@@ -27,7 +27,7 @@ export default function ConversationsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Nachrichten</h1>
+      <h1 className="text-3xl font-semibold">Nachrichten</h1>
       {sorted.length === 0 ? (
         <EmptyState
           icon={MessageCircle}

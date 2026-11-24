@@ -13,7 +13,7 @@ export default function AdhsSettingsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">ADHS-freundliche Funktionen</h1>
+      <h1 className="text-3xl font-semibold">ADHS-freundliche Funktionen</h1>
       <p className="text-muted-foreground">
         Alle Funktionen sind freiwillig. Aktiviere nur, was dir wirklich hilft — es gibt keine
         Belohnungspunkte, kein endloses Scrollen und keinen Zeitdruck.

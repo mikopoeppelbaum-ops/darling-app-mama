@@ -39,7 +39,7 @@ export default function AccountPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Konto</h1>
+      <h1 className="text-3xl font-semibold">Konto</h1>
 
       <Card>
         <CardHeader>

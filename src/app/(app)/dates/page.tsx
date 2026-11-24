@@ -6,8 +6,10 @@ import { Calendar, CalendarPlus, CheckCircle2, Download } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { otherProfileId, profileById, useAppStore } from "@/lib/store";
+import { sharedMeetingNeeds } from "@/lib/matching";
+import { profileForViewer } from "@/lib/visibility";
+import { AccessibilityNeedsPicker } from "@/components/profile/accessibility-needs-picker";
 import {
-  ACCESSIBILITY_NEED_OPTIONS,
   DATE_TYPE_OPTIONS,
   POLITE_CANCEL_TEMPLATES,
   labelFor,
@@ -22,7 +24,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { FormField } from "@/components/ui/form-field";
-import { ChipGroup } from "@/components/ui/chip-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Dialog } from "@/components/ui/dialog";
@@ -46,14 +47,21 @@ function DatesPageInner() {
   const [cancelTarget, setCancelTarget] = React.useState<DatePlan | null>(null);
 
   const activeMatches = state.matches.filter((m) => m.status === "active");
-  const upcoming = state.datePlans
-    .filter((d) => d.status !== "cancelled")
+  const [tab, setTab] = React.useState<"upcoming" | "past">("upcoming");
+  const isOver = (d: DatePlan) =>
+    d.status === "cancelled" || d.status === "completed" || isPastDate(d.startsAt);
+  const upcomingPlans = state.datePlans
+    .filter((d) => !isOver(d))
     .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+  const pastPlans = state.datePlans
+    .filter((d) => isOver(d))
+    .sort((a, b) => b.startsAt.localeCompare(a.startsAt));
+  const upcoming = tab === "upcoming" ? upcomingPlans : pastPlans;
 
   return (
     <div className="space-y-4">
       <header className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">Date-Planer</h1>
+        <h1 className="text-3xl font-semibold">Date-Planer</h1>
         {activeMatches.length > 0 ? (
           <Button onClick={() => setCreating((v) => !v)} aria-expanded={creating}>
             <CalendarPlus aria-hidden="true" /> Date planen
@@ -65,10 +73,29 @@ function DatesPageInner() {
         <DatePlanForm preselectedMatchId={preselectedMatch} onDone={() => setCreating(false)} />
       ) : null}
 
+      <div role="group" aria-label="Dates anzeigen" className="flex gap-2">
+        <Button
+          variant={tab === "upcoming" ? "soft" : "ghost"}
+          size="sm"
+          aria-pressed={tab === "upcoming"}
+          onClick={() => setTab("upcoming")}
+        >
+          Anstehend ({upcomingPlans.length})
+        </Button>
+        <Button
+          variant={tab === "past" ? "soft" : "ghost"}
+          size="sm"
+          aria-pressed={tab === "past"}
+          onClick={() => setTab("past")}
+        >
+          Vergangen und abgesagt ({pastPlans.length})
+        </Button>
+      </div>
+
       {upcoming.length === 0 && !creating ? (
         <EmptyState
           icon={Calendar}
-          title="Noch keine Dates geplant"
+          title={tab === "upcoming" ? "Keine anstehenden Dates" : "Noch keine vergangenen Dates"}
           description="Plane ein Treffen mit einem Match — mit Ort, Zeit, Dauer und allem, was du für ein gutes Treffen brauchst."
         />
       ) : (
@@ -259,6 +286,22 @@ function DatePlanCard({
           ) : null}
         </dl>
 
+        {plan.pauseSignal ? (
+          <p className="rounded-xl bg-accent-soft px-3 py-2 text-sm">
+            <span className="font-semibold">Euer Pausenzeichen:</span> {plan.pauseSignal}
+          </p>
+        ) : null}
+
+        <a
+          href="https://wheelmap.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-primary underline underline-offset-4"
+        >
+          „{plan.locationName}“ auf der Wheelmap nachschlagen
+          <span className="sr-only">(öffnet in neuem Tab)</span>
+        </a>
+
         {plan.lastChangeNote ? (
           <Alert variant="info" title="Letzte Änderung">
             {plan.lastChangeNote}
@@ -304,6 +347,15 @@ function DatePlanForm({
   const activeMatches = state.matches.filter((m) => m.status === "active");
   const [matchId, setMatchId] = React.useState(preselectedMatchId ?? activeMatches[0]?.id ?? "");
   const [accessibility, setAccessibility] = React.useState<string[]>([]);
+  const [pauseSignal, setPauseSignal] = React.useState("");
+  const selectedMatch = activeMatches.find((m) => m.id === matchId);
+  const otherForNeeds = selectedMatch
+    ? profileById(state, otherProfileId(selectedMatch, state.me.id))
+    : undefined;
+  // Nur Angaben, die die andere Person für Matches freigegeben hat.
+  const shared = otherForNeeds
+    ? sharedMeetingNeeds(state.me, profileForViewer(otherForNeeds, "matched"))
+    : [];
   const [safetyCodeEnabled, setSafetyCodeEnabled] = React.useState(false);
 
   const {
@@ -333,6 +385,7 @@ function DatePlanForm({
       locationName: data.locationName,
       locationNotes: data.locationNotes || undefined,
       accessibilityRequirements: accessibility,
+      pauseSignal: pauseSignal.trim() || undefined,
       notes: data.notes || undefined,
       remindersEnabled: data.remindersEnabled,
       safetyContactName: data.safetyContactName || undefined,
@@ -437,13 +490,54 @@ function DatePlanForm({
             />
           </FormField>
 
-          <ChipGroup
-            legend="Barrierefreiheit für dieses Treffen"
-            hint="Was soll der Ort erfüllen?"
-            options={ACCESSIBILITY_NEED_OPTIONS.map((o) => ({ value: o, label: o }))}
-            selected={accessibility}
-            onChange={setAccessibility}
-          />
+          {shared.length > 0 ? (
+            <div className="space-y-2 rounded-xl bg-primary-soft p-4">
+              <p className="font-semibold">Was ihr beide für ein gutes Treffen braucht</p>
+              <p className="text-sm">
+                Aus deinem Profil und den für dich freigegebenen Angaben von{" "}
+                {otherForNeeds?.displayName}. Übernimm, was für diesen Ort wichtig ist.
+              </p>
+              <ul className="space-y-1 text-sm">
+                {shared.map((n) => (
+                  <li key={n.need}>
+                    {n.need}{" "}
+                    <span className="text-muted-foreground">
+                      ({n.fromMe && n.fromOther ? "ihr beide" : n.fromMe ? "du" : otherForNeeds?.displayName})
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() =>
+                  setAccessibility([...new Set([...accessibility, ...shared.map((n) => n.need)])])
+                }
+              >
+                Alle übernehmen
+              </Button>
+            </div>
+          ) : null}
+
+          <fieldset className="space-y-2">
+            <legend className="font-semibold">Barrierefreiheit für dieses Treffen</legend>
+            <p className="text-sm text-muted-foreground">Was soll der Ort erfüllen?</p>
+            <AccessibilityNeedsPicker selected={accessibility} onChange={setAccessibility} />
+          </fieldset>
+
+          <FormField
+            label="Pausenzeichen"
+            htmlFor="plan-pause"
+            optional
+            hint="Ein vereinbartes Wort oder Zeichen für „Ich brauche kurz eine Pause“ — ohne Erklärungen."
+          >
+            <Input
+              id="plan-pause"
+              placeholder="z. B. „Ich hol mir kurz Wasser“"
+              value={pauseSignal}
+              onChange={(e) => setPauseSignal(e.target.value)}
+            />
+          </FormField>
 
           <FormField
             label="Notizen für euch beide"

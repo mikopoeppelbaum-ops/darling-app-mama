@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: "Hilfe & Sicherheit" };
 export default function SafetyPage() {
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Hilfe & Sicherheit</h1>
+      <h1 className="text-3xl font-semibold">Hilfe & Sicherheit</h1>
       <p className="text-muted-foreground">
         Deine Sicherheit ist uns wichtig. Hier findest du unseren Leitfaden für sicheres
         Kennenlernen — in klarer, einfacher Sprache.
