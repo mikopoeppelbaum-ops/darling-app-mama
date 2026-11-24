@@ -308,8 +308,8 @@ export default function ChatPage() {
               Ton markieren (Tone-Tags)
             </summary>
             <p className="mt-2 text-sm text-muted-foreground">
-              Ein kurzes Kürzel macht klar, wie du etwas meinst. Die Erklärung wird beim
-              Gegenüber angezeigt.
+              Ein kurzes Kürzel macht klar, wie du etwas meinst. Die Erklärung wird beim Gegenüber
+              angezeigt.
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
               {TONE_TAGS.map((t) => (

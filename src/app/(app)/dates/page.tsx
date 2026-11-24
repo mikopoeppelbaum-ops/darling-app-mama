@@ -9,11 +9,7 @@ import { otherProfileId, profileById, useAppStore } from "@/lib/store";
 import { sharedMeetingNeeds } from "@/lib/matching";
 import { profileForViewer } from "@/lib/visibility";
 import { AccessibilityNeedsPicker } from "@/components/profile/accessibility-needs-picker";
-import {
-  DATE_TYPE_OPTIONS,
-  POLITE_CANCEL_TEMPLATES,
-  labelFor,
-} from "@/lib/options";
+import { DATE_TYPE_OPTIONS, POLITE_CANCEL_TEMPLATES, labelFor } from "@/lib/options";
 import { datePlanSchema, type DatePlanInput } from "@/lib/validation";
 import { formatDateTime, generateSafetyCode, isPastDate } from "@/lib/utils";
 import type { DatePlan } from "@/lib/types";
@@ -502,7 +498,13 @@ function DatePlanForm({
                   <li key={n.need}>
                     {n.need}{" "}
                     <span className="text-muted-foreground">
-                      ({n.fromMe && n.fromOther ? "ihr beide" : n.fromMe ? "du" : otherForNeeds?.displayName})
+                      (
+                      {n.fromMe && n.fromOther
+                        ? "ihr beide"
+                        : n.fromMe
+                          ? "du"
+                          : otherForNeeds?.displayName}
+                      )
                     </span>
                   </li>
                 ))}

@@ -28,7 +28,10 @@ function describe(n: AppNotification, name: string): { title: string; href: stri
     case "date_reminder":
       return { title: `Bald: dein Date mit ${name}.`, href: "/dates" };
     case "date_checkin_due":
-      return { title: `Wie war dein Date mit ${name}? Der Check-in steht noch aus.`, href: "/dates" };
+      return {
+        title: `Wie war dein Date mit ${name}? Der Check-in steht noch aus.`,
+        href: "/dates",
+      };
   }
 }
 
@@ -87,7 +90,11 @@ export default function NotificationsPage() {
                       <p className="text-sm text-muted-foreground">{formatDateTime(n.createdAt)}</p>
                     </div>
                     {!isDerived && unread ? (
-                      <Button variant="ghost" size="sm" onClick={() => store.markNotificationRead(n.id)}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => store.markNotificationRead(n.id)}
+                      >
                         Gelesen
                       </Button>
                     ) : null}

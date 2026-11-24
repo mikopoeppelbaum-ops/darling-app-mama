@@ -100,7 +100,9 @@ export function PhotosManager() {
                     value={photo.altText}
                     onChange={(e) =>
                       updatePhotos(
-                        photos.map((p) => (p.id === photo.id ? { ...p, altText: e.target.value } : p)),
+                        photos.map((p) =>
+                          p.id === photo.id ? { ...p, altText: e.target.value } : p,
+                        ),
                       )
                     }
                     placeholder="z. B. Ich lächle in einem Park, im Hintergrund Bäume."

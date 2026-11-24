@@ -24,60 +24,97 @@ const NUMBERS = [
   {
     value: "7,9 Millionen",
     text: "Menschen mit anerkannter Schwerbehinderung in Deutschland (Ende 2023), rund 9,3 % der Bevölkerung. Viele Behinderungen — etwa psychische Erkrankungen oder Neurodivergenz ohne Schwerbehindertenausweis — sind darin gar nicht erfasst.",
-    source: { label: "Destatis", href: "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Behinderte-Menschen/_inhalt.html" },
+    source: {
+      label: "Destatis",
+      href: "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Behinderte-Menschen/_inhalt.html",
+    },
   },
   {
     value: "2,58 % / 6,76 %",
     text: "der Erwachsenen weltweit haben eine seit der Kindheit bestehende ADHS bzw. ADHS-Symptome (Meta-Analyse, Stand 2020).",
-    source: { label: "Song et al., J Glob Health 2021", href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7916320" },
+    source: {
+      label: "Song et al., J Glob Health 2021",
+      href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7916320",
+    },
   },
   {
     value: "≈ 1 von 127",
     text: "Menschen ist laut Schätzung für 2021 autistisch. Die WHO weist darauf hin, dass Zahlen je nach Studie stark schwanken.",
-    source: { label: "WHO-Faktenblatt Autismus", href: "https://www.who.int/news-room/fact-sheets/detail/autism-spectrum-disorders" },
+    source: {
+      label: "WHO-Faktenblatt Autismus",
+      href: "https://www.who.int/news-room/fact-sheets/detail/autism-spectrum-disorders",
+    },
   },
   {
     value: "88 %",
     text: "von 1.155 Dating-App-Nutzenden mit Behinderung berichteten in einer australischen Befragung von digital vermittelter sexueller Belästigung oder Gewalt.",
-    source: { label: "Australian Institute of Criminology 2024", href: "https://aic.gov.au/publications/tandi/tandi695" },
+    source: {
+      label: "Australian Institute of Criminology 2024",
+      href: "https://aic.gov.au/publications/tandi/tandi695",
+    },
   },
 ] as const;
 
 const FEATURE_BASIS = [
   {
     feature: "Tägliche Auswahl statt endlosem Wischen",
-    basis: "Wer aus 24 statt 6 Profilen wählte, war eine Woche später unzufriedener mit der Wahl und schrieb weniger sorgfältige Nachrichten („Choice Overload“).",
-    source: { label: "D'Angelo & Toma, Media Psychology", href: "https://news.wisc.edu/online-dating-study-shows-too-many-choices-can-lead-to-dissatisfaction" },
+    basis:
+      "Wer aus 24 statt 6 Profilen wählte, war eine Woche später unzufriedener mit der Wahl und schrieb weniger sorgfältige Nachrichten („Choice Overload“).",
+    source: {
+      label: "D'Angelo & Toma, Media Psychology",
+      href: "https://news.wisc.edu/online-dating-study-shows-too-many-choices-can-lead-to-dissatisfaction",
+    },
   },
   {
     feature: "Kommunikationsstil-Matching statt „Defizit“-Logik",
-    basis: "Das Double-Empathy-Problem: Missverständnisse zwischen autistischen und nicht-autistischen Menschen entstehen auf beiden Seiten.",
-    source: { label: "Milton 2012; Milton et al. 2022", href: "https://journals.sagepub.com/doi/10.1177/13623613221129123" },
+    basis:
+      "Das Double-Empathy-Problem: Missverständnisse zwischen autistischen und nicht-autistischen Menschen entstehen auf beiden Seiten.",
+    source: {
+      label: "Milton 2012; Milton et al. 2022",
+      href: "https://journals.sagepub.com/doi/10.1177/13623613221129123",
+    },
   },
   {
     feature: "Tone-Tags im Chat (/j, /s, /gen …)",
-    basis: "In einer Studie mit 18 Gesprächspaaren senkten Tone-Tags die kognitive Belastung beim Deuten des Tons.",
-    source: { label: "Tone Indicators, CSCW 2025", href: "https://jeffhuang.com/papers/ToneIndicators_CSCW25.pdf" },
+    basis:
+      "In einer Studie mit 18 Gesprächspaaren senkten Tone-Tags die kognitive Belastung beim Deuten des Tons.",
+    source: {
+      label: "Tone Indicators, CSCW 2025",
+      href: "https://jeffhuang.com/papers/ToneIndicators_CSCW25.pdf",
+    },
   },
   {
     feature: "Reizempfindlichkeiten in vier Mustern",
-    basis: "Dunns Modell der sensorischen Verarbeitung (Reizschwelle × Reaktionsstil), validiert bei Erwachsenen.",
-    source: { label: "Jussila et al. 2019", href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6406387/" },
+    basis:
+      "Dunns Modell der sensorischen Verarbeitung (Reizschwelle × Reaktionsstil), validiert bei Erwachsenen.",
+    source: {
+      label: "Jussila et al. 2019",
+      href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6406387/",
+    },
   },
   {
     feature: "Barrierefreiheit nach ICF-Bereichen",
-    basis: "Die ICF der WHO beschreibt Behinderung als Wechselwirkung zwischen Person und Umwelt — wir fragen deshalb, was ein Ort braucht.",
-    source: { label: "WHO ICF", href: "https://www.who.int/standards/classifications/international-classification-of-functioning-disability-and-health" },
+    basis:
+      "Die ICF der WHO beschreibt Behinderung als Wechselwirkung zwischen Person und Umwelt — wir fragen deshalb, was ein Ort braucht.",
+    source: {
+      label: "WHO ICF",
+      href: "https://www.who.int/standards/classifications/international-classification-of-functioning-disability-and-health",
+    },
   },
   {
     feature: "Einstellung „Mehr Textabstand“",
-    basis: "Größerer Buchstabenabstand halbierte in einer Studie Lesefehler bei Kindern mit Legasthenie. Spätere Studien bestätigen den Effekt auf Fehler, nicht auf Lesetempo.",
+    basis:
+      "Größerer Buchstabenabstand halbierte in einer Studie Lesefehler bei Kindern mit Legasthenie. Spätere Studien bestätigen den Effekt auf Fehler, nicht auf Lesetempo.",
     source: { label: "Zorzi et al., PNAS 2012", href: "https://pubmed.ncbi.nlm.nih.gov/22665803/" },
   },
   {
     feature: "Warnung bei Krypto- und Investment-Angeboten",
-    basis: "Die Bundesregierung beschreibt „Romance Baiting“ (Anlagebetrug mit Liebesmasche) als eigene Variante des Love Scams. In Bayern wurden 2023 über 450 Fälle mit mehr als 5 Mio. € Schaden angezeigt.",
-    source: { label: "Bundestag hib 727/2025", href: "https://www.bundestag.de/presse/hib/kurzmeldungen-1134842" },
+    basis:
+      "Die Bundesregierung beschreibt „Romance Baiting“ (Anlagebetrug mit Liebesmasche) als eigene Variante des Love Scams. In Bayern wurden 2023 über 450 Fälle mit mehr als 5 Mio. € Schaden angezeigt.",
+    source: {
+      label: "Bundestag hib 727/2025",
+      href: "https://www.bundestag.de/presse/hib/kurzmeldungen-1134842",
+    },
   },
 ] as const;
 
@@ -145,16 +182,16 @@ export default function KnowledgePage() {
         <CardContent>
           <ul className="list-inside list-disc space-y-2">
             <li>
-              <strong>Tagesform / „Löffel“:</strong> Die Spoon Theory (Christine Miserandino,
-              2003) ist ein Community-Bild, keine wissenschaftliche Messgröße. Wir nutzen sie,
-              weil viele Menschen mit chronischer Erkrankung sie als hilfreich beschreiben.
+              <strong>Tagesform / „Löffel“:</strong> Die Spoon Theory (Christine Miserandino, 2003)
+              ist ein Community-Bild, keine wissenschaftliche Messgröße. Wir nutzen sie, weil viele
+              Menschen mit chronischer Erkrankung sie als hilfreich beschreiben.
             </li>
             <li>
-              <strong>Zurückweisungs-Empfindlichkeit bei ADHS:</strong> Gut belegt ist eine
-              stärkere Emotionsregulations-Schwierigkeit bei Erwachsenen mit ADHS (Meta-Analyse,
-              BMC Psychiatry 2020). Speziell zur „Rejection Sensitivity“ gibt es bisher vor allem
-              kleine qualitative Studien. Deshalb vermeiden wir Lesebestätigungs-Druck und bieten
-              „Ich brauche gerade Zeit“ an — ohne medizinische Versprechen.
+              <strong>Zurückweisungs-Empfindlichkeit bei ADHS:</strong> Gut belegt ist eine stärkere
+              Emotionsregulations-Schwierigkeit bei Erwachsenen mit ADHS (Meta-Analyse, BMC
+              Psychiatry 2020). Speziell zur „Rejection Sensitivity“ gibt es bisher vor allem kleine
+              qualitative Studien. Deshalb vermeiden wir Lesebestätigungs-Druck und bieten „Ich
+              brauche gerade Zeit“ an — ohne medizinische Versprechen.
             </li>
             <li>
               <strong>Atkinson Hyperlegible:</strong> Die Schrift wurde mit sehbeeinträchtigten
@@ -162,13 +199,13 @@ export default function KnowledgePage() {
             </li>
             <li>
               <strong>Spezielle „Legasthenie-Schriften“</strong> wie OpenDyslexic zeigten in einer
-              Studie keinen Vorteil (Wery & Diliberto 2017). Wir bieten stattdessen mehr
-              Textabstand an.
+              Studie keinen Vorteil (Wery & Diliberto 2017). Wir bieten stattdessen mehr Textabstand
+              an.
             </li>
             <li>
-              <strong>Dating-Erfahrungen autistischer Erwachsener:</strong> Die Forschung zu
-              Risiken auf Dating-Apps ist neu und uneinheitlich. Sicherheitsfunktionen sind
-              deshalb für alle da — niemand wird als „gefährdet“ markiert.
+              <strong>Dating-Erfahrungen autistischer Erwachsener:</strong> Die Forschung zu Risiken
+              auf Dating-Apps ist neu und uneinheitlich. Sicherheitsfunktionen sind deshalb für alle
+              da — niemand wird als „gefährdet“ markiert.
             </li>
           </ul>
         </CardContent>
@@ -184,20 +221,19 @@ export default function KnowledgePage() {
         <CardContent>
           <ul className="list-inside list-disc space-y-2">
             <li>
-              <strong>DSGVO Art. 9:</strong> Angaben zu Gesundheit und sexueller Orientierung
-              sind besondere Kategorien personenbezogener Daten. Wir speichern sie nur nach
+              <strong>DSGVO Art. 9:</strong> Angaben zu Gesundheit und sexueller Orientierung sind
+              besondere Kategorien personenbezogener Daten. Wir speichern sie nur nach
               ausdrücklicher Einwilligung.
             </li>
             <li>
-              <strong>WCAG 2.2 AA:</strong> Leitlinie für Bedienbarkeit, u. a. mit sichtbarem
-              Fokus, der nicht verdeckt wird, konsistenter Hilfe und ausreichend großen
-              Bedienelementen.
+              <strong>WCAG 2.2 AA:</strong> Leitlinie für Bedienbarkeit, u. a. mit sichtbarem Fokus,
+              der nicht verdeckt wird, konsistenter Hilfe und ausreichend großen Bedienelementen.
             </li>
             <li>
-              <strong>Barrierefreiheitsstärkungsgesetz (BFSG):</strong> Gilt seit dem 28. Juni
-              2025 für viele digitale Dienstleistungen gegenüber Verbraucher:innen. Ob und wie es
-              auf eine Dating-App mit Bezahlfunktionen anwendbar ist, sollte vor dem Start
-              rechtlich geprüft werden.
+              <strong>Barrierefreiheitsstärkungsgesetz (BFSG):</strong> Gilt seit dem 28. Juni 2025
+              für viele digitale Dienstleistungen gegenüber Verbraucher:innen. Ob und wie es auf
+              eine Dating-App mit Bezahlfunktionen anwendbar ist, sollte vor dem Start rechtlich
+              geprüft werden.
             </li>
           </ul>
         </CardContent>

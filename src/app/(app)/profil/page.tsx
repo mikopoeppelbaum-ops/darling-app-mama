@@ -476,146 +476,148 @@ function DisclosuresEditor() {
 
   return (
     <>
-    <Card>
-      <CardHeader>
-        <CardTitle>Freiwillige Angaben zu Behinderung, Erkrankung oder Neurodivergenz</CardTitle>
-        <CardDescription>
-          Du musst hier nichts angeben — eine Diagnose ist nie verpflichtend. Du wählst deine
-          eigenen Worte und bestimmst für jede Angabe einzeln, wer sie sieht.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {me.disclosures.length > 0 ? (
-          <ul className="space-y-3">
-            {me.disclosures.map((d) => (
-              <li key={d.id} className="space-y-2 rounded-md border border-border p-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-medium">{d.label}</p>
-                    {d.description ? (
-                      <p className="text-sm text-muted-foreground">{d.description}</p>
-                    ) : null}
+      <Card>
+        <CardHeader>
+          <CardTitle>Freiwillige Angaben zu Behinderung, Erkrankung oder Neurodivergenz</CardTitle>
+          <CardDescription>
+            Du musst hier nichts angeben — eine Diagnose ist nie verpflichtend. Du wählst deine
+            eigenen Worte und bestimmst für jede Angabe einzeln, wer sie sieht.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {me.disclosures.length > 0 ? (
+            <ul className="space-y-3">
+              {me.disclosures.map((d) => (
+                <li key={d.id} className="space-y-2 rounded-md border border-border p-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-medium">{d.label}</p>
+                      {d.description ? (
+                        <p className="text-sm text-muted-foreground">{d.description}</p>
+                      ) : null}
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Angabe „${d.label}“ löschen`}
+                      onClick={() =>
+                        store.updateProfile({
+                          disclosures: me.disclosures.filter((x) => x.id !== d.id),
+                        })
+                      }
+                    >
+                      <Trash2 aria-hidden="true" />
+                    </Button>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={`Angabe „${d.label}“ löschen`}
-                    onClick={() =>
-                      store.updateProfile({
-                        disclosures: me.disclosures.filter((x) => x.id !== d.id),
-                      })
-                    }
-                  >
-                    <Trash2 aria-hidden="true" />
-                  </Button>
-                </div>
-                <VisibilitySelect
-                  id={`disclosure-vis-${d.id}`}
-                  label={`Wer sieht „${d.label}“?`}
-                  value={d.visibility}
-                  onChange={(v) =>
-                    store.updateProfile({
-                      disclosures: me.disclosures.map((x) =>
-                        x.id === d.id
-                          ? {
-                              ...x,
-                              visibility: v,
-                              searchable: v === "public" ? x.searchable : false,
-                            }
-                          : x,
-                      ),
-                    })
-                  }
-                />
-                <div className="flex items-center justify-between gap-3">
-                  <Label htmlFor={`disclosure-search-${d.id}`} className="text-sm font-normal">
-                    Darf über Suchfilter gefunden werden (nur bei öffentlicher Sichtbarkeit)
-                  </Label>
-                  <Switch
-                    id={`disclosure-search-${d.id}`}
-                    checked={d.searchable && d.visibility === "public"}
-                    disabled={d.visibility !== "public"}
-                    onCheckedChange={(v) =>
+                  <VisibilitySelect
+                    id={`disclosure-vis-${d.id}`}
+                    label={`Wer sieht „${d.label}“?`}
+                    value={d.visibility}
+                    onChange={(v) =>
                       store.updateProfile({
                         disclosures: me.disclosures.map((x) =>
-                          x.id === d.id ? { ...x, searchable: v } : x,
+                          x.id === d.id
+                            ? {
+                                ...x,
+                                visibility: v,
+                                searchable: v === "public" ? x.searchable : false,
+                              }
+                            : x,
                         ),
                       })
                     }
                   />
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-muted-foreground">Du hast aktuell keine Angaben hinterlegt.</p>
-        )}
+                  <div className="flex items-center justify-between gap-3">
+                    <Label htmlFor={`disclosure-search-${d.id}`} className="text-sm font-normal">
+                      Darf über Suchfilter gefunden werden (nur bei öffentlicher Sichtbarkeit)
+                    </Label>
+                    <Switch
+                      id={`disclosure-search-${d.id}`}
+                      checked={d.searchable && d.visibility === "public"}
+                      disabled={d.visibility !== "public"}
+                      onCheckedChange={(v) =>
+                        store.updateProfile({
+                          disclosures: me.disclosures.map((x) =>
+                            x.id === d.id ? { ...x, searchable: v } : x,
+                          ),
+                        })
+                      }
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-muted-foreground">Du hast aktuell keine Angaben hinterlegt.</p>
+          )}
 
-        <fieldset className="space-y-3 rounded-md border border-border p-4">
-          <legend className="px-1 font-semibold">Neue Angabe hinzufügen</legend>
-          {error ? <Alert variant="destructive">{error}</Alert> : null}
-          <FormField
-            label="Bezeichnung"
-            htmlFor="new-disclosure-label"
-            hint="Deine eigenen Worte, z. B. „ADHS“ oder „chronische Schmerzen“."
-          >
-            <Input
-              id="new-disclosure-label"
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
+          <fieldset className="space-y-3 rounded-md border border-border p-4">
+            <legend className="px-1 font-semibold">Neue Angabe hinzufügen</legend>
+            {error ? <Alert variant="destructive">{error}</Alert> : null}
+            <FormField
+              label="Bezeichnung"
+              htmlFor="new-disclosure-label"
+              hint="Deine eigenen Worte, z. B. „ADHS“ oder „chronische Schmerzen“."
+            >
+              <Input
+                id="new-disclosure-label"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
+              />
+            </FormField>
+            <FormField label="Beschreibung" htmlFor="new-disclosure-desc" optional>
+              <Textarea
+                id="new-disclosure-desc"
+                rows={2}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </FormField>
+            <VisibilitySelect
+              id="new-disclosure-vis"
+              label="Sichtbarkeit"
+              value={visibility}
+              onChange={setVisibility}
             />
-          </FormField>
-          <FormField label="Beschreibung" htmlFor="new-disclosure-desc" optional>
-            <Textarea
-              id="new-disclosure-desc"
-              rows={2}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </FormField>
-          <VisibilitySelect
-            id="new-disclosure-vis"
-            label="Sichtbarkeit"
-            value={visibility}
-            onChange={setVisibility}
-          />
-          <Button onClick={addDisclosure}>
-            <Plus aria-hidden="true" /> Angabe hinzufügen
-          </Button>
-        </fieldset>
-      </CardContent>
-    </Card>
-    <Dialog
-      open={consentOpen}
-      onClose={() => setConsentOpen(false)}
-      title="Einwilligung für sensible Angaben"
-      description="Angaben zu Behinderung, Erkrankung oder Neurodivergenz sind Gesundheitsdaten. Die DSGVO (Art. 9) schützt sie besonders."
-    >
-      <div className="space-y-4">
-        <ul className="list-inside list-disc space-y-1 text-sm">
-          <li>Du entscheidest für jede Angabe einzeln, wer sie sieht.</li>
-          <li>Wir geben diese Angaben nie an Dritte weiter und nutzen sie nicht für Werbung.</li>
-          <li>Du kannst deine Einwilligung jederzeit widerrufen, indem du die Angaben löschst.</li>
-          <li>Das Moderationsteam hat keinen Zugriff auf diese Angaben.</li>
-        </ul>
-        <div className="flex flex-wrap gap-3">
-          <Button
-            onClick={() => {
-              store.giveSensitiveConsent();
-              setConsentOpen(false);
-            }}
-          >
-            Ich willige ausdrücklich ein
-          </Button>
-          <Button variant="secondary" onClick={() => setConsentOpen(false)}>
-            Lieber nicht
-          </Button>
+            <Button onClick={addDisclosure}>
+              <Plus aria-hidden="true" /> Angabe hinzufügen
+            </Button>
+          </fieldset>
+        </CardContent>
+      </Card>
+      <Dialog
+        open={consentOpen}
+        onClose={() => setConsentOpen(false)}
+        title="Einwilligung für sensible Angaben"
+        description="Angaben zu Behinderung, Erkrankung oder Neurodivergenz sind Gesundheitsdaten. Die DSGVO (Art. 9) schützt sie besonders."
+      >
+        <div className="space-y-4">
+          <ul className="list-inside list-disc space-y-1 text-sm">
+            <li>Du entscheidest für jede Angabe einzeln, wer sie sieht.</li>
+            <li>Wir geben diese Angaben nie an Dritte weiter und nutzen sie nicht für Werbung.</li>
+            <li>
+              Du kannst deine Einwilligung jederzeit widerrufen, indem du die Angaben löschst.
+            </li>
+            <li>Das Moderationsteam hat keinen Zugriff auf diese Angaben.</li>
+          </ul>
+          <div className="flex flex-wrap gap-3">
+            <Button
+              onClick={() => {
+                store.giveSensitiveConsent();
+                setConsentOpen(false);
+              }}
+            >
+              Ich willige ausdrücklich ein
+            </Button>
+            <Button variant="secondary" onClick={() => setConsentOpen(false)}>
+              Lieber nicht
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Nach der Einwilligung tippe noch einmal auf „Angabe hinzufügen“.
+          </p>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Nach der Einwilligung tippe noch einmal auf „Angabe hinzufügen“.
-        </p>
-      </div>
-    </Dialog>
+      </Dialog>
     </>
   );
 }

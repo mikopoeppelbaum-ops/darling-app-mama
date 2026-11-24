@@ -277,10 +277,7 @@ export interface ModerationAction {
 }
 
 export type NotificationKind =
-  | "new_match"
-  | "answer_later_due"
-  | "date_reminder"
-  | "date_checkin_due";
+  "new_match" | "answer_later_due" | "date_reminder" | "date_checkin_due";
 
 /**
  * Benachrichtigung. "new_match" wird gespeichert; die übrigen Arten werden

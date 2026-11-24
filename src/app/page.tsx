@@ -109,7 +109,10 @@ export default function LandingPage() {
             <span className="font-display text-2xl font-semibold tracking-tight">EchtNah</span>
           </span>
           <nav aria-label="Startseiten-Navigation" className="flex items-center gap-2">
-            <Link href="/wissen" className={cn(buttonVariants({ variant: "ghost" }), "hidden sm:inline-flex")}>
+            <Link
+              href="/wissen"
+              className={cn(buttonVariants({ variant: "ghost" }), "hidden sm:inline-flex")}
+            >
               Wissen
             </Link>
             <Link href="/anmelden" className={buttonVariants({ variant: "ghost" })}>
@@ -141,7 +144,10 @@ export default function LandingPage() {
               <Link href="/registrieren" className={buttonVariants({ size: "lg" })}>
                 Kostenlos starten
               </Link>
-              <Link href="/entdecken" className={buttonVariants({ variant: "secondary", size: "lg" })}>
+              <Link
+                href="/entdecken"
+                className={buttonVariants({ variant: "secondary", size: "lg" })}
+              >
                 Demo ansehen
               </Link>
             </div>
@@ -151,7 +157,10 @@ export default function LandingPage() {
           </div>
 
           {/* Beispiel-Profilkarte: zeigt, dass Persönlichkeit vor Fotos kommt */}
-          <figure className="rounded-xl border border-border bg-card p-6" aria-labelledby="beispiel-caption">
+          <figure
+            className="rounded-xl border border-border bg-card p-6"
+            aria-labelledby="beispiel-caption"
+          >
             <div className="flex items-center gap-4">
               <div
                 aria-hidden="true"
@@ -214,9 +223,21 @@ export default function LandingPage() {
             </h2>
             <ol className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
-                { step: "1", title: "Erzähl von dir", text: "In kurzen, freiwilligen Schritten — in deinem Tempo, mit Pausen." },
-                { step: "2", title: "Entdecke Menschen", text: "Eine ruhige Auswahl pro Tag, mit nachvollziehbaren Gemeinsamkeiten." },
-                { step: "3", title: "Lernt euch kennen", text: "Chat ohne Druck, Date-Planung mit Rücksicht auf eure Bedürfnisse." },
+                {
+                  step: "1",
+                  title: "Erzähl von dir",
+                  text: "In kurzen, freiwilligen Schritten — in deinem Tempo, mit Pausen.",
+                },
+                {
+                  step: "2",
+                  title: "Entdecke Menschen",
+                  text: "Eine ruhige Auswahl pro Tag, mit nachvollziehbaren Gemeinsamkeiten.",
+                },
+                {
+                  step: "3",
+                  title: "Lernt euch kennen",
+                  text: "Chat ohne Druck, Date-Planung mit Rücksicht auf eure Bedürfnisse.",
+                },
               ].map((s) => (
                 <li key={s.step} className="rounded-xl border border-border bg-card p-6">
                   <p
@@ -269,7 +290,9 @@ export default function LandingPage() {
               </h2>
               <ul className="mt-4 space-y-2">
                 <li>Blockieren und Melden mit zwei Klicks — vertraulich</li>
-                <li>Warnungen bei Geldforderungen, Krypto-Angeboten und Druck zu anderen Messengern</li>
+                <li>
+                  Warnungen bei Geldforderungen, Krypto-Angeboten und Druck zu anderen Messengern
+                </li>
                 <li>Kein exakter Standort — niemals</li>
                 <li>Sicherheitskontakt, Sicherheitscode und Check-in für Dates</li>
                 <li>Klare Regeln gegen Ableismus und Fetischisierung</li>

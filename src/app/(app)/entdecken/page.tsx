@@ -30,11 +30,7 @@ import {
 } from "@/lib/matching";
 import type { DiscoverFilters, Profile } from "@/lib/types";
 import { ageFromBirthdate } from "@/lib/utils";
-import {
-  labelFor,
-  QUESTIONS_ABOUT_ME_OPTIONS,
-  RELATIONSHIP_GOAL_OPTIONS,
-} from "@/lib/options";
+import { labelFor, QUESTIONS_ABOUT_ME_OPTIONS, RELATIONSHIP_GOAL_OPTIONS } from "@/lib/options";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -102,7 +98,9 @@ export default function DiscoverPage() {
   function handleUndo() {
     const restored = store.undoSkip();
     setNotice(
-      restored ? "Das zuletzt übersprungene Profil ist wieder da." : "Es gibt nichts zum Zurückholen.",
+      restored
+        ? "Das zuletzt übersprungene Profil ist wieder da."
+        : "Es gibt nichts zum Zurückholen.",
     );
   }
 
@@ -163,7 +161,11 @@ export default function DiscoverPage() {
       ) : null}
 
       {filtersOpen ? (
-        <DiscoverFiltersPanel filters={filters} onChange={setFilters} onClose={() => setFiltersOpen(false)} />
+        <DiscoverFiltersPanel
+          filters={filters}
+          onChange={setFilters}
+          onClose={() => setFiltersOpen(false)}
+        />
       ) : null}
 
       {leftToday === 0 ? (
@@ -225,10 +227,15 @@ export default function DiscoverPage() {
                     </Link>
                     <p className="truncate text-sm text-muted-foreground">
                       {labelFor(RELATIONSHIP_GOAL_OPTIONS, p.relationshipGoal)} ·{" "}
-                      {matchReasons(state.me, p).length} Gemeinsamkeiten · {distanceKm(state.me, p)} km
+                      {matchReasons(state.me, p).length} Gemeinsamkeiten · {distanceKm(state.me, p)}{" "}
+                      km
                     </p>
                   </div>
-                  <Button size="sm" onClick={() => handleLike(p)} aria-label={`${p.displayName} gefällt mir`}>
+                  <Button
+                    size="sm"
+                    onClick={() => handleLike(p)}
+                    aria-label={`${p.displayName} gefällt mir`}
+                  >
                     <Heart aria-hidden="true" className="size-4" /> Gefällt mir
                   </Button>
                 </CardContent>
@@ -318,9 +325,13 @@ function CandidateCard({
 
         {questions ? (
           <p className="flex items-start gap-2 text-sm">
-            <MessageCircleQuestion aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-primary" />
+            <MessageCircleQuestion
+              aria-hidden="true"
+              className="mt-0.5 size-4 shrink-0 text-primary"
+            />
             <span>
-              <span className="font-semibold">Fragen zu Behinderung/Neurodivergenz:</span> {questions}
+              <span className="font-semibold">Fragen zu Behinderung/Neurodivergenz:</span>{" "}
+              {questions}
             </span>
           </p>
         ) : null}

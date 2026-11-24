@@ -278,8 +278,8 @@ export default function OnboardingPage() {
             onChange={(v) => store.updatePreferences({ dealbreakers: v })}
           />
           <Alert variant="info" title="Profilbilder">
-            Fotos sind freiwillig. Du kannst sie später unter „Mein Profil“ hinzufügen — jeweils
-            mit einer kurzen Bildbeschreibung für Screenreader.
+            Fotos sind freiwillig. Du kannst sie später unter „Mein Profil“ hinzufügen — jeweils mit
+            einer kurzen Bildbeschreibung für Screenreader.
           </Alert>
         </div>
       ),

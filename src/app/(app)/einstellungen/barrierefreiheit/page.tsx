@@ -54,6 +54,22 @@ export default function AccessibilitySettingsPage() {
           />
           <div className="flex items-center justify-between gap-3">
             <div>
+              <Label htmlFor="set-spacing" className="font-medium">
+                Mehr Textabstand
+              </Label>
+              <p className="text-sm text-muted-foreground">
+                Mehr Platz zwischen Zeilen, Buchstaben und Wörtern. Kann das Lesen erleichtern, z.
+                B. bei Legasthenie (Zorzi et al. 2012).
+              </p>
+            </div>
+            <Switch
+              id="set-spacing"
+              checked={settings.textSpacing === "wide"}
+              onCheckedChange={(v) => update({ textSpacing: v ? "wide" : "normal" })}
+            />
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <div>
               <Label htmlFor="set-contrast" className="font-medium">
                 Hoher Kontrast
               </Label>

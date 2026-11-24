@@ -97,6 +97,11 @@ export default function SafetyPage() {
           <ul className="list-inside list-disc space-y-2">
             <li>Die Person bittet um Geld oder erzählt von plötzlichen Notlagen.</li>
             <li>
+              Die Person schwärmt von Krypto- oder Trading-Gewinnen und möchte dich zum Investieren
+              bringen. Diese Masche heißt „Romance Baiting“ und ist laut Bundesregierung eine eigene
+              Form des Liebesbetrugs.
+            </li>
+            <li>
               Die Person drängt dich, die App schnell zu verlassen (z. B. zu einem Messenger).
             </li>
             <li>

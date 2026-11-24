@@ -5,12 +5,7 @@
  */
 
 export type ContentWarningType =
-  | "phone_number"
-  | "link"
-  | "bank_data"
-  | "money_request"
-  | "investment_scam"
-  | "move_off_platform";
+  "phone_number" | "link" | "bank_data" | "money_request" | "investment_scam" | "move_off_platform";
 
 export interface ContentWarning {
   type: ContentWarningType;
