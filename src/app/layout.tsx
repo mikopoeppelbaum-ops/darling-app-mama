@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Atkinson_Hyperlegible_Next, Fraunces } from "next/font/google";
 import "./globals.css";
 import {
   AccessibilityProvider,
@@ -7,9 +7,17 @@ import {
 } from "@/components/a11y/accessibility-provider";
 import { AppStoreProvider } from "@/lib/store";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bodyFont = Atkinson_Hyperlegible_Next({
+  variable: "--font-body",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const displayFont = Fraunces({
+  variable: "--font-display-face",
+  subsets: ["latin"],
+  display: "swap",
+  axes: ["SOFT", "opsz"],
 });
 
 export const metadata: Metadata = {
@@ -24,6 +32,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f3ec" },
+    { media: "(prefers-color-scheme: dark)", color: "#131816" },
+  ],
 };
 
 export default function RootLayout({
@@ -32,7 +44,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
+    <html
+      lang="de"
+      className={`${bodyFont.variable} ${displayFont.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <body className="flex min-h-full flex-col">
         {/* Wendet gespeicherte Barrierefreiheits-Einstellungen vor dem ersten Rendern an */}
         <script dangerouslySetInnerHTML={{ __html: accessibilityInitScript }} />

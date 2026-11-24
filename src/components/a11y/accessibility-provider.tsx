@@ -4,12 +4,13 @@ import * as React from "react";
 
 export type FontSize = "normal" | "large" | "xlarge";
 export type ThemeSetting = "system" | "light" | "dark";
+export type TextSpacing = "normal" | "wide";
 
 export interface AccessibilitySettings {
   fontSize: FontSize;
   theme: ThemeSetting;
   highContrast: boolean;
-  /** Reduzierte Ansicht: keine Animationen, weniger gleichzeitige Reize. */
+  /** Reduzierte Ansicht: keine Animationen, keine Deko-Elemente, weniger Reize. */
   reducedView: boolean;
   /**
    * Kürzere Sätze und einfachere Wörter auf zentralen Seiten. Eine Annäherung
@@ -18,6 +19,8 @@ export interface AccessibilitySettings {
    * Prüfgruppe aus der Zielgruppe selbst, die wir hier nicht leisten können).
    */
   simpleLanguage: boolean;
+  /** Mehr Zeilen-, Buchstaben- und Wortabstand (WCAG 2.2 SC 1.4.12). */
+  textSpacing: TextSpacing;
 }
 
 const DEFAULTS: AccessibilitySettings = {
@@ -26,6 +29,7 @@ const DEFAULTS: AccessibilitySettings = {
   highContrast: false,
   reducedView: false,
   simpleLanguage: false,
+  textSpacing: "normal",
 };
 
 const STORAGE_KEY = "echtnah.accessibility";
@@ -46,6 +50,7 @@ function applyToDocument(settings: AccessibilitySettings) {
   root.dataset.contrast = settings.highContrast ? "high" : "normal";
   root.dataset.reduced = settings.reducedView ? "true" : "false";
   root.dataset.simpleLanguage = settings.simpleLanguage ? "true" : "false";
+  root.dataset.textSpacing = settings.textSpacing;
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const dark = settings.theme === "dark" || (settings.theme === "system" && prefersDark);
   root.classList.toggle("dark", dark);
@@ -105,6 +110,7 @@ export const accessibilityInitScript = `
     root.dataset.contrast = s.highContrast ? "high" : "normal";
     root.dataset.reduced = s.reducedView ? "true" : "false";
     root.dataset.simpleLanguage = s.simpleLanguage ? "true" : "false";
+    root.dataset.textSpacing = s.textSpacing || "normal";
     var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     if (s.theme === "dark" || ((!s.theme || s.theme === "system") && prefersDark)) {
       root.classList.add("dark");

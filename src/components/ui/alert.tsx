@@ -3,13 +3,13 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { AlertTriangle, CheckCircle2, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const alertVariants = cva("flex gap-3 rounded-md border-2 p-4 text-base", {
+const alertVariants = cva("flex gap-3 rounded-xl border border-l-4 p-4 text-base", {
   variants: {
     variant: {
-      info: "border-border bg-muted text-foreground",
-      warning: "border-accent bg-muted text-foreground",
-      destructive: "border-destructive bg-muted text-foreground",
-      success: "border-success bg-muted text-foreground",
+      info: "border-border border-l-primary bg-primary-soft text-foreground",
+      warning: "border-border border-l-accent bg-accent-soft text-foreground",
+      destructive: "border-border border-l-destructive bg-card text-foreground",
+      success: "border-border border-l-success bg-card text-foreground",
     },
   },
   defaultVariants: { variant: "info" },

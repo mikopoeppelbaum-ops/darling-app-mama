@@ -8,12 +8,13 @@ import { cn } from "@/lib/utils";
  * unterschiedliche Füllung/Rahmen).
  */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap select-none disabled:pointer-events-none disabled:opacity-60 [&_svg]:size-5 [&_svg]:shrink-0 cursor-pointer",
+  "transition-calm inline-flex items-center justify-center gap-2 rounded-xl font-semibold whitespace-nowrap select-none disabled:pointer-events-none disabled:opacity-60 [&_svg]:size-5 [&_svg]:shrink-0 cursor-pointer",
   {
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:opacity-90",
-        secondary: "bg-secondary text-secondary-foreground border border-border hover:bg-muted",
+        secondary: "bg-card text-foreground border border-border hover:bg-muted",
+        soft: "bg-primary-soft text-foreground hover:bg-muted",
         outline: "border-2 border-input bg-transparent text-foreground hover:bg-muted",
         ghost: "text-foreground hover:bg-muted",
         destructive: "bg-destructive text-destructive-foreground hover:opacity-90",

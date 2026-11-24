@@ -36,8 +36,8 @@ function RadioCards({ legend, name, options, value, onChange, hint, className }:
             <label
               key={opt.value}
               className={cn(
-                "flex cursor-pointer items-start gap-3 rounded-md border-2 p-3.5 has-focus-visible:outline-3 has-focus-visible:outline-ring",
-                isSelected ? "border-primary bg-muted" : "border-input bg-card",
+                "transition-calm flex cursor-pointer items-start gap-3 rounded-xl border-2 p-3.5 has-focus-visible:outline-3 has-focus-visible:outline-ring",
+                isSelected ? "border-primary bg-primary-soft" : "border-input bg-card",
               )}
             >
               <input

@@ -43,7 +43,7 @@ function ChipGroup({ legend, options, selected, onChange, hint, max, className }
             <label
               key={opt.value}
               className={cn(
-                "inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border-2 px-4 py-1.5 text-base has-focus-visible:outline-3 has-focus-visible:outline-ring",
+                "transition-calm inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border-2 px-4 py-1.5 text-base has-focus-visible:outline-3 has-focus-visible:outline-ring",
                 isSelected
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-input bg-card text-foreground",
