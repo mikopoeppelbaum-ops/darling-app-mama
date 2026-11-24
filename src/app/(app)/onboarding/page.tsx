@@ -4,8 +4,9 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useAppStore } from "@/lib/store";
+import { AccessibilityNeedsPicker } from "@/components/profile/accessibility-needs-picker";
+import { ProfileDetails } from "@/components/profile/profile-details";
 import {
-  ACCESSIBILITY_NEED_OPTIONS,
   COMMUNICATION_STYLE_OPTIONS,
   CONTACT_FREQUENCY_OPTIONS,
   DEALBREAKER_OPTIONS,
@@ -225,9 +226,7 @@ export default function OnboardingPage() {
             selected={me.sensoryNeeds}
             onChange={(v) => store.updateProfile({ sensoryNeeds: v })}
           />
-          <ChipGroup
-            legend="Barrierefreiheitsbedürfnisse"
-            options={ACCESSIBILITY_NEED_OPTIONS.map((i) => ({ value: i, label: i }))}
+          <AccessibilityNeedsPicker
             selected={me.accessibilityNeeds}
             onChange={(v) => store.updateProfile({ accessibilityNeeds: v })}
           />
@@ -279,9 +278,25 @@ export default function OnboardingPage() {
             onChange={(v) => store.updatePreferences({ dealbreakers: v })}
           />
           <Alert variant="info" title="Profilbilder">
-            Im Demo-Modus wird ein Platzhalterbild verwendet. Mit Supabase-Anbindung kannst du hier
-            Fotos mit Bildbeschreibung (Alt-Text) hochladen.
+            Fotos sind freiwillig. Du kannst sie später unter „Mein Profil“ hinzufügen — jeweils
+            mit einer kurzen Bildbeschreibung für Screenreader.
           </Alert>
+        </div>
+      ),
+    },
+    {
+      title: "So sehen dich andere",
+      description:
+        "Das ist genau die Ansicht, die Menschen vor einem Match sehen. Angaben, die du „erst nach einem Match“ oder „nie“ zeigen möchtest, sind hier nicht dabei.",
+      content: (
+        <div className="space-y-4">
+          <div className="rounded-xl border border-border bg-background p-4">
+            <ProfileDetails profile={me} context="public" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Passt etwas nicht? Mit „Zurück“ kannst du alles ändern — oder später unter „Mein
+            Profil“.
+          </p>
         </div>
       ),
     },

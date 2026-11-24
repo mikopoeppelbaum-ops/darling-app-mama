@@ -5,8 +5,8 @@ import { Eye, ListChecks, Pencil, Plus, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppStore } from "@/lib/store";
+import { AccessibilityNeedsPicker } from "@/components/profile/accessibility-needs-picker";
 import {
-  ACCESSIBILITY_NEED_OPTIONS,
   COMMUNICATION_STYLE_OPTIONS,
   CONTACT_FREQUENCY_OPTIONS,
   ENERGY_LEVEL_OPTIONS,
@@ -43,6 +43,10 @@ import { Alert } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import { ProfileDetails } from "@/components/profile/profile-details";
 import { VisibilitySelect } from "@/components/profile/visibility-select";
+import { PhotosManager } from "@/components/profile/photos-manager";
+import { Dialog } from "@/components/ui/dialog";
+import { QUESTIONS_ABOUT_ME_OPTIONS, TODAY_ENERGY_OPTIONS } from "@/lib/options";
+import type { QuestionsAboutMe, TodayEnergy } from "@/lib/types";
 
 /** Checkliste für die Profilvervollständigung (ADHS-freundlich: klare Schritte). */
 function completionChecklist(p: Profile): { label: string; done: boolean }[] {
@@ -68,7 +72,7 @@ export default function MyProfilePage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Mein Profil</h1>
+      <h1 className="text-3xl font-semibold">Mein Profil</h1>
 
       <div role="group" aria-label="Ansicht wählen" className="flex flex-wrap gap-2">
         <Button
@@ -134,6 +138,18 @@ export default function MyProfilePage() {
             </Alert>
           ) : null}
 
+          <Card>
+            <CardHeader>
+              <CardTitle>Profilbilder</CardTitle>
+              <CardDescription>
+                Bilder werden nie größer dargestellt als deine Angaben. Jedes Foto braucht eine
+                kurze Beschreibung für Screenreader.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <PhotosManager />
+            </CardContent>
+          </Card>
           <BasicsForm onSaved={() => setSaved(true)} />
           <SelectionsForm onSaved={() => setSaved(true)} />
           <PromptsForm onSaved={() => setSaved(true)} />
@@ -330,10 +346,12 @@ function SelectionsForm({ onSaved }: { onSaved: () => void }) {
           }}
         />
         <div className="space-y-2">
-          <ChipGroup
-            legend="Barrierefreiheitsbedürfnisse"
-            hint="Freiwillig. Du bestimmst unten, wer diese Angaben sieht."
-            options={ACCESSIBILITY_NEED_OPTIONS.map((i) => ({ value: i, label: i }))}
+          <h3 className="text-base font-semibold">Barrierefreiheitsbedürfnisse für Treffen</h3>
+          <p className="text-sm text-muted-foreground">
+            Freiwillig. Beschreibt, was ein Ort oder Treffen braucht. Du bestimmst unten, wer das
+            sieht.
+          </p>
+          <AccessibilityNeedsPicker
             selected={me.accessibilityNeeds}
             onChange={(v) => {
               store.updateProfile({ accessibilityNeeds: v });
@@ -424,6 +442,7 @@ function DisclosuresEditor() {
   const [visibility, setVisibility] = React.useState<Visibility>("after_match");
   const [searchable, setSearchable] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [consentOpen, setConsentOpen] = React.useState(false);
 
   function addDisclosure() {
     const parsed = disclosureSchema.safeParse({
@@ -434,6 +453,11 @@ function DisclosuresEditor() {
     });
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? "Bitte prüfe deine Eingabe.");
+      return;
+    }
+    // Art. 9 DSGVO: Gesundheitsdaten nur nach ausdrücklicher Einwilligung.
+    if (!me.sensitiveConsentGivenAt) {
+      setConsentOpen(true);
       return;
     }
     const d: SensitiveDisclosure = {
@@ -451,6 +475,7 @@ function DisclosuresEditor() {
   }
 
   return (
+    <>
     <Card>
       <CardHeader>
         <CardTitle>Freiwillige Angaben zu Behinderung, Erkrankung oder Neurodivergenz</CardTitle>
@@ -560,6 +585,38 @@ function DisclosuresEditor() {
         </fieldset>
       </CardContent>
     </Card>
+    <Dialog
+      open={consentOpen}
+      onClose={() => setConsentOpen(false)}
+      title="Einwilligung für sensible Angaben"
+      description="Angaben zu Behinderung, Erkrankung oder Neurodivergenz sind Gesundheitsdaten. Die DSGVO (Art. 9) schützt sie besonders."
+    >
+      <div className="space-y-4">
+        <ul className="list-inside list-disc space-y-1 text-sm">
+          <li>Du entscheidest für jede Angabe einzeln, wer sie sieht.</li>
+          <li>Wir geben diese Angaben nie an Dritte weiter und nutzen sie nicht für Werbung.</li>
+          <li>Du kannst deine Einwilligung jederzeit widerrufen, indem du die Angaben löschst.</li>
+          <li>Das Moderationsteam hat keinen Zugriff auf diese Angaben.</li>
+        </ul>
+        <div className="flex flex-wrap gap-3">
+          <Button
+            onClick={() => {
+              store.giveSensitiveConsent();
+              setConsentOpen(false);
+            }}
+          >
+            Ich willige ausdrücklich ein
+          </Button>
+          <Button variant="secondary" onClick={() => setConsentOpen(false)}>
+            Lieber nicht
+          </Button>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Nach der Einwilligung tippe noch einmal auf „Angabe hinzufügen“.
+        </p>
+      </div>
+    </Dialog>
+    </>
   );
 }
 
@@ -569,9 +626,10 @@ function StatusFlagsCard() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Status</CardTitle>
+        <CardTitle>Status und Fragen</CardTitle>
+        <CardDescription>Alles freiwillig. Du kannst es jederzeit ändern.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6">
         <div className="flex items-center justify-between gap-3">
           <Label htmlFor="flag-slow" className="font-normal">
             Status „Meine Antwort kann etwas dauern“ im Profil zeigen
@@ -584,6 +642,43 @@ function StatusFlagsCard() {
             }
           />
         </div>
+
+        <RadioCards
+          legend="Wie geht es dir heute? (nur für Matches sichtbar)"
+          hint="Angelehnt an die „Löffel“-Idee aus der Community chronisch kranker Menschen: Wie viel Energie hast du heute für Kontakte?"
+          name="todayEnergy"
+          options={[...TODAY_ENERGY_OPTIONS, { value: "none", label: "Keine Angabe" }]}
+          value={me.todayEnergy?.level ?? "none"}
+          onChange={(v) =>
+            store.updateProfile({
+              todayEnergy:
+                v === "none"
+                  ? undefined
+                  : { level: v as TodayEnergy, updatedAt: new Date().toISOString() },
+            })
+          }
+        />
+
+        <RadioCards
+          legend="Fragen zu Behinderung, Erkrankung oder Neurodivergenz"
+          hint="So wissen andere vorab, ob Fragen willkommen sind — und niemand muss raten."
+          name="questionsAboutMe"
+          options={[...QUESTIONS_ABOUT_ME_OPTIONS, { value: "none", label: "Keine Angabe" }]}
+          value={me.questionsAboutMe ?? "none"}
+          onChange={(v) =>
+            store.updateProfile({
+              questionsAboutMe: v === "none" ? undefined : (v as QuestionsAboutMe),
+            })
+          }
+        />
+        <FormField label="Ergänzung in deinen Worten" htmlFor="questions-note" optional>
+          <Textarea
+            id="questions-note"
+            rows={2}
+            defaultValue={me.questionsNote ?? ""}
+            onBlur={(e) => store.updateProfile({ questionsNote: e.target.value || undefined })}
+          />
+        </FormField>
       </CardContent>
     </Card>
   );
