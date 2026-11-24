@@ -40,5 +40,9 @@ export function profileForViewer(profile: Profile, context: ViewerContext): Prof
     orientation: isVisible(profile.orientationVisibility, context)
       ? profile.orientation
       : "prefer_not_to_say",
+    // Tagesform ist bewusst nur für Matches sichtbar.
+    todayEnergy: context === "matched" ? profile.todayEnergy : undefined,
+    // Einwilligungs-Zeitpunkt ist eine interne Angabe und nie öffentlich.
+    sensitiveConsentGivenAt: undefined,
   };
 }

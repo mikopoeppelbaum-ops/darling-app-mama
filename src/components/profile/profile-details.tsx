@@ -3,6 +3,8 @@
 import Image from "next/image";
 import {
   Accessibility,
+  BatteryMedium,
+  MessageCircleQuestion,
   CalendarClock,
   Ear,
   HandHeart,
@@ -21,6 +23,8 @@ import {
   CONTACT_FREQUENCY_OPTIONS,
   ENERGY_LEVEL_OPTIONS,
   ORIENTATION_OPTIONS,
+  QUESTIONS_ABOUT_ME_OPTIONS,
+  TODAY_ENERGY_OPTIONS,
   PLANNING_STYLE_OPTIONS,
   RELATIONSHIP_GOAL_OPTIONS,
   RESPONSE_PACE_OPTIONS,
@@ -92,11 +96,12 @@ export function ProfileDetails({
             alt={profile.photos[0].altText}
             width={112}
             height={112}
-            className="size-24 shrink-0 rounded-lg border border-border object-cover md:size-28"
+            unoptimized
+            className="size-24 shrink-0 rounded-full border border-border object-cover md:size-28"
           />
         ) : null}
         <div className="min-w-0">
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-3xl font-semibold">
             {profile.displayName}
             <span className="font-normal text-muted-foreground">, {age}</span>
           </h1>
@@ -108,12 +113,20 @@ export function ProfileDetails({
               {profile.city} (ungefähr)
             </span>
           </p>
-          {profile.statusFlags.slowReplies ? (
-            <Badge className="mt-2" variant="outline">
-              <Ear aria-hidden="true" className="size-3.5" />
-              Meine Antwort kann etwas dauern
-            </Badge>
-          ) : null}
+          <div className="mt-2 flex flex-wrap gap-2">
+            {profile.statusFlags.slowReplies ? (
+              <Badge variant="outline">
+                <Ear aria-hidden="true" className="size-3.5" />
+                Meine Antwort kann etwas dauern
+              </Badge>
+            ) : null}
+            {profile.todayEnergy ? (
+              <Badge variant="warm">
+                <BatteryMedium aria-hidden="true" className="size-3.5" />
+                {labelFor(TODAY_ENERGY_OPTIONS, profile.todayEnergy.level)}
+              </Badge>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -177,6 +190,17 @@ export function ProfileDetails({
               <li key={n}>{n}</li>
             ))}
           </ul>
+        </Section>
+      ) : null}
+
+      {profile.questionsAboutMe ? (
+        <Section icon={MessageCircleQuestion} title="Fragen zu Behinderung oder Neurodivergenz">
+          <p className="font-medium">
+            {labelFor(QUESTIONS_ABOUT_ME_OPTIONS, profile.questionsAboutMe)}
+          </p>
+          {profile.questionsNote ? (
+            <p className="text-muted-foreground">{profile.questionsNote}</p>
+          ) : null}
         </Section>
       ) : null}
 

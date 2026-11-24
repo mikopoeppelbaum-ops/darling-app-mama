@@ -3,7 +3,7 @@ import { Sparkles } from "lucide-react";
 /** Zeigt verständliche Übereinstimmungen — bewusst keine Prozentwerte. */
 export function MatchReasonsList({ reasons }: { reasons: string[] }) {
   return (
-    <div className="rounded-md border border-border bg-muted p-4">
+    <div className="rounded-xl bg-primary-soft p-4">
       <h3 className="flex items-center gap-2 font-semibold">
         <Sparkles aria-hidden="true" className="size-4 text-primary" />
         Warum ihr zusammenpassen könntet
