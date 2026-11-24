@@ -6,6 +6,10 @@ import * as React from "react";
 import LandingPage from "@/app/page";
 import RegisterPage from "@/app/(auth)/registrieren/page";
 import SecuritySettingsPage from "@/app/(app)/einstellungen/sicherheit/page";
+import KnowledgePage from "@/app/(app)/wissen/page";
+import NotificationsPage from "@/app/(app)/benachrichtigungen/page";
+import DiscoverPage from "@/app/(app)/entdecken/page";
+import MatchesPage from "@/app/(app)/matches/page";
 import { CommunityRulesContent } from "@/components/community-rules-content";
 import { AppShell } from "@/components/layout/app-shell";
 import { AppStoreProvider } from "@/lib/store";
@@ -83,6 +87,25 @@ describe("Barrierefreiheits-Audit: ganze Seiten (axe-core)", () => {
     );
     expect(await axe(container, pageAxeOptions)).toHaveNoViolations();
   }, 15000);
+
+  it("Wissen & Quellen hat keine axe-Verstöße", async () => {
+    const { container } = render(<KnowledgePage />);
+    expect(await axe(container, pageAxeOptions)).toHaveNoViolations();
+  }, 15000);
+
+  it("Entdecken, Matches und Benachrichtigungen haben keine axe-Verstöße", async () => {
+    for (const Page of [DiscoverPage, MatchesPage, NotificationsPage]) {
+      const { container, unmount } = render(
+        <AppStoreProvider>
+          <main>
+            <Page />
+          </main>
+        </AppStoreProvider>,
+      );
+      expect(await axe(container, pageAxeOptions)).toHaveNoViolations();
+      unmount();
+    }
+  }, 30000);
 
   it("App-Navigation (Desktop- und Mobil-Menü) hat keine axe-Verstöße", async () => {
     const { container } = render(

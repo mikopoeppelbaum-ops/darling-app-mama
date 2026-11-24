@@ -6,11 +6,16 @@ import {
   likesRemainingToday,
   matchesPreferences,
   matchReasons,
+  sharedMeetingNeeds,
+  sortByMatchQuality,
+  suggestionsLeftToday,
+  DAILY_SUGGESTIONS,
   violatesDealbreakers,
   FREE_DAILY_LIKE_LIMIT,
 } from "@/lib/matching";
 import { DEMO_ME, DEMO_MY_PREFERENCES, DEMO_PROFILES } from "@/lib/demo-data";
 import type { Preferences, Profile } from "@/lib/types";
+import { profileForViewer } from "@/lib/visibility";
 
 const mara = DEMO_PROFILES.find((p) => p.displayName === "Mara")!;
 const frida = DEMO_PROFILES.find((p) => p.displayName === "Frida")!;
@@ -130,5 +135,58 @@ describe("distanceKm", () => {
     const d = distanceKm(koeln, bonn);
     expect(d).toBeGreaterThan(15);
     expect(d).toBeLessThan(40);
+  });
+});
+
+describe("sortByMatchQuality", () => {
+  it("sortiert absteigend nach Anzahl der Übereinstimmungen", () => {
+    const counts = sortByMatchQuality(DEMO_PROFILES, DEMO_ME).map(
+      (p) => matchReasons(DEMO_ME, p).length,
+    );
+    for (let i = 1; i < counts.length; i++) expect(counts[i]).toBeLessThanOrEqual(counts[i - 1]);
+  });
+
+  it("ist stabil und verändert die Eingabe nicht", () => {
+    const same: Profile[] = [
+      { ...mara, id: "x1" },
+      { ...mara, id: "x2" },
+    ];
+    expect(sortByMatchQuality(same, DEMO_ME).map((p) => p.id)).toEqual(["x1", "x2"]);
+    const copy = [...DEMO_PROFILES];
+    sortByMatchQuality(DEMO_PROFILES, DEMO_ME);
+    expect(DEMO_PROFILES).toEqual(copy);
+  });
+});
+
+describe("suggestionsLeftToday (Tagesauswahl)", () => {
+  it("zählt nur heutige Entscheidungen", () => {
+    const now = new Date("2026-11-24T12:00:00");
+    const ts = ["2026-11-24T08:00:00", "2026-11-24T09:00:00", "2026-11-23T20:00:00"];
+    expect(suggestionsLeftToday(ts, now)).toBe(DAILY_SUGGESTIONS - 2);
+  });
+
+  it("geht nie unter null", () => {
+    const now = new Date("2026-11-24T12:00:00");
+    expect(suggestionsLeftToday(Array(30).fill("2026-11-24T08:00:00"), now)).toBe(0);
+  });
+});
+
+describe("sharedMeetingNeeds", () => {
+  it("vereinigt Bedürfnisse und kennzeichnet die Herkunft", () => {
+    const tom = DEMO_PROFILES.find((p) => p.displayName === "Tom")!;
+    const shared = sharedMeetingNeeds(DEMO_ME, tom);
+    const quiet = shared.find((n) => n.need === "Ruhige Umgebung");
+    expect(quiet).toEqual({ need: "Ruhige Umgebung", fromMe: true, fromOther: true });
+  });
+
+  it("übernimmt verborgene Angaben nicht, wenn die öffentliche Sicht übergeben wird", () => {
+    const tom = DEMO_PROFILES.find((p) => p.displayName === "Tom")!;
+    // Toms Barrierefreiheitsangaben sind erst nach einem Match sichtbar.
+    const publicTom = profileForViewer(tom, "public");
+    const shared = sharedMeetingNeeds(
+      { ...DEMO_ME, accessibilityNeeds: [], sensoryNeeds: [] },
+      publicTom,
+    );
+    expect(shared.some((n) => n.need === "Kurze Treffen bevorzugt")).toBe(false);
   });
 });

@@ -1,6 +1,12 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import { act, renderHook } from "@testing-library/react";
-import { AppStoreProvider, useAppStore } from "@/lib/store";
+import {
+  AppStoreProvider,
+  allNotifications,
+  decisionTimestamps,
+  deriveLiveNotifications,
+  useAppStore,
+} from "@/lib/store";
 
 function setup() {
   window.localStorage.clear();
@@ -201,5 +207,81 @@ describe("Datenexport und Kontolöschung", () => {
       result.current.deleteAccount();
     });
     expect(result.current.state.likesGiven).toHaveLength(0);
+  });
+});
+
+describe("Benachrichtigungs-Center", () => {
+  const plan = (startsAt: string) => ({
+    matchId: "m1",
+    createdByProfileId: "me",
+    dateType: "quiet_cafe",
+    startsAt,
+    durationMinutes: 60,
+    locationName: "Café Ruhepol",
+    accessibilityRequirements: [],
+    remindersEnabled: true,
+    shareWithTrustedPerson: false,
+  });
+
+  it("speichert eine Benachrichtigung bei einem neuen Match", () => {
+    const { result } = setup();
+    act(() => {
+      result.current.like("p2");
+    });
+    const n = result.current.state.notifications.find((x) => x.kind === "new_match");
+    expect(n?.profileId).toBe("p2");
+    expect(n?.read).toBe(false);
+  });
+
+  it("leitet fällige 'Später beantworten'-Erinnerungen ab — aber nicht vor der Zeit", () => {
+    const { result } = setup();
+    act(() => result.current.markAnswerLater("msg4", "2026-01-01T00:00:00Z"));
+    const due = deriveLiveNotifications(result.current.state, new Date("2026-02-01T00:00:00Z"));
+    expect(due.some((n) => n.kind === "answer_later_due" && n.messageId === "msg4")).toBe(true);
+    const early = deriveLiveNotifications(result.current.state, new Date("2025-12-01T00:00:00Z"));
+    expect(early.some((n) => n.kind === "answer_later_due")).toBe(false);
+  });
+
+  it("leitet Date-Erinnerung (48 h vorher) und ausstehenden Check-in ab", () => {
+    const { result } = setup();
+    act(() => result.current.createDatePlan(plan("2026-01-02T10:00:00Z")));
+    const before = deriveLiveNotifications(result.current.state, new Date("2026-01-01T00:00:00Z"));
+    expect(before.some((n) => n.kind === "date_reminder")).toBe(true);
+    const after = deriveLiveNotifications(result.current.state, new Date("2026-01-03T00:00:00Z"));
+    expect(after.some((n) => n.kind === "date_checkin_due")).toBe(true);
+  });
+
+  it("sortiert die kombinierte Liste, neueste zuerst, und markiert als gelesen", () => {
+    const { result } = setup();
+    act(() => {
+      result.current.like("p2");
+      result.current.like("p8");
+    });
+    const all = allNotifications(result.current.state);
+    for (let i = 1; i < all.length; i++)
+      expect(all[i].createdAt <= all[i - 1].createdAt).toBe(true);
+    act(() => result.current.markAllNotificationsRead());
+    expect(result.current.state.notifications.every((n) => n.read)).toBe(true);
+  });
+});
+
+describe("Tagesauswahl und Einwilligung", () => {
+  it("zählt Überspringen als Entscheidung und gibt sie beim Zurückholen frei", () => {
+    const { result } = setup();
+    act(() => result.current.skip("p4"));
+    expect(decisionTimestamps(result.current.state)).toHaveLength(1);
+    let restored: string | null = null;
+    act(() => {
+      restored = result.current.undoSkip();
+    });
+    expect(restored).toBe("p4");
+    expect(decisionTimestamps(result.current.state)).toHaveLength(0);
+  });
+
+  it("protokolliert die ausdrückliche Einwilligung nach Art. 9 DSGVO", () => {
+    const { result } = setup();
+    expect(result.current.state.me.sensitiveConsentGivenAt).toBeUndefined();
+    act(() => result.current.giveSensitiveConsent());
+    expect(result.current.state.me.sensitiveConsentGivenAt).toBeTruthy();
   });
 });

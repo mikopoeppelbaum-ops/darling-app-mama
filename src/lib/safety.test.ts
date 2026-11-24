@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { chunkLongMessage, detectContentWarnings, isRateLimited } from "@/lib/safety";
+import {
+  chunkLongMessage,
+  detectContentWarnings,
+  isRateLimited,
+  parseToneTags,
+} from "@/lib/safety";
 
 describe("detectContentWarnings", () => {
   it("warnt vor Telefonnummern", () => {
@@ -64,5 +69,28 @@ describe("chunkLongMessage", () => {
     expect(chunks.length).toBeGreaterThan(1);
     expect(chunks.join(" ")).toBe(long);
     for (const c of chunks) expect(c.length).toBeLessThanOrEqual(120);
+  });
+});
+
+describe("Romance Baiting und Plattformwechsel", () => {
+  it("warnt bei Krypto- und Investment-Angeboten", () => {
+    const w = detectContentWarnings("Ich zeige dir eine Trading-Plattform, Rendite garantiert");
+    expect(w.some((x) => x.type === "investment_scam")).toBe(true);
+  });
+
+  it("weist auf Druck zu anderen Messengern hin", () => {
+    const w = detectContentWarnings("Schreib mir lieber auf Telegram");
+    expect(w.some((x) => x.type === "move_off_platform")).toBe(true);
+  });
+});
+
+describe("parseToneTags", () => {
+  const tags = ["/j", "/s", "/gen"];
+  it("erkennt Tags am Ende und am Anfang", () => {
+    expect(parseToneTags("Haha klar /j", tags)).toEqual(["/j"]);
+    expect(parseToneTags("/gen wie geht es dir?", tags)).toEqual(["/gen"]);
+  });
+  it("erkennt keine Tags mitten in Wörtern", () => {
+    expect(parseToneTags("jetzt/s nicht", tags)).toEqual([]);
   });
 });

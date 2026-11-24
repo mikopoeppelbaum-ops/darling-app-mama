@@ -11,6 +11,8 @@ const bodyFont = Atkinson_Hyperlegible_Next({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
+  // Für diese Schrift liefert Next.js keine Metrik-Werte; Fallback ohne Anpassung.
+  adjustFontFallback: false,
 });
 
 const displayFont = Fraunces({

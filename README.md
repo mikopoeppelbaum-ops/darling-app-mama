@@ -26,6 +26,37 @@ Chat, Date-Planer, Einstellungen, Onboarding und das Moderations-Dashboard.
 Demo-Tipp: Die Profile „Jonas“ und „Frida“ haben dich bereits geliked — ein Like
 zurück erzeugt sofort ein Match.
 
+## Version 2: Design- und Fakten-Überarbeitung
+
+**Design.** Neue, ruhige Farbwelt („warmes Papier, tiefes Petrol, Terrakotta“), jedes Farbpaar
+rechnerisch gegen WCAG 2.2 AA geprüft (hell, dunkel, hoher Kontrast). Fließtext in
+_Atkinson Hyperlegible Next_ (Braille Institute, für gute Lesbarkeit entworfen), Überschriften
+in _Fraunces_. Mobile Kopfzeile mit Hilfe an immer gleicher Stelle (WCAG 2.2 SC 3.2.6),
+fokussierte Elemente werden nicht von der Navigation verdeckt (SC 2.4.11).
+
+**Neue, belegte Funktionen** (alle Quellen auch in der App unter `/wissen`):
+
+| Funktion                                                                                                                    | Grundlage                                                              |
+| --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Tägliche Auswahl von 8 Vorschlägen statt endlosem Wischen                                                                   | Choice Overload beim Online-Dating (D'Angelo & Toma, Media Psychology) |
+| Sortierung nach Anzahl nachvollziehbarer Gemeinsamkeiten (ohne Score-Anzeige)                                               | Bisheriges Matching-Prinzip                                            |
+| Tone-Tags im Chat (/j, /s, /gen …) mit deutscher Erklärung                                                                  | Tone Indicators, CSCW 2025                                             |
+| Barrierefreiheitsbedürfnisse nach ICF-Bereichen gegliedert                                                                  | WHO ICF (Behinderung als Wechselwirkung mit der Umwelt)                |
+| Einstellung „Mehr Textabstand“                                                                                              | WCAG 2.2 SC 1.4.12; Zorzi et al., PNAS 2012                            |
+| „Fragen zu Behinderung: willkommen / später / lieber nicht“                                                                 | Wunsch nach Selbstbestimmung über Offenlegung                          |
+| Tagesform („Löffel“), nur für Matches sichtbar                                                                              | Spoon Theory — als Community-Konzept gekennzeichnet                    |
+| Ausdrückliche Einwilligung vor Gesundheitsdaten                                                                             | DSGVO Art. 9 Abs. 2 lit. a                                             |
+| Warnung vor Krypto-/Investment-Angeboten und Messenger-Druck                                                                | „Romance Baiting“ laut Bundestag hib 727/2025                          |
+| Gemeinsamer Bedürfnis-Check im Date-Planer, Pausenzeichen, Wheelmap-Hinweis                                                 | Nur freigegebene Angaben fließen ein                                   |
+| Benachrichtigungs-Center mit abgeleiteten Erinnerungen                                                                      | „Später beantworten“, Date-Erinnerung 48 h vorher, Check-in            |
+| Fotos verwalten mit Pflicht-Bildbeschreibung, Bilder im Chat, Hinweis auf erhaltene Likes, Onboarding-Vorschau, Date-Reiter | —                                                                      |
+
+**Zahlen auf der Startseite:** 7,9 Mio. Menschen mit Schwerbehinderung (Destatis, Ende 2023);
+≈ 1 von 127 Menschen autistisch (WHO/GBD 2021); 2,58 % persistierende bzw. 6,76 % symptomatische
+ADHS bei Erwachsenen (Song et al. 2021); 88 % der Dating-App-Nutzenden mit Behinderung berichten
+digitale Übergriffe (Australian Institute of Criminology 2024). Wo Belege dünn sind (Spoon Theory,
+Rejection Sensitivity, Atkinson-Wirksamkeit), sagt die App das ausdrücklich.
+
 ## Technischer Stack
 
 | Bereich        | Technologie                                              | Anmerkung                                                                                                                                                                                                                                                       |
