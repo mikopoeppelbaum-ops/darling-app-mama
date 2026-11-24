@@ -191,24 +191,74 @@ export const SENSORY_NEED_OPTIONS = [
   "Ich brauche eher mehr als weniger Reize, um mich wohlzufühlen",
 ] as const;
 
-/** Barrierefreiheits- und Unterstützungsbedürfnisse für Treffen. */
-export const ACCESSIBILITY_NEED_OPTIONS = [
-  "Rollstuhlgerechter Treffpunkt",
-  "Barrierefreies WC",
-  "Wenig Treppen",
-  "Ruhige Umgebung",
-  "Gedämpftes Licht",
-  "Wenig Hintergrundgeräusche",
-  "Begleitperson möglich",
-  "Assistenzhund willkommen",
-  "Leichte Sprache",
-  "Schriftliche Kommunikation bevorzugt",
-  "Lippenlesen — bitte deutlich sprechen",
-  "Gebärdensprache",
-  "Pausen während des Treffens",
-  "Kurze Treffen bevorzugt",
-  "Flexible Absagemöglichkeit",
+/**
+ * Barrierefreiheits- und Unterstützungsbedürfnisse für Treffen, gegliedert
+ * nach Bereichen der ICF der WHO (International Classification of
+ * Functioning, Disability and Health, 2001). Die ICF versteht Behinderung
+ * als Wechselwirkung zwischen Person und Umwelt — deshalb beschreiben die
+ * Einträge, was ein ORT oder ein TREFFEN braucht, nicht, was mit einer
+ * Person "nicht stimmt". Die ICF-Codes dienen nur der Nachvollziehbarkeit.
+ */
+export const ACCESSIBILITY_NEED_GROUPS = [
+  {
+    id: "mobility",
+    title: "Wege und Räume",
+    icf: "ICF d4 Mobilität, e150 Gebäude",
+    options: [
+      "Rollstuhlgerechter Treffpunkt",
+      "Stufenloser Eingang",
+      "Wenig Treppen",
+      "Sitzgelegenheiten in der Nähe",
+      "Barrierefreies WC",
+      "Barrierefrei mit Bus und Bahn erreichbar",
+    ],
+  },
+  {
+    id: "senses",
+    title: "Licht, Geräusche und Reize",
+    icf: "ICF e240 Licht, e250 Laute",
+    options: [
+      "Ruhige Umgebung",
+      "Wenig Hintergrundgeräusche",
+      "Gedämpftes Licht",
+      "Gute Beleuchtung (z. B. zum Lippenlesen)",
+      "Ruhiger Rückzugsort in der Nähe",
+    ],
+  },
+  {
+    id: "communication",
+    title: "Verständigung",
+    icf: "ICF d3 Kommunikation",
+    options: [
+      "Schriftliche Kommunikation bevorzugt",
+      "Lippenlesen — bitte deutlich sprechen",
+      "Gebärdensprache",
+      "Höranlage / Induktionsschleife",
+      "Leichte Sprache",
+    ],
+  },
+  {
+    id: "structure",
+    title: "Ablauf und Energie",
+    icf: "ICF d230 Tagesroutine, d240 Umgang mit Stress",
+    options: [
+      "Klare Absprachen vorab (Ablauf, Dauer, Ort)",
+      "Pausen während des Treffens",
+      "Kurze Treffen bevorzugt",
+      "Flexible Absagemöglichkeit",
+    ],
+  },
+  {
+    id: "support",
+    title: "Begleitung und Unterstützung",
+    icf: "ICF e340 Assistenz, e350 Assistenztiere",
+    options: ["Begleitperson möglich", "Assistenzhund willkommen"],
+  },
 ] as const;
+
+export const ACCESSIBILITY_NEED_OPTIONS: readonly string[] = ACCESSIBILITY_NEED_GROUPS.flatMap(
+  (g) => g.options,
+);
 
 export const DEALBREAKER_OPTIONS = [
   "Rauchen",
@@ -255,6 +305,49 @@ export const CONVERSATION_STARTERS = [
   "Brauchst du manchmal länger, um auf Nachrichten zu antworten?",
   "Was ist dein liebster Ort, um zur Ruhe zu kommen?",
   "Worüber hast du dich diese Woche gefreut?",
+  "Wie sieht für dich ein richtig guter, ruhiger Tag aus?",
+  "Gibt es etwas, das dir hilft, wenn ein Gespräch ins Stocken gerät?",
+] as const;
+
+/**
+ * Tone-Tags: in neurodivergenten Online-Communities verbreitete Kürzel, die
+ * den Ton einer Nachricht ausdrücklich machen. Eine Studie (CSCW 2025,
+ * "Tone Indicators", 18 Gesprächspaare) fand, dass sie die kognitive
+ * Belastung beim Deuten des Tons senken. Wir zeigen das Kürzel immer
+ * zusammen mit einer deutschen Erklärung, damit niemand raten muss.
+ */
+export const TONE_TAGS = [
+  { tag: "/j", label: "Spaß", description: "Das ist als Scherz gemeint." },
+  { tag: "/s", label: "Sarkasmus", description: "Das ist sarkastisch gemeint, nicht wörtlich." },
+  { tag: "/gen", label: "ernst gemeinte Frage", description: "Ich frage wirklich, ohne Unterton." },
+  { tag: "/srs", label: "ernst", description: "Das meine ich ernst." },
+  { tag: "/pos", label: "positiv", description: "Das ist freundlich und positiv gemeint." },
+  { tag: "/nm", label: "nicht sauer", description: "Ich bin nicht verärgert." },
+  { tag: "/lh", label: "locker", description: "Das ist leicht und unbeschwert gemeint." },
+] as const;
+
+export const QUESTIONS_ABOUT_ME_OPTIONS = [
+  {
+    value: "welcome",
+    label: "Fragen sind willkommen",
+    description: "Frag ruhig, ich erzähle gern davon.",
+  },
+  {
+    value: "after_getting_to_know",
+    label: "Gern, wenn wir uns etwas kennen",
+    description: "Lass uns erst über andere Dinge sprechen.",
+  },
+  {
+    value: "not_wanted",
+    label: "Lieber keine Fragen dazu",
+    description: "Wenn ich etwas teilen möchte, mache ich das von selbst.",
+  },
+] as const;
+
+export const TODAY_ENERGY_OPTIONS = [
+  { value: "high", label: "Heute viel Energie" },
+  { value: "medium", label: "Heute mittlere Energie" },
+  { value: "low", label: "Heute wenig Energie — Antworten dauern" },
 ] as const;
 
 /** Vorgefertigte respektvolle Absagen für den Date-Planer. */

@@ -236,3 +236,59 @@ export function likesRemainingToday(
   const usedToday = likeTimestamps.filter((t) => new Date(t) >= startOfDay).length;
   return Math.max(0, limit - usedToday);
 }
+
+/**
+ * Sortiert Kandidat:innen nach Anzahl nachvollziehbarer Übereinstimmungen
+ * (siehe matchReasons). Die Zahl selbst wird nie angezeigt — sie bestimmt nur
+ * die Reihenfolge. Stabil: Gleichstände behalten die ursprüngliche Ordnung.
+ */
+export function sortByMatchQuality(profiles: Profile[], me: Profile): Profile[] {
+  return profiles
+    .map((p, index) => ({ p, index, count: matchReasons(me, p).length }))
+    .sort((a, b) => b.count - a.count || a.index - b.index)
+    .map((x) => x.p);
+}
+
+/**
+ * Tägliche Auswahl statt endlosem Wischen.
+ * Grundlage: In einem Experiment (D'Angelo & Toma, Media Psychology,
+ * 2016/2017) waren Teilnehmende, die aus 24 statt aus 6 Profilen wählten,
+ * eine Woche später unzufriedener mit ihrer Wahl und schrieben weniger
+ * sorgfältige Nachrichten ("Choice Overload"). Eine überschaubare tägliche
+ * Auswahl schützt außerdem vor Reizüberflutung und ist ADHS-freundlich.
+ */
+export const DAILY_SUGGESTIONS = 8;
+
+/** Wie viele Profile heute noch vorgeschlagen werden (Likes + Überspringen zählen). */
+export function suggestionsLeftToday(
+  decisionTimestamps: string[],
+  now: Date = new Date(),
+  limit: number = DAILY_SUGGESTIONS,
+): number {
+  const startOfDay = new Date(now);
+  startOfDay.setHours(0, 0, 0, 0);
+  const decidedToday = decisionTimestamps.filter((t) => new Date(t) >= startOfDay).length;
+  return Math.max(0, limit - decidedToday);
+}
+
+/**
+ * Gemeinsame Bedürfnisse für ein Treffen: Vereinigung der Barrierefreiheits-
+ * und Reizbedürfnisse beider Personen. Erwartet das Profil der anderen
+ * Person bereits in der Sicht, die die eigene Person sehen darf
+ * (profileForViewer(..., "matched")) — verborgene Angaben fließen so nie ein.
+ */
+export function sharedMeetingNeeds(
+  me: Profile,
+  otherAsVisibleToMe: Profile,
+): { need: string; fromMe: boolean; fromOther: boolean }[] {
+  const mine = new Set([...me.accessibilityNeeds, ...me.sensoryNeeds]);
+  const theirs = new Set([
+    ...otherAsVisibleToMe.accessibilityNeeds,
+    ...otherAsVisibleToMe.sensoryNeeds,
+  ]);
+  return [...new Set([...mine, ...theirs])].map((need) => ({
+    need,
+    fromMe: mine.has(need),
+    fromOther: theirs.has(need),
+  }));
+}

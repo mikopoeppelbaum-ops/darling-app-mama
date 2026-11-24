@@ -46,6 +46,15 @@ export type CommunicationStyle =
 
 export type ResponsePace = "fast" | "same_day" | "takes_time";
 
+/** Wie offen jemand für Fragen zu Behinderung, Erkrankung oder Neurodivergenz ist. */
+export type QuestionsAboutMe = "welcome" | "after_getting_to_know" | "not_wanted";
+
+/**
+ * Tagesform ("Löffel" im Sinne der Spoon Theory, Miserandino 2003 — ein
+ * Community-Konzept, keine klinische Messgröße). Freiwillig, nur für Matches.
+ */
+export type TodayEnergy = "high" | "medium" | "low";
+
 /** Sichtbarkeitsstufen für sensible Angaben — pro Angabe einzeln einstellbar. */
 export interface SensitiveDisclosure {
   id: string;
@@ -103,6 +112,16 @@ export interface Profile {
   disclosures: SensitiveDisclosure[];
   prompts: ProfilePrompts;
   boundaries: string;
+  /** Freiwillig: Offenheit für Fragen zu Behinderung/Neurodivergenz. */
+  questionsAboutMe?: QuestionsAboutMe;
+  questionsNote?: string;
+  /** Freiwillig: heutige Energie, nur für Matches sichtbar. */
+  todayEnergy?: { level: TodayEnergy; updatedAt: string };
+  /**
+   * Ausdrückliche Einwilligung nach Art. 9 Abs. 2 lit. a DSGVO, bevor
+   * Gesundheitsdaten (Behinderung, Diagnose) gespeichert werden.
+   */
+  sensitiveConsentGivenAt?: string;
   lifestyle: {
     childrenWish?: string;
     smoking?: string;
@@ -241,6 +260,8 @@ export interface DatePlan {
   shareWithTrustedPerson: boolean;
   checkInDone: boolean;
   lastChangeNote?: string;
+  /** Vorab vereinbartes Zeichen für "Ich brauche eine Pause" während des Treffens. */
+  pauseSignal?: string;
   createdAt: string;
 }
 
@@ -253,6 +274,28 @@ export interface ModerationAction {
   actionType: ModerationActionType;
   reason: string;
   createdAt: string;
+}
+
+export type NotificationKind =
+  | "new_match"
+  | "answer_later_due"
+  | "date_reminder"
+  | "date_checkin_due";
+
+/**
+ * Benachrichtigung. "new_match" wird gespeichert; die übrigen Arten werden
+ * live aus bestehenden Daten abgeleitet (deriveLiveNotifications in
+ * lib/store.tsx) und verschwinden von selbst, wenn sie erledigt sind.
+ */
+export interface AppNotification {
+  id: string;
+  kind: NotificationKind;
+  createdAt: string;
+  read: boolean;
+  profileId?: string;
+  matchId?: string;
+  messageId?: string;
+  datePlanId?: string;
 }
 
 export interface NotificationSettings {

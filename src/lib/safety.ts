@@ -4,7 +4,13 @@
  * es wird nichts blockiert, sondern verständlich gewarnt.
  */
 
-export type ContentWarningType = "phone_number" | "link" | "bank_data" | "money_request";
+export type ContentWarningType =
+  | "phone_number"
+  | "link"
+  | "bank_data"
+  | "money_request"
+  | "investment_scam"
+  | "move_off_platform";
 
 export interface ContentWarning {
   type: ContentWarningType;
@@ -15,7 +21,16 @@ const PHONE_RE = /(\+?\d[\d\s\-/()]{7,}\d)/;
 const LINK_RE = /(https?:\/\/|www\.)\S+|\b\S+\.(de|com|net|org|io|app)\b/i;
 const IBAN_RE = /\b[A-Z]{2}\d{2}[\sA-Z0-9]{10,30}\b/;
 const MONEY_REQUEST_RE =
-  /(geld\s*(leihen|schicken|senden|überweisen)|überweis|paypal|western union|gutschein(karte)?|krypto|bitcoin|notfall.*geld|geld.*notfall)/i;
+  /(geld\s*(leihen|schicken|senden|überweisen)|überweis|paypal|western union|gutschein(karte)?|notfall.*geld|geld.*notfall|zollgebühr|erbschaft)/i;
+/**
+ * "Romance Baiting": Anlagebetrug mit Liebesmasche — laut Antwort der
+ * Bundesregierung (hib 727/2025) eine eigene Variante neben dem
+ * klassischen Love Scam. Typisch sind Krypto- oder Trading-Angebote.
+ */
+const INVESTMENT_RE =
+  /(krypto|bitcoin|trading|investier|anlage(plattform|tipp)?|rendite|forex|gewinn garantiert)/i;
+/** Drängen auf andere Messenger ist ein häufiges frühes Warnsignal. */
+const OFF_PLATFORM_RE = /(whats ?app|telegram|signal|snapchat|schreib mir (lieber )?(auf|bei))/i;
 
 export function detectContentWarnings(text: string): ContentWarning[] {
   const warnings: ContentWarning[] = [];
@@ -32,6 +47,20 @@ export function detectContentWarnings(text: string): ContentWarning[] {
       type: "money_request",
       message:
         "Vorsicht: Hier geht es um Geld. Seriöse Kontakte bitten nicht um Geld, Gutscheine oder Überweisungen. Du kannst das Profil jederzeit melden.",
+    });
+  }
+  if (INVESTMENT_RE.test(text)) {
+    warnings.push({
+      type: "investment_scam",
+      message:
+        "Hier geht es um Geldanlagen oder Krypto. Liebesbetrug mit angeblichen Investment-Tipps ist eine bekannte Masche. Investiere nie auf Rat von Online-Bekanntschaften.",
+    });
+  }
+  if (OFF_PLATFORM_RE.test(text)) {
+    warnings.push({
+      type: "move_off_platform",
+      message:
+        "Die Person möchte zu einem anderen Messenger wechseln. Das ist okay, wenn du es willst — Druck dazu ist aber ein bekanntes Warnsignal. Hier bei EchtNah kannst du jederzeit melden und blockieren.",
     });
   }
   if (PHONE_RE.test(text)) {
@@ -85,4 +114,14 @@ export function chunkLongMessage(text: string, maxChunkLength = 280): string[] {
   }
   if (current) chunks.push(current);
   return chunks;
+}
+
+/** Erkennt Tone-Tags (z. B. "/j", "/gen") am Ende oder im Text einer Nachricht. */
+export function parseToneTags(text: string, knownTags: readonly string[]): string[] {
+  const found: string[] = [];
+  for (const tag of knownTags) {
+    const re = new RegExp(`(^|\\s)${tag.replace("/", "\\/")}(?=\\s|$|[.,!?])`, "i");
+    if (re.test(text)) found.push(tag);
+  }
+  return found;
 }

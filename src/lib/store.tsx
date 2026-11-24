@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import type {
+  AppNotification,
   ConversationSettings,
   DatePlan,
   Match,
@@ -48,6 +49,8 @@ interface AppState {
   likesReceived: string[]; // Profil-IDs, die "mich" geliked haben (Demo)
   skipped: string[];
   skipHistory: string[]; // für die Zurück-Funktion
+  /** Zeitpunkte von Entscheidungen (Überspringen) für die tägliche Auswahl. */
+  skipLog: { profileId: string; createdAt: string }[];
   saved: string[];
   blocked: string[];
   matches: Match[];
@@ -56,6 +59,7 @@ interface AppState {
   reports: Report[];
   moderationActions: ModerationAction[];
   datePlans: DatePlan[];
+  notifications: AppNotification[];
   notificationSettings: NotificationSettings;
   privacySettings: PrivacySettings;
   adhsSettings: AdhsSettings;
@@ -71,6 +75,7 @@ const initialState: AppState = {
   likesReceived: ["p2", "p8"],
   skipped: [],
   skipHistory: [],
+  skipLog: [],
   saved: [],
   blocked: [],
   matches: DEMO_MATCHES,
@@ -79,6 +84,7 @@ const initialState: AppState = {
   reports: [],
   moderationActions: [],
   datePlans: [],
+  notifications: [],
   notificationSettings: {
     profileId: "me",
     newMatches: true,
@@ -117,6 +123,10 @@ interface AppStoreValue {
   like: (profileId: string) => { match?: Match; limitReached?: boolean; rateLimited?: boolean };
   skip: (profileId: string) => void;
   undoSkip: () => string | null;
+  markNotificationRead: (id: string) => void;
+  markAllNotificationsRead: () => void;
+  /** Ausdrückliche Einwilligung (Art. 9 DSGVO) vor dem Speichern von Gesundheitsdaten. */
+  giveSensitiveConsent: () => void;
   toggleSave: (profileId: string) => void;
   block: (profileId: string) => void;
   unblock: (profileId: string) => void;
@@ -213,6 +223,19 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
           ...s,
           likesGiven: [...s.likesGiven, { toProfileId: profileId, createdAt: now }],
           matches: match ? [...s.matches, match] : s.matches,
+          notifications: match
+            ? [
+                ...s.notifications,
+                {
+                  id: newId("notif"),
+                  kind: "new_match" as const,
+                  createdAt: now,
+                  read: false,
+                  profileId,
+                  matchId: match.id,
+                },
+              ]
+            : s.notifications,
         };
       });
       return { match };
@@ -223,22 +246,40 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
         ...s,
         skipped: [...s.skipped, profileId],
         skipHistory: [...s.skipHistory, profileId],
+        skipLog: [...s.skipLog, { profileId, createdAt: new Date().toISOString() }],
       })),
 
     undoSkip: () => {
-      let restored: string | null = null;
-      setState((s) => {
-        const last = s.skipHistory[s.skipHistory.length - 1];
-        if (!last) return s;
-        restored = last;
-        return {
-          ...s,
-          skipped: s.skipped.filter((id) => id !== last),
-          skipHistory: s.skipHistory.slice(0, -1),
-        };
-      });
-      return restored;
+      // Aus dem aktuellen Zustand berechnen, damit der Rückgabewert sofort stimmt.
+      const last = state.skipHistory[state.skipHistory.length - 1];
+      if (!last) return null;
+      setState((s) => ({
+        ...s,
+        skipped: s.skipped.filter((id) => id !== last),
+        skipHistory: s.skipHistory.slice(0, -1),
+        // Zurückholen gibt den Vorschlag für heute wieder frei.
+        skipLog: s.skipLog.filter((e) => e.profileId !== last),
+      }));
+      return last;
     },
+
+    markNotificationRead: (id) =>
+      setState((s) => ({
+        ...s,
+        notifications: s.notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
+      })),
+
+    markAllNotificationsRead: () =>
+      setState((s) => ({
+        ...s,
+        notifications: s.notifications.map((n) => ({ ...n, read: true })),
+      })),
+
+    giveSensitiveConsent: () =>
+      setState((s) => ({
+        ...s,
+        me: { ...s.me, sensitiveConsentGivenAt: new Date().toISOString() },
+      })),
 
     toggleSave: (profileId) =>
       setState((s) => ({
@@ -521,4 +562,97 @@ export function unreadCount(state: AppState, matchId: string): number {
   return state.messages.filter(
     (m) => m.matchId === matchId && m.senderProfileId !== state.me.id && m.status === "sent",
   ).length;
+}
+
+/** Zeitpunkte aller Entscheidungen (Like oder Überspringen) — Grundlage der Tagesauswahl. */
+export function decisionTimestamps(state: AppState): string[] {
+  return [...state.likesGiven.map((l) => l.createdAt), ...state.skipLog.map((e) => e.createdAt)];
+}
+
+const DATE_REMINDER_WINDOW_MS = 48 * 3600_000;
+
+/**
+ * Leitet Erinnerungen live aus bestehenden Daten ab, statt sie zu speichern:
+ * fällige "Später beantworten"-Erinnerungen, Date-Erinnerungen (48 Stunden
+ * vorher) und ausstehende Check-ins nach einem Date. Kein Cron-Job nötig;
+ * Einträge verschwinden von selbst, wenn sich die Lage ändert.
+ */
+export function deriveLiveNotifications(
+  state: AppState,
+  now: Date = new Date(),
+): AppNotification[] {
+  const result: AppNotification[] = [];
+  const nowMs = now.getTime();
+
+  for (const m of state.messages) {
+    if (
+      m.answerLater &&
+      m.status !== "deleted" &&
+      m.senderProfileId !== state.me.id &&
+      m.remindAt &&
+      new Date(m.remindAt).getTime() <= nowMs
+    ) {
+      result.push({
+        id: `derived-answer-${m.id}`,
+        kind: "answer_later_due",
+        createdAt: m.remindAt,
+        read: false,
+        matchId: m.matchId,
+        messageId: m.id,
+        profileId: m.senderProfileId,
+      });
+    }
+  }
+
+  for (const plan of state.datePlans) {
+    const startsAtMs = new Date(plan.startsAt).getTime();
+    const match = state.matches.find((mt) => mt.id === plan.matchId);
+    const otherId = match ? otherProfileId(match, state.me.id) : undefined;
+    const active = plan.status === "proposed" || plan.status === "confirmed";
+
+    if (
+      plan.remindersEnabled &&
+      active &&
+      startsAtMs > nowMs &&
+      startsAtMs - nowMs <= DATE_REMINDER_WINDOW_MS
+    ) {
+      result.push({
+        id: `derived-date-${plan.id}`,
+        kind: "date_reminder",
+        createdAt: new Date(startsAtMs - DATE_REMINDER_WINDOW_MS).toISOString(),
+        read: false,
+        matchId: plan.matchId,
+        datePlanId: plan.id,
+        profileId: otherId,
+      });
+    }
+
+    if (startsAtMs <= nowMs && active && !plan.checkInDone) {
+      result.push({
+        id: `derived-checkin-${plan.id}`,
+        kind: "date_checkin_due",
+        createdAt: plan.startsAt,
+        read: false,
+        matchId: plan.matchId,
+        datePlanId: plan.id,
+        profileId: otherId,
+      });
+    }
+  }
+
+  return result;
+}
+
+/** Gespeicherte und abgeleitete Benachrichtigungen zusammen, neueste zuerst. */
+export function allNotifications(state: AppState, now: Date = new Date()): AppNotification[] {
+  return [...state.notifications, ...deriveLiveNotifications(state, now)].sort((a, b) =>
+    b.createdAt.localeCompare(a.createdAt),
+  );
+}
+
+/** Anzahl offener Benachrichtigungen für das Badge in der Navigation. */
+export function unreadNotificationCount(state: AppState, now: Date = new Date()): number {
+  return (
+    state.notifications.filter((n) => !n.read).length + deriveLiveNotifications(state, now).length
+  );
 }
