@@ -44,6 +44,7 @@ import { Progress } from "@/components/ui/progress";
 import { ProfileDetails } from "@/components/profile/profile-details";
 import { VisibilitySelect } from "@/components/profile/visibility-select";
 import { PhotosManager } from "@/components/profile/photos-manager";
+import { IdentityEditor, PronounDatalist } from "@/components/profile/identity-editor";
 import { Dialog } from "@/components/ui/dialog";
 import { QUESTIONS_ABOUT_ME_OPTIONS, TODAY_ENERGY_OPTIONS } from "@/lib/options";
 import type { QuestionsAboutMe, TodayEnergy } from "@/lib/types";
@@ -151,6 +152,17 @@ export default function MyProfilePage() {
             </CardContent>
           </Card>
           <BasicsForm onSaved={() => setSaved(true)} />
+          <Card>
+            <CardHeader>
+              <CardTitle>Identität und Beziehungsform</CardTitle>
+              <CardDescription>
+                Alles freiwillig. Wer deine Orientierung sieht, legst du weiter unten fest.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <IdentityEditor />
+            </CardContent>
+          </Card>
           <SelectionsForm onSaved={() => setSaved(true)} />
           <PromptsForm onSaved={() => setSaved(true)} />
           <DisclosuresEditor />
@@ -213,9 +225,11 @@ function BasicsForm({ onSaved }: { onSaved: () => void }) {
             >
               <Input
                 id="p-pronouns"
-                placeholder="z. B. sie/ihr, er/ihm, they/them"
+                list="pronoun-suggestions"
+                placeholder="z. B. sie/ihr, er/ihm, they/them, dey/dem"
                 {...register("pronouns")}
               />
+              <PronounDatalist />
             </FormField>
           </div>
           <FormField

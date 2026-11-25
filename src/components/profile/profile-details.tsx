@@ -18,11 +18,15 @@ import {
 import type { Profile } from "@/lib/types";
 import { profileForViewer, type ViewerContext } from "@/lib/visibility";
 import { ageFromBirthdate } from "@/lib/utils";
+import { orientationsOf } from "@/lib/matching";
 import {
   COMMUNICATION_STYLE_OPTIONS,
   CONTACT_FREQUENCY_OPTIONS,
   ENERGY_LEVEL_OPTIONS,
+  GENDER_OPTIONS,
   ORIENTATION_OPTIONS,
+  RELATIONSHIP_STRUCTURE_OPTIONS,
+  ROMANTIC_ORIENTATION_OPTIONS,
   QUESTIONS_ABOUT_ME_OPTIONS,
   TODAY_ENERGY_OPTIONS,
   PLANNING_STYLE_OPTIONS,
@@ -70,9 +74,19 @@ export function ProfileDetails({
   const profile = profileForViewer(rawProfile, context);
   const age = ageFromBirthdate(profile.birthdate);
   const orientationLabel =
-    profile.orientation !== "prefer_not_to_say"
-      ? labelFor(ORIENTATION_OPTIONS, profile.orientation)
-      : null;
+    orientationsOf(profile)
+      .filter((o) => o !== "prefer_not_to_say")
+      .map((o) => labelFor(ORIENTATION_OPTIONS, o))
+      .join(", ") || null;
+  const romanticLabel = profile.romanticOrientation
+    ? labelFor(ROMANTIC_ORIENTATION_OPTIONS, profile.romanticOrientation)
+    : null;
+  const genderLabel =
+    profile.gender === "self_described"
+      ? profile.genderSelfDescribed || null
+      : profile.gender !== "prefer_not_to_say"
+        ? labelFor(GENDER_OPTIONS, profile.gender)
+        : null;
 
   const promptItems: { label: string; value?: string }[] = [
     { label: "Das hilft mir bei einem Treffen", value: profile.prompts.helpsMeOnDates },
@@ -107,7 +121,9 @@ export function ProfileDetails({
           </h1>
           <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
             {profile.pronouns ? <span>{profile.pronouns}</span> : null}
+            {genderLabel ? <span>{genderLabel}</span> : null}
             {orientationLabel ? <span>{orientationLabel}</span> : null}
+            {romanticLabel ? <span>{romanticLabel}</span> : null}
             <span className="inline-flex items-center gap-1">
               <MapPin aria-hidden="true" className="size-4" />
               {profile.city} (ungefähr)
@@ -120,6 +136,12 @@ export function ProfileDetails({
                 Meine Antwort kann etwas dauern
               </Badge>
             ) : null}
+            {profile.relationshipStructure && profile.relationshipStructure !== "monogamous" ? (
+              <Badge variant="soft">
+                {labelFor(RELATIONSHIP_STRUCTURE_OPTIONS, profile.relationshipStructure)}
+              </Badge>
+            ) : null}
+            {profile.inter ? <Badge variant="soft">inter*</Badge> : null}
             {profile.todayEnergy ? (
               <Badge variant="warm">
                 <BatteryMedium aria-hidden="true" className="size-3.5" />

@@ -49,9 +49,11 @@ returns boolean language sql stable security definer as $$
       where pr.profile_id = owner
         and (
           cardinality(pr.seeking_genders) = 0
-          or viewer.gender = any (pr.seeking_genders)
-          or (viewer.gender = 'trans_woman' and 'woman' = any (pr.seeking_genders))
-          or (viewer.gender = 'trans_man' and 'man' = any (pr.seeking_genders))
+          -- Vergleich als Text: neue Enum-Werte dürfen in derselben
+          -- Transaktion nicht als Literal verwendet werden.
+          or viewer.gender::text = any (pr.seeking_genders::text[])
+          or (viewer.gender::text = 'trans_woman' and 'woman' = any (pr.seeking_genders::text[]))
+          or (viewer.gender::text = 'trans_man' and 'man' = any (pr.seeking_genders::text[]))
         )
     )
 $$;

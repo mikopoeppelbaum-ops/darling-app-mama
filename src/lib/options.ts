@@ -59,7 +59,11 @@ export const RELATIONSHIP_STRUCTURE_OPTIONS: {
 }[] = [
   { value: "monogamous", label: "Monogam" },
   { value: "open", label: "Offene Beziehung" },
-  { value: "polyamorous", label: "Polyamor", description: "Mehrere Beziehungen, offen und einvernehmlich." },
+  {
+    value: "polyamorous",
+    label: "Polyamor",
+    description: "Mehrere Beziehungen, offen und einvernehmlich.",
+  },
   { value: "figuring_out", label: "Finde ich noch heraus" },
 ];
 

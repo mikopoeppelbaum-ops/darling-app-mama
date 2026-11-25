@@ -8,6 +8,7 @@ import {
   HeartHandshake,
   MessageCircle,
   ShieldCheck,
+  Rainbow,
   Sparkles,
   Sun,
 } from "lucide-react";
@@ -22,6 +23,11 @@ const FACTS = [
     source: "Destatis, Statistik der schwerbehinderten Menschen",
   },
   {
+    value: "12 %",
+    text: "der Menschen in Deutschland beschreiben sich als lesbisch, schwul, bi, trans, nicht-binär, pan oder asexuell.",
+    source: "Ipsos LGBT+ Pride Report 2025",
+  },
+  {
     value: "≈ 1 von 127",
     text: "Menschen weltweit ist autistisch — so die aktuelle Schätzung für 2021.",
     source: "WHO / Global Burden of Disease 2021",
@@ -30,6 +36,11 @@ const FACTS = [
     value: "2,6 %",
     text: "der Erwachsenen weltweit haben eine seit der Kindheit bestehende ADHS, mit Symptomen sogar 6,8 %.",
     source: "Song et al., Journal of Global Health 2021",
+  },
+  {
+    value: "57 %",
+    text: "der befragten LGBTIQ-Menschen in Deutschland wurden im Jahr vor der Befragung belästigt.",
+    source: "EU-Grundrechteagentur (FRA), LGBTIQ-Survey 2024",
   },
   {
     value: "88 %",
@@ -55,6 +66,11 @@ const FEATURES = [
     text: "Angaben zu Behinderung, Erkrankung oder Neurodivergenz sind freiwillig — für jede einzeln: sofort sichtbar, erst nach einem Match oder gar nicht. Und du legst fest, ob Fragen dazu willkommen sind.",
   },
   {
+    icon: Rainbow,
+    title: "Queer selbstverständlich",
+    text: "Trans, nicht-binär, inter*, ace, aro, poly: Geschlecht, Orientierungen, romantische Orientierung, Pronomen und Beziehungsform frei wählbar. Wer „Frauen“ sucht, findet auch trans Frauen. Ein diskreter Modus schützt vor ungewolltem Outing.",
+  },
+  {
     icon: MessageCircle,
     title: "Kommunikation ohne Rätselraten",
     text: "Tone-Tags wie „/j“ (Spaß) oder „/gen“ (ernst gemeinte Frage) mit deutscher Erklärung. Eine Studie zeigt: Sie senken die Anstrengung beim Deuten von Nachrichten.",
@@ -77,8 +93,8 @@ const FAQ = [
     a: "Nein, niemals. Alle Angaben zu Behinderung, Erkrankung oder Neurodivergenz sind freiwillig. Bevor du so etwas speicherst, fragen wir ausdrücklich nach deiner Einwilligung, wie es die DSGVO für Gesundheitsdaten verlangt.",
   },
   {
-    q: "Ist EchtNah nur für Menschen mit Behinderungen?",
-    a: "EchtNah ist für alle, die wertschätzendes Kennenlernen suchen. Die App ist so gebaut, dass Barrierefreiheit und verschiedene Arten zu kommunizieren selbstverständlich sind — nicht die Ausnahme.",
+    q: "Ist EchtNah nur für Menschen mit Behinderungen oder nur für queere Menschen?",
+    a: "Nein. EchtNah ist für alle, die wertschätzendes Kennenlernen suchen — mit und ohne Behinderung, queer oder nicht. Die App ist so gebaut, dass Barrierefreiheit, geschlechtliche und sexuelle Vielfalt und verschiedene Arten zu kommunizieren selbstverständlich sind — nicht die Ausnahme.",
   },
   {
     q: "Warum sehe ich nur wenige Profile pro Tag?",
@@ -130,15 +146,16 @@ export default function LandingPage() {
         <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 md:grid-cols-[1.15fr_1fr] md:py-24">
           <div>
             <p className="mb-4 inline-flex rounded-full bg-accent-soft px-3 py-1 text-sm font-semibold">
-              Barrierearm · ADHS-freundlich · ohne Druck
+              Barrierearm · Queer-freundlich · ADHS-freundlich
             </p>
             <h1 className="text-4xl leading-tight font-semibold text-balance md:text-6xl">
               Dating, das dich als ganzen Menschen sieht.
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-              Lerne Menschen kennen, die zu deinem Alltag, deinen Werten und deiner Art zu
-              kommunizieren passen. Für Menschen mit und ohne Behinderungen, mit ADHS,
-              neurodivergent — oder einfach auf der Suche nach echter Nähe.
+              Egal wie du liebst, lebst oder kommunizierst: Hier lernst du Menschen kennen, die zu
+              deinem Alltag und deinen Werten passen. Für Menschen mit und ohne Behinderung,
+              neurodivergent, lesbisch, schwul, bi, trans, nicht-binär, inter*, asexuell, hetero —
+              und alle, die anderswo nicht mitgedacht werden.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/registrieren" className={buttonVariants({ size: "lg" })}>
@@ -197,10 +214,10 @@ export default function LandingPage() {
               Warum es EchtNah braucht
             </h2>
             <p className="mt-3 max-w-2xl text-muted-foreground">
-              Viele Menschen, wenig passende Angebote — und mehr Risiken auf gewöhnlichen
-              Dating-Apps. Jede Zahl mit Quelle.
+              Viele Menschen, die auf gewöhnlichen Dating-Apps nicht mitgedacht werden — und dort
+              häufiger Belästigung erleben. Jede Zahl mit Quelle.
             </p>
-            <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {FACTS.map((f) => (
                 <div key={f.value} className="rounded-xl border border-border bg-background p-5">
                   <dt className="font-display text-4xl font-semibold text-primary">{f.value}</dt>
@@ -294,8 +311,10 @@ export default function LandingPage() {
                   Warnungen bei Geldforderungen, Krypto-Angeboten und Druck zu anderen Messengern
                 </li>
                 <li>Kein exakter Standort — niemals</li>
+                <li>Diskreter Modus gegen ungewolltes Outing, kostenlos</li>
+                <li>Melden von Queer- und Transfeindlichkeit, Misgendering und Outing-Drohungen</li>
                 <li>Sicherheitskontakt, Sicherheitscode und Check-in für Dates</li>
-                <li>Klare Regeln gegen Ableismus und Fetischisierung</li>
+                <li>Klare Regeln gegen Ableismus, Queerfeindlichkeit und Fetischisierung</li>
               </ul>
             </div>
             <div className="rounded-xl border border-border bg-card p-6">

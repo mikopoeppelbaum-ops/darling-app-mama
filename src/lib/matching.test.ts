@@ -7,6 +7,9 @@ import {
   matchesPreferences,
   matchReasons,
   sharedMeetingNeeds,
+  genderMatchesSeeking,
+  isVisibleTo,
+  orientationsOf,
   sortByMatchQuality,
   suggestionsLeftToday,
   DAILY_SUGGESTIONS,
@@ -188,5 +191,52 @@ describe("sharedMeetingNeeds", () => {
       publicTom,
     );
     expect(shared.some((n) => n.need === "Kurze Treffen bevorzugt")).toBe(false);
+  });
+});
+
+describe("LGBTQIA+-Inklusion", () => {
+  const lea = DEMO_PROFILES.find((p) => p.displayName === "Lea")!;
+  const ivy = DEMO_PROFILES.find((p) => p.displayName === "Ivy")!;
+
+  it("zählt trans Frauen bei der Suche nach Frauen mit, trans Männer bei Männern", () => {
+    expect(genderMatchesSeeking(["woman"], "trans_woman")).toBe(true);
+    expect(genderMatchesSeeking(["man"], "trans_man")).toBe(true);
+    expect(genderMatchesSeeking(["trans_woman"], "trans_woman")).toBe(true);
+    expect(genderMatchesSeeking(["trans_woman"], "woman")).toBe(false);
+    expect(genderMatchesSeeking(["man"], "trans_woman")).toBe(false);
+    expect(genderMatchesSeeking([], "agender")).toBe(true);
+  });
+
+  it("findet Lea, wenn Frauen gesucht werden", () => {
+    const prefs: Preferences = { ...DEMO_MY_PREFERENCES, seekingGenders: ["woman"] };
+    expect(matchesPreferences(DEMO_ME, prefs, lea)).toBe(true);
+    expect(applyDiscoverFilters([lea], { genders: ["woman"] })).toHaveLength(1);
+  });
+
+  it("berücksichtigt Mehrfach-Orientierungen beim Filtern", () => {
+    expect(orientationsOf(ivy)).toEqual(["pan", "queer"]);
+    expect(applyDiscoverFilters([ivy], { orientations: ["queer"] })).toHaveLength(1);
+  });
+
+  it("nennt eine gemeinsame Beziehungsform als Übereinstimmung", () => {
+    const a: Profile = { ...DEMO_ME, relationshipStructure: "polyamorous" };
+    expect(matchReasons(a, ivy).some((r) => r.includes("polyamor"))).toBe(true);
+  });
+
+  it("diskreter Modus: nur sichtbar für Menschen, die zur eigenen Suche passen", () => {
+    const ownerPrefs: Preferences = { ...DEMO_MY_PREFERENCES, seekingGenders: ["man"] };
+    const jonas = DEMO_PROFILES.find((p) => p.displayName === "Jonas")!;
+    expect(isVisibleTo(DEMO_ME, ownerPrefs, true, jonas)).toBe(true);
+    expect(isVisibleTo(DEMO_ME, ownerPrefs, true, mara)).toBe(false);
+    expect(isVisibleTo(DEMO_ME, ownerPrefs, false, mara)).toBe(true);
+  });
+
+  it("zeigt Inter* standardmäßig niemandem und blendet verborgene Orientierungen aus", () => {
+    const p: Profile = { ...lea, inter: true, orientationVisibility: "after_match" };
+    const publicView = profileForViewer(p, "public");
+    expect(publicView.inter).toBeUndefined();
+    expect(publicView.orientations).toBeUndefined();
+    expect(profileForViewer({ ...p, interVisibility: "public" }, "public").inter).toBe(true);
+    expect(profileForViewer(p, "matched").orientations).toEqual(["lesbian", "queer"]);
   });
 });

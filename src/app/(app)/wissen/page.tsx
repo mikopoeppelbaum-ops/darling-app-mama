@@ -22,6 +22,22 @@ function Source({ href, children }: { href: string; children: React.ReactNode })
 
 const NUMBERS = [
   {
+    value: "12 %",
+    text: "der Menschen in Deutschland beschreiben sich als lesbisch, schwul, bisexuell, trans, nicht-binär, pansexuell oder asexuell (Online-Befragung).",
+    source: {
+      label: "Ipsos LGBT+ Pride Report 2025",
+      href: "https://www.csdmuenchen.de/files/presse_downloads/Ipsos-PM_LGBT-Pride_2025-06-10.pdf",
+    },
+  },
+  {
+    value: "57 %",
+    text: "der LGBTIQ-Befragten in Deutschland wurden im Jahr vor der Befragung belästigt (EU-Durchschnitt 54 %); 21 % meiden oft oder immer bestimmte Orte aus Angst vor Übergriffen.",
+    source: {
+      label: "EU-Grundrechteagentur, LGBTIQ-Survey III (2024), Länderblatt Deutschland",
+      href: "https://fra.europa.eu/sites/default/files/fra_uploads/lgbtiq_survey-2024-country_sheet-germany.pdf",
+    },
+  },
+  {
     value: "7,9 Millionen",
     text: "Menschen mit anerkannter Schwerbehinderung in Deutschland (Ende 2023), rund 9,3 % der Bevölkerung. Viele Behinderungen — etwa psychische Erkrankungen oder Neurodivergenz ohne Schwerbehindertenausweis — sind darin gar nicht erfasst.",
     source: {
@@ -56,6 +72,24 @@ const NUMBERS = [
 ] as const;
 
 const FEATURE_BASIS = [
+  {
+    feature: "Diskreter Modus gegen ungewolltes Outing",
+    basis:
+      "Gefälschte Profile, mit denen queere Menschen gezielt aufgespürt werden, sind dokumentiert. Deshalb kann das eigene Profil auf Menschen beschränkt werden, die zur eigenen Suche passen — kostenlos.",
+    source: {
+      label: "ARTICLE 19, Apps, arrests and abuse (2018)",
+      href: "https://article19.org/resources/apps-traps-dating-apps-must-protect-communities-middle-east-north-africa",
+    },
+  },
+  {
+    feature: "Trans Frauen sind Frauen, trans Männer sind Männer",
+    basis:
+      "Wer „Frauen“ sucht, findet auch trans Frauen; wer „Männer“ sucht, auch trans Männer. Wer ausdrücklich nur nach „trans Frau“ sucht, kann das ebenfalls wählen. Geschlecht ist Selbstbeschreibung, wie es auch das Selbstbestimmungsgesetz vorsieht.",
+    source: {
+      label: "Bundesregierung zum Selbstbestimmungsgesetz",
+      href: "https://www.bundesregierung.de/breg-de/aktuelles/selbstbestimmungsgesetz-2215426",
+    },
+  },
   {
     feature: "Tägliche Auswahl statt endlosem Wischen",
     basis:
@@ -221,9 +255,17 @@ export default function KnowledgePage() {
         <CardContent>
           <ul className="list-inside list-disc space-y-2">
             <li>
-              <strong>DSGVO Art. 9:</strong> Angaben zu Gesundheit und sexueller Orientierung sind
-              besondere Kategorien personenbezogener Daten. Wir speichern sie nur nach
-              ausdrücklicher Einwilligung.
+              <strong>DSGVO Art. 9:</strong> Angaben zu Gesundheit, Sexualleben und sexueller
+              Orientierung sind besondere Kategorien personenbezogener Daten. Gesundheitsangaben
+              speichern wir nur nach ausdrücklicher Einwilligung; Orientierung und Inter*-Angabe
+              haben eine eigene, einzeln einstellbare Sichtbarkeit.
+            </li>
+            <li>
+              <strong>Selbstbestimmungsgesetz (SBGG), § 13:</strong> Seit dem 1. November 2024
+              dürfen frühere Geschlechtseinträge und Vornamen ohne Zustimmung nicht offenbart werden
+              (Offenbarungsverbot). Outing und die Drohung damit sind deshalb in den
+              Community-Regeln ausdrücklich verboten.{" "}
+              <Source href="https://www.gesetze-im-internet.de/sbgg/__13.html">§ 13 SBGG</Source>
             </li>
             <li>
               <strong>WCAG 2.2 AA:</strong> Leitlinie für Bedienbarkeit, u. a. mit sichtbarem Fokus,

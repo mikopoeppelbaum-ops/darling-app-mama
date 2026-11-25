@@ -6,13 +6,13 @@ import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useAppStore } from "@/lib/store";
 import { AccessibilityNeedsPicker } from "@/components/profile/accessibility-needs-picker";
 import { ProfileDetails } from "@/components/profile/profile-details";
+import { IdentityEditor, PronounDatalist } from "@/components/profile/identity-editor";
 import {
   COMMUNICATION_STYLE_OPTIONS,
   CONTACT_FREQUENCY_OPTIONS,
   DEALBREAKER_OPTIONS,
   GENDER_OPTIONS,
   INTEREST_OPTIONS,
-  ORIENTATION_OPTIONS,
   PLANNING_STYLE_OPTIONS,
   RELATIONSHIP_GOAL_OPTIONS,
   SENSORY_NEED_OPTIONS,
@@ -22,7 +22,6 @@ import type {
   CommunicationStyle,
   ContactFrequency,
   Gender,
-  Orientation,
   PlanningStyle,
   RelationshipGoal,
 } from "@/lib/types";
@@ -89,11 +88,13 @@ export default function OnboardingPage() {
           <FormField label="Pronomen" htmlFor="ob-pronouns" optional>
             <Input
               id="ob-pronouns"
-              placeholder="z. B. sie/ihr, er/ihm, they/them"
+              list="pronoun-suggestions"
+              placeholder="z. B. sie/ihr, er/ihm, they/them, dey/dem"
               value={me.pronouns ?? ""}
               onChange={(e) => store.updateProfile({ pronouns: e.target.value || undefined })}
             />
           </FormField>
+          <PronounDatalist />
         </div>
       ),
     },
@@ -102,22 +103,10 @@ export default function OnboardingPage() {
       description: "Alle Angaben außer dem Alter kannst du später jederzeit ändern.",
       content: (
         <div className="space-y-5">
-          <RadioCards
-            legend="Geschlechtsidentität"
-            name="ob-gender"
-            options={GENDER_OPTIONS}
-            value={me.gender}
-            onChange={(v) => store.updateProfile({ gender: v as Gender })}
-          />
-          <RadioCards
-            legend="Sexuelle Orientierung"
-            name="ob-orientation"
-            options={ORIENTATION_OPTIONS}
-            value={me.orientation}
-            onChange={(v) => store.updateProfile({ orientation: v as Orientation })}
-          />
+          <IdentityEditor />
           <ChipGroup
             legend="Ich möchte kennenlernen"
+            hint="Wer „Frauen“ wählt, sieht auch trans Frauen; wer „Männer“ wählt, auch trans Männer."
             options={GENDER_OPTIONS.filter((g) => g.value !== "prefer_not_to_say")}
             selected={state.myPreferences.seekingGenders}
             onChange={(v) => store.updatePreferences({ seekingGenders: v as Gender[] })}

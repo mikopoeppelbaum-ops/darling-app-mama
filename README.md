@@ -57,6 +57,28 @@ ADHS bei Erwachsenen (Song et al. 2021); 88 % der Dating-App-Nutzenden mit Behin
 digitale Übergriffe (Australian Institute of Criminology 2024). Wo Belege dünn sind (Spoon Theory,
 Rejection Sensitivity, Atkinson-Wirksamkeit), sagt die App das ausdrücklich.
 
+## Version 3: Queer- und trans-inklusiv — eine tolerante App für alle
+
+EchtNah richtet sich gleichberechtigt an Menschen mit Behinderung, neurodivergente Menschen
+**und** LGBTQIA+-Personen — und an alle, die respektvoll daten wollen.
+
+| Funktion                                                                                                                              | Grundlage                                                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Trans Frau / trans Mann als eigene Optionen; trans Frauen gelten bei der Suche nach „Frauen“ als Frauen (und umgekehrt)               | Selbstbestimmung; Schutz vor Ausschluss                                                                                                               |
+| Mehrere sexuelle Orientierungen gleichzeitig (z. B. bi + queer), getrennte romantische Orientierung                                   | Split-Attraction-Modell, wichtig für asexuelle/aromantische Menschen                                                                                  |
+| Beziehungsform (monogam, offen, polyamor …), freiwillig                                                                               | —                                                                                                                                                     |
+| Inter*-Angabe, standardmäßig für niemanden sichtbar                                                                                   | Datensparsamkeit, DSGVO Art. 9                                                                                                                        |
+| Pronomen-Vorschläge inkl. Neopronomen (dey/dem, xier) — freie Eingabe bleibt möglich                                                  | —                                                                                                                                                     |
+| **Diskreter Modus:** Profil nur für Menschen sichtbar, die zu den eigenen Suchkriterien passen (auch per RLS in `0004_inclusion.sql`) | Schutz vor Outing/Entrapment ([ARTICLE 19](https://article19.org/resources/apps-traps-dating-apps-must-protect-communities-middle-east-north-africa)) |
+| Neue Meldegründe: Queerfeindlichkeit, Transfeindlichkeit, Misgendering, Outing-Drohung                                                | Offenbarungsverbot [§ 13 SBGG](https://www.gesetze-im-internet.de/sbgg/__13.html) (seit 1.11.2024)                                                    |
+| Community-Regeln: kein Deadnaming, kein Outing, keine Fetischisierung                                                                 | —                                                                                                                                                     |
+| Demo-Profile Lea (trans, lesbisch) und Sam (nichtbinär, ace)                                                                          | —                                                                                                                                                     |
+
+**Zahlen:** 12 % der Menschen in Deutschland identifizieren sich als LGBT+
+([Ipsos Pride Survey 2025](https://www.csdmuenchen.de/files/presse_downloads/Ipsos-PM_LGBT-Pride_2025-06-10.pdf));
+57 % der LGBTIQ-Personen in Deutschland erlebten in den letzten 12 Monaten Belästigung
+([FRA LGBTIQ Survey III, 2024](https://fra.europa.eu/sites/default/files/fra_uploads/lgbtiq_survey-2024-country_sheet-germany.pdf)).
+
 ## Technischer Stack
 
 | Bereich        | Technologie                                              | Anmerkung                                                                                                                                                                                                                                                       |
@@ -144,7 +166,7 @@ psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" \
 | `npm run build` / `npm start` | Produktions-Build / -Server |
 | `npm run lint`                | ESLint                      |
 | `npm run typecheck`           | TypeScript ohne Emit        |
-| `npm test`                    | Vitest (63 Tests)           |
+| `npm test`                    | Vitest (109 Tests)          |
 | `npm run format`              | Prettier                    |
 
 ## Fertige Funktionen (MVP)

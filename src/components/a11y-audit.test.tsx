@@ -10,6 +10,8 @@ import KnowledgePage from "@/app/(app)/wissen/page";
 import NotificationsPage from "@/app/(app)/benachrichtigungen/page";
 import DiscoverPage from "@/app/(app)/entdecken/page";
 import MatchesPage from "@/app/(app)/matches/page";
+import PrivacyPage from "@/app/(app)/einstellungen/privatsphaere/page";
+import { IdentityEditor } from "@/components/profile/identity-editor";
 import { CommunityRulesContent } from "@/components/community-rules-content";
 import { AppShell } from "@/components/layout/app-shell";
 import { AppStoreProvider } from "@/lib/store";
@@ -106,6 +108,19 @@ describe("Barrierefreiheits-Audit: ganze Seiten (axe-core)", () => {
       unmount();
     }
   }, 30000);
+
+  it("Identitätsangaben und Privatsphäre (diskreter Modus) haben keine axe-Verstöße", async () => {
+    const { container } = render(
+      <AppStoreProvider>
+        <main>
+          <h1>Profil</h1>
+          <IdentityEditor showPronouns />
+          <PrivacyPage />
+        </main>
+      </AppStoreProvider>,
+    );
+    expect(await axe(container, pageAxeOptions)).toHaveNoViolations();
+  }, 20000);
 
   it("App-Navigation (Desktop- und Mobil-Menü) hat keine axe-Verstöße", async () => {
     const { container } = render(

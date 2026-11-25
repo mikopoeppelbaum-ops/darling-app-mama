@@ -12,13 +12,16 @@ const RULES = [
       "Keine Beleidigungen, Abwertungen oder Demütigungen.",
       "Kein Ableismus: Behinderung oder Neurodivergenz sind nie ein Makel und kein Thema für Witze auf Kosten anderer.",
       "Keine Diskriminierung — egal ob wegen Behinderung, Geschlecht, Orientierung, Herkunft, Religion oder Aussehen.",
+      "Keine Queer-, Trans- oder Interfeindlichkeit. Jede Geschlechtsidentität und jede Orientierung ist gleich viel wert — auch Asexualität und Aromantik.",
     ],
   },
   {
     title: "Grenzen gelten",
     items: [
       "Keine sexuelle Belästigung. Kein ungefragtes Zusenden intimer Inhalte.",
-      "Keine Fetischisierung von Behinderungen. Menschen sind keine Kategorie.",
+      "Keine Fetischisierung — weder von Behinderung noch von trans, inter* oder anderen queeren Menschen. Menschen sind keine Kategorie.",
+      "Kein absichtliches Misgendering und keine früheren Namen. Nutze die Pronomen und den Namen, die jemand angibt.",
+      "Niemanden outen und nicht mit einem Outing drohen. Frühere Geschlechtseinträge ohne Zustimmung offenzulegen ist in Deutschland zudem verboten (§ 13 Selbstbestimmungsgesetz).",
       "Kein Stalking: Wenn jemand nicht mehr antwortet oder blockiert, ist das zu respektieren.",
       "Kein Druck, eine Diagnose oder medizinische Details offenzulegen. Was jemand teilt, entscheidet nur diese Person.",
       "Keine ungefragten medizinischen Ratschläge oder Heilungstipps.",
@@ -55,6 +58,7 @@ const SIMPLE_RULES = [
       "Werte niemanden ab.",
       "Eine Behinderung ist kein Fehler. Mach keine Witze darüber.",
       "Diskriminiere niemanden. Zum Beispiel nicht wegen Behinderung, Geschlecht, Herkunft oder Religion.",
+      "Sei respektvoll zu allen. Egal, wen jemand liebt. Egal, welches Geschlecht jemand hat.",
     ],
   },
   {
@@ -62,7 +66,9 @@ const SIMPLE_RULES = [
     items: [
       "Belästige niemanden sexuell.",
       "Schicke keine intimen Bilder ohne Nachfrage.",
-      "Reduziere niemanden auf seine Behinderung.",
+      "Reduziere niemanden auf seine Behinderung oder sein Geschlecht.",
+      "Nutze die Pronomen und den Namen, die jemand angibt.",
+      "Oute niemanden. Drohe nie damit.",
       "Wenn jemand nicht mehr antwortet: Lass die Person in Ruhe.",
       "Wenn jemand dich blockiert: Akzeptiere das.",
       "Zwinge niemanden, eine Diagnose zu erzählen.",

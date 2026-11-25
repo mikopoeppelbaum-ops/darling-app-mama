@@ -1,6 +1,6 @@
 "use client";
 
-import { Download } from "lucide-react";
+import { Download, EyeOff } from "lucide-react";
 import { useAppStore } from "@/lib/store";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -43,6 +43,32 @@ export default function PrivacySettingsPage() {
         Profil — für jede Angabe einzeln. Dein genauer Standort wird nie gespeichert, dein
         Geburtsdatum nie angezeigt.
       </Alert>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <EyeOff aria-hidden="true" className="size-5 text-primary" />
+            Diskreter Modus
+          </CardTitle>
+          <CardDescription>
+            Dein Profil sehen nur Menschen, die zu deiner Suche passen. Hilfreich, wenn du nicht
+            möchtest, dass zufällig Bekannte oder Kolleg:innen dich hier finden — zum Beispiel, wenn
+            du (noch) nicht überall geoutet bist. Kostenlos, weil es um deine Sicherheit geht.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between gap-3">
+            <Label htmlFor="priv-discreet" className="font-medium">
+              Diskreten Modus einschalten
+            </Label>
+            <Switch
+              id="priv-discreet"
+              checked={p.discreetMode ?? false}
+              onCheckedChange={(v) => store.updatePrivacySettings({ discreetMode: v })}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
