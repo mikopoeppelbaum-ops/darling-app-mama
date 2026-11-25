@@ -11,13 +11,17 @@ import type {
   Orientation,
   PlanningStyle,
   RelationshipGoal,
+  RelationshipStructure,
   ReportCategory,
+  RomanticOrientation,
   ResponsePace,
 } from "@/lib/types";
 
 export const GENDER_OPTIONS: { value: Gender; label: string }[] = [
   { value: "woman", label: "Frau" },
   { value: "man", label: "Mann" },
+  { value: "trans_woman", label: "Trans Frau" },
+  { value: "trans_man", label: "Trans Mann" },
   { value: "nonbinary", label: "Nicht-binär" },
   { value: "genderfluid", label: "Genderfluid" },
   { value: "agender", label: "Agender" },
@@ -37,6 +41,37 @@ export const ORIENTATION_OPTIONS: { value: Orientation; label: string }[] = [
   { value: "questioning", label: "Noch am Herausfinden" },
   { value: "prefer_not_to_say", label: "Keine Angabe" },
 ];
+
+export const ROMANTIC_ORIENTATION_OPTIONS: { value: RomanticOrientation; label: string }[] = [
+  { value: "aromantic", label: "Aromantisch" },
+  { value: "heteroromantic", label: "Heteroromantisch" },
+  { value: "homoromantic", label: "Homoromantisch" },
+  { value: "biromantic", label: "Biromantisch" },
+  { value: "panromantic", label: "Panromantisch" },
+  { value: "demiromantic", label: "Demiromantisch" },
+  { value: "prefer_not_to_say", label: "Keine Angabe" },
+];
+
+export const RELATIONSHIP_STRUCTURE_OPTIONS: {
+  value: RelationshipStructure;
+  label: string;
+  description?: string;
+}[] = [
+  { value: "monogamous", label: "Monogam" },
+  { value: "open", label: "Offene Beziehung" },
+  { value: "polyamorous", label: "Polyamor", description: "Mehrere Beziehungen, offen und einvernehmlich." },
+  { value: "figuring_out", label: "Finde ich noch heraus" },
+];
+
+/** Vorschläge — eigene Pronomen sind jederzeit frei eintragbar. */
+export const PRONOUN_SUGGESTIONS = [
+  "sie/ihr",
+  "er/ihm",
+  "they/them",
+  "dey/dem",
+  "xier/xiem",
+  "keine Pronomen — bitte meinen Namen",
+] as const;
 
 export const RELATIONSHIP_GOAL_OPTIONS: {
   value: RelationshipGoal;
@@ -287,7 +322,11 @@ export const REPORT_CATEGORY_OPTIONS: { value: ReportCategory; label: string }[]
   { value: "ableism", label: "Ableismus" },
   { value: "discrimination", label: "Diskriminierung" },
   { value: "sexual_harassment", label: "Sexuelle Belästigung" },
-  { value: "fetishization", label: "Fetischisierung von Behinderung" },
+  { value: "fetishization", label: "Fetischisierung (z. B. von Behinderung oder trans Personen)" },
+  { value: "queerphobia", label: "Queerfeindlichkeit" },
+  { value: "transphobia", label: "Trans- oder Interfeindlichkeit" },
+  { value: "misgendering", label: "Absichtlich falsches Geschlecht oder früherer Name" },
+  { value: "outing_threat", label: "Drohung mit Outing" },
   { value: "manipulation", label: "Manipulation oder Druck" },
   { value: "scam", label: "Betrug oder Geldforderung" },
   { value: "stalking", label: "Stalking" },

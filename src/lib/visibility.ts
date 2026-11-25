@@ -40,6 +40,14 @@ export function profileForViewer(profile: Profile, context: ViewerContext): Prof
     orientation: isVisible(profile.orientationVisibility, context)
       ? profile.orientation
       : "prefer_not_to_say",
+    orientations: isVisible(profile.orientationVisibility, context)
+      ? profile.orientations
+      : undefined,
+    romanticOrientation: isVisible(profile.orientationVisibility, context)
+      ? profile.romanticOrientation
+      : undefined,
+    // Inter* ist standardmäßig verborgen, solange nichts anderes gewählt ist.
+    inter: profile.inter && isVisible(profile.interVisibility ?? "hidden", context) ? true : undefined,
     // Tagesform ist bewusst nur für Matches sichtbar.
     todayEnergy: context === "matched" ? profile.todayEnergy : undefined,
     // Einwilligungs-Zeitpunkt ist eine interne Angabe und nie öffentlich.

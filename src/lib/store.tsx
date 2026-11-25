@@ -100,6 +100,7 @@ const initialState: AppState = {
     showPronouns: true,
     showLastActive: false,
     incognito: false,
+    discreetMode: false,
   },
   adhsSettings: {
     remindersEnabled: false,

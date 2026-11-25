@@ -8,6 +8,8 @@ export type Visibility = "public" | "after_match" | "hidden";
 export type Gender =
   | "woman"
   | "man"
+  | "trans_woman"
+  | "trans_man"
   | "nonbinary"
   | "genderfluid"
   | "agender"
@@ -25,6 +27,22 @@ export type Orientation =
   | "queer"
   | "questioning"
   | "prefer_not_to_say";
+
+/**
+ * Romantische Orientierung, getrennt von der sexuellen ("Split Attraction
+ * Model"). Für viele asexuelle und aromantische Menschen ist die
+ * Unterscheidung zentral, z. B. "asexuell und panromantisch".
+ */
+export type RomanticOrientation =
+  | "aromantic"
+  | "heteroromantic"
+  | "homoromantic"
+  | "biromantic"
+  | "panromantic"
+  | "demiromantic"
+  | "prefer_not_to_say";
+
+export type RelationshipStructure = "monogamous" | "open" | "polyamorous" | "figuring_out";
 
 export type RelationshipGoal =
   "long_term" | "open_to_anything" | "friendship_first" | "casual" | "companionship";
@@ -90,8 +108,16 @@ export interface Profile {
   gender: Gender;
   genderSelfDescribed?: string;
   pronouns?: string;
+  /** Primäre Angabe; bei mehreren Angaben siehe `orientations`. */
   orientation: Orientation;
+  /** Mehrfachauswahl, z. B. ["bi", "queer"]. Hat Vorrang vor `orientation`. */
+  orientations?: Orientation[];
+  romanticOrientation?: RomanticOrientation;
   orientationVisibility: Visibility;
+  /** Freiwillige Angabe "inter*", eigene Sichtbarkeit (Standard: nicht anzeigen). */
+  inter?: boolean;
+  interVisibility?: Visibility;
+  relationshipStructure?: RelationshipStructure;
   /** Ungefährer Standort — niemals exakte Adresse. */
   city: string;
   approxLat: number;
@@ -223,6 +249,10 @@ export type ReportCategory =
   | "unwanted_medical_advice"
   | "diagnosis_pressure"
   | "fake_profile"
+  | "queerphobia"
+  | "transphobia"
+  | "misgendering"
+  | "outing_threat"
   | "other";
 
 export type ReportStatus = "open" | "in_review" | "resolved" | "dismissed";
@@ -312,6 +342,12 @@ export interface PrivacySettings {
   showPronouns: boolean;
   showLastActive: boolean;
   incognito: boolean;
+  /**
+   * Diskreter Modus (kostenlos, Sicherheitsfunktion): Das Profil sehen nur
+   * Personen, die selbst zu den eigenen Suchkriterien passen. Schützt vor
+   * ungewolltem Outing.
+   */
+  discreetMode: boolean;
 }
 
 export interface ConsentRecord {

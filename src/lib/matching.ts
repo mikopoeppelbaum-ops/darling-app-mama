@@ -1,6 +1,11 @@
-import type { DiscoverFilters, Preferences, Profile } from "@/lib/types";
+import type { DiscoverFilters, Gender, Orientation, Preferences, Profile } from "@/lib/types";
 import { ageFromBirthdate } from "@/lib/utils";
-import { labelFor, PLANNING_STYLE_OPTIONS, RELATIONSHIP_GOAL_OPTIONS } from "@/lib/options";
+import {
+  labelFor,
+  PLANNING_STYLE_OPTIONS,
+  RELATIONSHIP_GOAL_OPTIONS,
+  RELATIONSHIP_STRUCTURE_OPTIONS,
+} from "@/lib/options";
 
 /**
  * Matching-Logik von EchtNah.
@@ -24,6 +29,40 @@ export function distanceKm(
   return Math.round(2 * R * Math.asin(Math.sqrt(h)));
 }
 
+/**
+ * Passt ein Geschlecht zur Suche? Trans Frauen sind Frauen und trans Männer
+ * sind Männer: Wer "Frau" sucht, findet auch trans Frauen. Wer gezielt
+ * "trans Frau" auswählt, findet genau diese Angabe. Leere Suche = alle.
+ */
+export function genderMatchesSeeking(seeking: Gender[], gender: Gender): boolean {
+  if (seeking.length === 0) return true;
+  if (seeking.includes(gender)) return true;
+  if (gender === "trans_woman" && seeking.includes("woman")) return true;
+  if (gender === "trans_man" && seeking.includes("man")) return true;
+  return false;
+}
+
+/** Alle Orientierungs-Angaben einer Person (Mehrfachauswahl oder Einzelangabe). */
+export function orientationsOf(p: Profile): Orientation[] {
+  return p.orientations && p.orientations.length > 0 ? p.orientations : [p.orientation];
+}
+
+/**
+ * Diskreter Modus: Ein Profil ist nur für Personen sichtbar, die selbst zu
+ * den Suchkriterien der Profilinhaber:in passen. Schützt vor ungewolltem
+ * Outing — Fallen mit gefälschten Profilen gegen queere Menschen sind
+ * dokumentiert (ARTICLE 19, 2018). Kostenlos, da Sicherheitsfunktion.
+ */
+export function isVisibleTo(
+  owner: Profile,
+  ownerPrefs: Preferences,
+  ownerDiscreet: boolean,
+  viewer: Profile,
+): boolean {
+  if (!ownerDiscreet) return true;
+  return matchesPreferences(owner, ownerPrefs, viewer);
+}
+
 /** Prüft, ob `candidate` den Suchpräferenzen von `seeker` entspricht. */
 export function matchesPreferences(
   seekerProfile: Profile,
@@ -32,12 +71,7 @@ export function matchesPreferences(
 ): boolean {
   const age = ageFromBirthdate(candidate.birthdate);
   if (age < seekerPrefs.ageMin || age > seekerPrefs.ageMax) return false;
-  if (
-    seekerPrefs.seekingGenders.length > 0 &&
-    !seekerPrefs.seekingGenders.includes(candidate.gender)
-  ) {
-    return false;
-  }
+  if (!genderMatchesSeeking(seekerPrefs.seekingGenders, candidate.gender)) return false;
   if (distanceKm(seekerProfile, candidate) > seekerPrefs.maxDistanceKm) return false;
   return true;
 }
@@ -65,6 +99,16 @@ export function matchReasons(a: Profile, b: Profile): string[] {
       a.relationshipGoal === "long_term"
         ? "Ihr sucht beide eine langfristige Beziehung."
         : `Ihr wünscht euch beide: ${goal}.`,
+    );
+  }
+
+  if (
+    a.relationshipStructure &&
+    a.relationshipStructure === b.relationshipStructure &&
+    a.relationshipStructure !== "figuring_out"
+  ) {
+    reasons.push(
+      `Ihr wünscht euch dieselbe Beziehungsform: ${labelFor(RELATIONSHIP_STRUCTURE_OPTIONS, a.relationshipStructure).toLowerCase()}.`,
     );
   }
 
@@ -138,11 +182,12 @@ export function applyDiscoverFilters(
     const age = ageFromBirthdate(p.birthdate);
     if (filters.ageMin !== undefined && age < filters.ageMin) return false;
     if (filters.ageMax !== undefined && age > filters.ageMax) return false;
-    if (filters.genders?.length && !filters.genders.includes(p.gender)) return false;
+    if (filters.genders?.length && !genderMatchesSeeking(filters.genders, p.gender)) return false;
     if (
       filters.orientations?.length &&
       // Orientierung darf nur gefiltert werden, wenn sie öffentlich sichtbar ist.
-      (p.orientationVisibility !== "public" || !filters.orientations.includes(p.orientation))
+      (p.orientationVisibility !== "public" ||
+        !orientationsOf(p).some((o) => filters.orientations!.includes(o)))
     ) {
       return false;
     }
